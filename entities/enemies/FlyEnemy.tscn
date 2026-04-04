@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://fly0001"]
+
+[ext_resource type="Script" path="res://entities/enemies/FlyEnemy.gd" id="1_fly0001"]
+
+[node name="FlyEnemy" type="Area2D"]
+script = ExtResource("1_fly0001")

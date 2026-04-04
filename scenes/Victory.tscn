@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://vict001"]
+
+[ext_resource type="Script" path="res://scenes/Victory.gd" id="1_vict001"]
+
+[node name="Victory" type="Node2D"]
+script = ExtResource("1_vict001")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://invi001"]
+
+[ext_resource type="Script" path="res://entities/enemies/InvisibleEnemy.gd" id="1_invi001"]
+
+[node name="InvisibleEnemy" type="Area2D"]
+script = ExtResource("1_invi001")

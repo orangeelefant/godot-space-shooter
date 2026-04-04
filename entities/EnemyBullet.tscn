@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ebul001"]
+
+[ext_resource type="Script" path="res://entities/EnemyBullet.gd" id="1_ebul001"]
+
+[node name="EnemyBullet" type="Area2D"]
+script = ExtResource("1_ebul001")
