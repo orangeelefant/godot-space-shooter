@@ -13,6 +13,7 @@ func _ready() -> void:
 	_draw_background()
 	_draw_worlds()
 	_draw_title()
+	_draw_nav()
 
 
 func _draw_background() -> void:
@@ -69,6 +70,28 @@ func _add_world_node(world: Dictionary, pos: Vector2, index: int, unlocked: bool
 	add_child(node)
 
 
+func _draw_nav() -> void:
+	var back := Button.new()
+	back.text = "< TILLBAKA"
+	back.size = Vector2(200, 50)
+	back.position = Vector2(40, 40)
+	back.add_theme_font_size_override("font_size", 20)
+	back.add_theme_color_override("font_color", Color(0.6, 0.7, 0.8))
+	back.flat = true
+	back.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/MainMenu.tscn"))
+	add_child(back)
+
+	var hangar := Button.new()
+	hangar.text = "HANGAREN >"
+	hangar.size = Vector2(220, 50)
+	hangar.position = Vector2(GameData.GAME_WIDTH - 260, 40)
+	hangar.add_theme_font_size_override("font_size", 20)
+	hangar.add_theme_color_override("font_color", Color(0, 1, 0.53))
+	hangar.flat = true
+	hangar.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/Hangar.tscn"))
+	add_child(hangar)
+
+
 func _on_world_selected(world_id: String) -> void:
 	GameState.current_world_id = world_id
 	get_tree().change_scene_to_file("res://scenes/LevelSelect.tscn")
@@ -83,6 +106,15 @@ class _WorldNode extends Node2D:
 
 	func _ready() -> void:
 		queue_redraw()
+		var lbl := Label.new()
+		lbl.text = world_data.get("name", "").to_upper()
+		lbl.position = Vector2(-60, 38)
+		lbl.size = Vector2(120, 28)
+		lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		lbl.add_theme_font_size_override("font_size", 13)
+		lbl.add_theme_color_override("font_color",
+			Color(0, 0.8, 1.0) if is_unlocked else Color(0.35, 0.35, 0.45))
+		add_child(lbl)
 
 	func _draw() -> void:
 		var color := Color(0, 0.8, 1.0) if is_unlocked else Color(0.3, 0.3, 0.4)

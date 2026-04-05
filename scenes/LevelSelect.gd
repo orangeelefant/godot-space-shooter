@@ -102,6 +102,26 @@ class _LevelCard extends Node2D:
 
 	func _ready() -> void:
 		queue_redraw()
+		var name_lbl := Label.new()
+		name_lbl.text = level_data.get("name", "").to_upper()
+		name_lbl.position = Vector2(-130, -28)
+		name_lbl.size = Vector2(260, 56)
+		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		name_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		name_lbl.add_theme_font_size_override("font_size", 20)
+		name_lbl.add_theme_color_override("font_color",
+			Color(0.27, 1.0, 0.53) if is_completed else Color(0.75, 0.88, 1.0))
+		add_child(name_lbl)
+
+		if is_completed:
+			var done_lbl := Label.new()
+			done_lbl.text = "KLAR"
+			done_lbl.position = Vector2(-130, 38)
+			done_lbl.size = Vector2(260, 28)
+			done_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			done_lbl.add_theme_font_size_override("font_size", 14)
+			done_lbl.add_theme_color_override("font_color", Color(0.27, 1.0, 0.53))
+			add_child(done_lbl)
 
 	func _draw() -> void:
 		var w := 280.0

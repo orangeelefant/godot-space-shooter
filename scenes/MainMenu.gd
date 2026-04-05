@@ -130,14 +130,50 @@ class _ShipCard extends Node2D:
 
 	var ship: Dictionary = {}
 	var is_selected: bool = false
-	var _hover: bool = false
+	var _selected_lbl: Label
 
 	func _ready() -> void:
 		queue_redraw()
+		var ship_color: Color = ship.get("color", Color.CYAN)
+
+		# Ship name
+		var name_lbl := Label.new()
+		name_lbl.text = ship.get("name", "").to_upper()
+		name_lbl.position = Vector2(-120, -143)
+		name_lbl.size = Vector2(240, 28)
+		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		name_lbl.add_theme_font_size_override("font_size", 15)
+		name_lbl.add_theme_color_override("font_color", ship_color)
+		add_child(name_lbl)
+
+		# Stat name labels (SPD, SLD, FIR)
+		var stat_names := ["SPD", "SLD", "FIR"]
+		for i in 3:
+			var sy := 10.0 + i * 30.0
+			var lbl := Label.new()
+			lbl.text = stat_names[i]
+			lbl.position = Vector2(65, sy - 12)
+			lbl.size = Vector2(50, 18)
+			lbl.add_theme_font_size_override("font_size", 11)
+			lbl.add_theme_color_override("font_color", Color(0.4, 0.55, 0.65))
+			add_child(lbl)
+
+		# Selected indicator label
+		_selected_lbl = Label.new()
+		_selected_lbl.text = "VALD"
+		_selected_lbl.position = Vector2(-60, 106)
+		_selected_lbl.size = Vector2(120, 22)
+		_selected_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_selected_lbl.add_theme_font_size_override("font_size", 13)
+		_selected_lbl.add_theme_color_override("font_color", Color(0.27, 1.0, 0.53))
+		_selected_lbl.visible = is_selected
+		add_child(_selected_lbl)
 
 	func set_selected(val: bool) -> void:
 		is_selected = val
 		queue_redraw()
+		if _selected_lbl:
+			_selected_lbl.visible = val
 
 	func _draw() -> void:
 		var w := 240.0
@@ -188,6 +224,3 @@ class _ShipCard extends Node2D:
 			if abs(local.x) < 120 and abs(local.y) < 155:
 				card_pressed.emit()
 
-	func _notification(what: int) -> void:
-		if what == NOTIFICATION_DRAW:
-			pass

@@ -123,13 +123,44 @@ class _UpgradeCard extends Node2D:
 
 	func _ready() -> void:
 		queue_redraw()
-		if not is_owned:
+
+		# Upgrade name
+		var name_lbl := Label.new()
+		name_lbl.text = upg.get("name", "").to_upper()
+		name_lbl.position = Vector2(16, 18)
+		name_lbl.size = Vector2(card_size.x - 32, 36)
+		name_lbl.add_theme_font_size_override("font_size", 22)
+		name_lbl.add_theme_color_override("font_color",
+			Color(0, 1, 0.53) if is_owned else Color(0.8, 0.9, 1.0))
+		add_child(name_lbl)
+
+		# Description
+		var desc_lbl := Label.new()
+		desc_lbl.text = upg.get("desc", "")
+		desc_lbl.position = Vector2(16, 62)
+		desc_lbl.size = Vector2(card_size.x - 32, 60)
+		desc_lbl.add_theme_font_size_override("font_size", 15)
+		desc_lbl.add_theme_color_override("font_color", Color(0.5, 0.6, 0.7))
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
+		add_child(desc_lbl)
+
+		if is_owned:
+			var owned_lbl := Label.new()
+			owned_lbl.text = "ÄGAD"
+			owned_lbl.position = Vector2(0, card_size.y - 52)
+			owned_lbl.size = Vector2(card_size.x, 36)
+			owned_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			owned_lbl.add_theme_font_size_override("font_size", 18)
+			owned_lbl.add_theme_color_override("font_color", Color(0, 1, 0.53))
+			add_child(owned_lbl)
+		else:
 			var btn := Button.new()
-			btn.text = "KÖPA  " + str(upg.get("cost", 0)) + " ¤" if not is_owned else "ÄGAT"
+			btn.text = "KÖPA " + str(upg.get("cost", 0)) + " ¤"
 			btn.size = Vector2(160, 40)
 			btn.position = Vector2(card_size.x / 2.0 - 80, card_size.y - 55)
 			btn.add_theme_font_size_override("font_size", 18)
-			btn.add_theme_color_override("font_color", Color(0, 1, 0.53) if can_buy else Color(0.4, 0.4, 0.5))
+			btn.add_theme_color_override("font_color",
+				Color(0, 1, 0.53) if can_buy else Color(0.4, 0.4, 0.5))
 			btn.disabled = not can_buy
 			btn.flat = true
 			btn.pressed.connect(func(): buy_pressed.emit())

@@ -19,7 +19,7 @@ func _ready() -> void:
 		add_child(dot)
 
 	_add_label("SEGER!", 260, 106, Color(0, 1, 0.8, 0.2))
-	_add_label("SEGER!", 260, 102, Color(0, 1, 0.8))
+	var title_lbl := _add_label("SEGER!", 260, 102, Color(0, 1, 0.8))
 	_add_label("DU HAR RÄDDAT GALAXEN", 390, 26, Color(0.67, 0.73, 0.8))
 
 	# Separator
@@ -40,13 +40,12 @@ func _ready() -> void:
 	add_child(btn)
 
 	# Pulse animation on title
-	var title_lbl := get_child(get_child_count() - 4)  # the main SEGER label
 	var tween := create_tween().set_loops()
 	tween.tween_property(title_lbl, "scale", Vector2(1.04, 1.04), 0.9)
 	tween.tween_property(title_lbl, "scale", Vector2(1.0, 1.0), 0.9)
 
 
-func _add_label(text: String, y: float, size: int, color: Color) -> void:
+func _add_label(text: String, y: float, size: int, color: Color) -> Label:
 	var lbl := Label.new()
 	lbl.text = text
 	lbl.position = Vector2(0, y)
@@ -55,3 +54,4 @@ func _add_label(text: String, y: float, size: int, color: Color) -> void:
 	lbl.add_theme_font_size_override("font_size", size)
 	lbl.add_theme_color_override("font_color", color)
 	add_child(lbl)
+	return lbl

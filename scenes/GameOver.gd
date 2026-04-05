@@ -33,8 +33,6 @@ func _ready() -> void:
 	menu.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/MainMenu.tscn"))
 	add_child(menu)
 
-	Input.action_press("ui_accept")
-
 
 func _add_label(text: String, y: float, size: int, color: Color) -> void:
 	var lbl := Label.new()
