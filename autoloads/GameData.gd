@@ -67,8 +67,9 @@ const WORLDS: Array[Dictionary] = [
 			{
 				"id": "w2-l3", "name": "Asteroidchefen",
 				"waves": [
-					{"type": "yellow", "count": 30, "formation": "v",     "delay": 0.2},
-					{"type": "red",    "count": 10, "formation": "line",  "delay": 0.5},
+					{"type": "yellow",  "count": 30, "formation": "v",     "delay": 0.2},
+					{"type": "red",     "count": 10, "formation": "line",  "delay": 0.5},
+					{"type": "shield",  "count": 5,  "formation": "line",  "delay": 0.3},
 				],
 				"mission": {"type": "boss", "boss_type": "standard"}
 			},
@@ -98,6 +99,7 @@ const WORLDS: Array[Dictionary] = [
 				"waves": [
 					{"type": "invisible", "count": 20, "formation": "random", "delay": 0.3},
 					{"type": "red",       "count": 15, "formation": "line",   "delay": 0.4},
+					{"type": "zigzag",    "count": 6,  "formation": "swarm",  "delay": 0.2},
 				],
 				"mission": {"type": "boss", "boss_type": "standard"}
 			},

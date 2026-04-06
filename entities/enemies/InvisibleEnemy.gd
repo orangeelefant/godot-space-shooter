@@ -59,3 +59,8 @@ func _get_radius() -> float:
 func _draw_shape() -> void:
 	draw_circle(Vector2.ZERO, _get_radius(), Color(0.4, 0.6, 1.0, 0.8))
 	draw_arc(Vector2.ZERO, _get_radius() + 4, 0, TAU, 32, Color(0.6, 0.8, 1.0, 0.5), 1.5)
+	# Proximity shimmer — always drawn, reveals enemy when player is close
+	var dist := position.distance_to(_player_pos)
+	var shimmer_alpha := 0.08 if dist >= 120.0 else 0.35 * (1.0 - dist / 120.0)
+	draw_arc(Vector2.ZERO, _get_radius() + 8, 0, TAU, 24, Color(0.0, 0.9, 1.0, shimmer_alpha), 2.0)
+	draw_arc(Vector2.ZERO, _get_radius() * 0.55, 0, TAU, 12, Color(0.0, 0.7, 1.0, shimmer_alpha * 0.5), 1.0)

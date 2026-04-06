@@ -84,6 +84,17 @@ func add_coins(amount: int) -> void:
 	save_game(state)
 
 
+func get_coins() -> int:
+	var state := load_game()
+	return int(state.get("coins", 0))
+
+
+func spend_coins(amount: int) -> void:
+	var state := load_game()
+	state["coins"] = maxi(0, int(state.get("coins", 0)) - amount)
+	save_game(state)
+
+
 func save_high_score(level_id: String, score: int) -> bool:
 	var state := load_game()
 	var scores: Dictionary = state.get("high_scores", {})

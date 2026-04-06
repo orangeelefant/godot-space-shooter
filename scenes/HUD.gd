@@ -95,6 +95,17 @@ func update_shield(active: bool) -> void:
 		_shield_label.text = "SLD  ON" if active else ""
 
 
+func show_damage_flash() -> void:
+	var vignette := ColorRect.new()
+	vignette.color = Color(0.9, 0.1, 0.0, 0.45)
+	vignette.size = Vector2(GameData.GAME_WIDTH, GameData.GAME_HEIGHT)
+	vignette.z_index = 25
+	add_child(vignette)
+	var tween := create_tween()
+	tween.tween_property(vignette, "modulate:a", 0.0, 0.4)
+	tween.tween_callback(vignette.queue_free)
+
+
 func show_frozen() -> void:
 	if _frozen_overlay and is_instance_valid(_frozen_overlay):
 		return

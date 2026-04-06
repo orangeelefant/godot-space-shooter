@@ -94,6 +94,10 @@ func _do_spawn(etype: String, pos: Vector2) -> void:
 			enemy = InvisibleEnemy.new()
 		"fly":
 			enemy = FlyEnemy.new()
+		"shield":
+			enemy = ShieldEnemy.new()
+		"zigzag":
+			enemy = ZigZagEnemy.new()
 		"boss":
 			var boss := BossEnemy.new()
 			boss.shoot_at.connect(_on_enemy_shoot)

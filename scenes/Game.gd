@@ -19,7 +19,9 @@ var _enemies_killed: int = 0
 var _level_done: bool = false
 
 var _cannon_level: String = "enkel"
+var _shop_open: bool = false
 var _shoot_cooldown: float = 0.0
+var _sweep_hit_cooldown: float = 0.0
 const SHOOT_RATE := 0.18  # seconds between shots
 
 # Parallax
@@ -119,6 +121,7 @@ func _build_spawner() -> void:
 	_spawner.enemy_killed.connect(_on_enemy_killed)
 	_spawner.all_waves_done.connect(_on_all_waves_launched)
 	_spawner.boss_spawned.connect(_on_boss_spawned)
+	_spawner.wave_started.connect(_on_wave_started)
 	_spawner.setup(waves)
 
 
@@ -184,6 +187,7 @@ func _process(delta: float) -> void:
 
 	# Shooting
 	_shoot_cooldown -= delta
+	_sweep_hit_cooldown -= delta
 	if _player.is_shoot_pressed() and _shoot_cooldown <= 0.0:
 		_fire_bullet()
 		_shoot_cooldown = SHOOT_RATE
@@ -324,6 +328,8 @@ func _check_player_powerups() -> void:
 func _check_player_boss_sweep() -> void:
 	if _player._invincible or _player._frozen:
 		return
+	if _sweep_hit_cooldown > 0.0:
+		return
 	for child in get_children():
 		if not child is BossEnemy:
 			continue
@@ -336,6 +342,9 @@ func _check_player_boss_sweep() -> void:
 		var t := clampf(((_player.position - a).dot(ab)) / ab.length_squared(), 0.0, 1.0)
 		if (a + ab * t).distance_to(_player.position) < 30.0:
 			_player.take_damage(1)
+			_hud.call("show_damage_flash")
+			AudioSystem.play_damage()
+			_sweep_hit_cooldown = 0.6
 
 
 # ── Event handlers ────────────────────────────────────────────────────────────
@@ -369,6 +378,20 @@ func _on_combo_changed(combo: int, multiplier: int) -> void:
 
 func _on_combo_lost() -> void:
 	_hud.call("update_combo", 0, 1)
+
+
+func _on_wave_started(index: int) -> void:
+	if index == 0 or _shop_open or _level_done:
+		return
+	var mission_type: String = _level_config.get("mission", {}).get("type", "")
+	if mission_type == "boss":
+		return
+	_shop_open = true
+	get_tree().paused = true
+	var overlay := load("res://scenes/ShopOverlay.gd").new()
+	overlay.setup(_cannon_level, func(new_cannon: String): _cannon_level = new_cannon)
+	overlay.closed.connect(func(): _shop_open = false)
+	add_child(overlay)
 
 
 func _on_all_waves_launched() -> void:
