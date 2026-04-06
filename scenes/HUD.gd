@@ -6,6 +6,8 @@ var _score_label: Label
 var _mission_label: Label
 var _timer_label: Label
 var _frozen_overlay: ColorRect
+var _shield_label: Label
+var _combo_label: Label
 
 
 func _ready() -> void:
@@ -35,6 +37,13 @@ func _ready() -> void:
 	_timer_label = _make_label(0, 70, "", Color(1, 0.27, 0.27), 38)
 	_timer_label.size = Vector2(GameData.GAME_WIDTH, 60)
 	_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+
+	_shield_label = _make_label(630, 15, "", Color(0.3, 0.8, 1.0), 22)
+
+	_combo_label = _make_label(0, 140, "", Color(1.0, 0.87, 0.0), 42)
+	_combo_label.size = Vector2(GameData.GAME_WIDTH, 60)
+	_combo_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_combo_label.visible = false
 
 
 func _make_label(x: float, y: float, text: String, color: Color, size: int) -> Label:
@@ -71,6 +80,19 @@ func update_timer(seconds: int) -> void:
 			Color(1, 0, 0) if seconds <= 10 else Color(1, 0.27, 0.27))
 	else:
 		_timer_label.text = ""
+
+
+func update_combo(combo: int, multiplier: int) -> void:
+	if combo <= 1 or multiplier <= 1:
+		_combo_label.visible = false
+		return
+	_combo_label.text = "x" + str(multiplier) + "  COMBO " + str(combo) + "!"
+	_combo_label.visible = true
+
+
+func update_shield(active: bool) -> void:
+	if _shield_label:
+		_shield_label.text = "SLD  ON" if active else ""
 
 
 func show_frozen() -> void:

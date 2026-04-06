@@ -42,6 +42,36 @@ func play_level_complete() -> void:
 		)
 
 
+func play_shield_activate() -> void:
+	# Ascending shimmer
+	var notes := [880.0, 1100.0, 1320.0, 1760.0]
+	for i in notes.size():
+		get_tree().create_timer(i * 0.06).timeout.connect(
+			func(): _play(_make_beep(notes[i], notes[i] * 1.1, 0.08, 0.18)), CONNECT_ONE_SHOT
+		)
+
+
+func play_shield_hit() -> void:
+	_play(_make_beep(2000.0, 1000.0, 0.1, 0.22))
+
+
+func play_boss_hit() -> void:
+	_play(_make_sawtooth(100.0, 50.0, 0.15))
+
+
+func play_boss_defeated() -> void:
+	var seq := [300.0, 220.0, 150.0, 80.0]
+	for i in seq.size():
+		get_tree().create_timer(i * 0.18).timeout.connect(
+			func(): _play(_make_noise(0.28, seq[i], seq[i] * 0.4)), CONNECT_ONE_SHOT
+		)
+
+
+func play_combo_up(level: int) -> void:
+	var freq := 440.0 + float(level) * 80.0
+	_play(_make_beep(freq, freq * 1.5, 0.08, 0.15))
+
+
 func set_enabled(on: bool) -> void:
 	_enabled = on
 

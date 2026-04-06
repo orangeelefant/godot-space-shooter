@@ -4,6 +4,7 @@ extends CharacterBody2D
 signal lives_changed(lives: int)
 signal damaged
 signal died
+signal shield_changed(active: bool)
 
 var ship_data: Dictionary = {}
 var upgrades: Dictionary = {}
@@ -18,6 +19,14 @@ var _blink_timer: float = 0.0
 var _color: Color = Color.CYAN
 var _shoot_pressed: bool = false
 var _gas_pressed: bool = false
+
+var _shield_active: bool = false
+var _shield_timer: float = 0.0
+var _shield_pulse: float = 0.0
+const SHIELD_DURATION := 8.0
+const SHIELD_HITS := 3
+var _shield_hits_left: int = 0
+var _thruster_phase: float = 0.0
 
 
 func _ready() -> void:
@@ -92,10 +101,33 @@ func _process(delta: float) -> void:
 			modulate = Color.WHITE
 			queue_redraw()
 
+	if _shield_active:
+		_shield_timer -= delta
+		_shield_pulse += delta * 4.0
+		if _shield_timer <= 0.0:
+			_shield_active = false
+			shield_changed.emit(false)
+		queue_redraw()
+
+	_thruster_phase += delta
+	queue_redraw()
+
 
 func _draw() -> void:
-	# Ship silhouette — arrow pointing right
 	var c := _color
+
+	# Animated thruster flame
+	var thrust_len := 12.0 + abs(velocity.x) * 0.025 + sin(_thruster_phase * 14.0) * 4.0
+	draw_polygon(
+		PackedVector2Array([Vector2(-18, -4), Vector2(-18 - thrust_len, 0), Vector2(-18, 4)]),
+		PackedColorArray([Color(1.0, 0.55, 0.1, 0.85)])
+	)
+	draw_polygon(
+		PackedVector2Array([Vector2(-16, -6), Vector2(-16 - thrust_len * 1.25, 0), Vector2(-16, 6)]),
+		PackedColorArray([Color(0.3, 0.5, 1.0, 0.28)])
+	)
+
+	# Ship silhouette — arrow pointing right
 	var pts := PackedVector2Array([
 		Vector2(34, 0),
 		Vector2(-20, -18),
@@ -103,14 +135,37 @@ func _draw() -> void:
 		Vector2(-20, 18),
 	])
 	draw_polygon(pts, PackedColorArray([c]))
-	# Engine glow
-	draw_circle(Vector2(-16, 0), 7.0, c.lightened(0.4))
 	# Cockpit
 	draw_circle(Vector2(12, 0), 6.0, Color(0.7, 0.9, 1.0, 0.8))
+
+	# Shield arc
+	if _shield_active:
+		var r := 32.0 + sin(_shield_pulse) * 3.0
+		var a := 0.4 + sin(_shield_pulse * 2.0) * 0.15
+		var shield_color := Color(0.3, 0.8, 1.0)
+		draw_arc(Vector2.ZERO, r, 0, TAU, 40, Color(shield_color.r, shield_color.g, shield_color.b, a), 2.5)
+		draw_arc(Vector2.ZERO, r + 4.0, 0, TAU, 40, Color(shield_color.r, shield_color.g, shield_color.b, a * 0.3), 1.0)
+
+
+func activate_shield() -> void:
+	_shield_active = true
+	_shield_timer = SHIELD_DURATION
+	_shield_hits_left = SHIELD_HITS
+	_shield_pulse = 0.0
+	shield_changed.emit(true)
+	AudioSystem.play_shield_activate()
 
 
 func take_damage(amount: int = 1) -> void:
 	if _invincible or _frozen:
+		return
+	if _shield_active:
+		_shield_hits_left -= amount
+		AudioSystem.play_shield_hit()
+		_shield_pulse = 0.0  # reset pulse for visual pop
+		if _shield_hits_left <= 0:
+			_shield_active = false
+			shield_changed.emit(false)
 		return
 	lives -= amount
 	lives_changed.emit(lives)

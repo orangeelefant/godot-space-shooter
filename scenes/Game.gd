@@ -7,6 +7,10 @@ var _level_config: Dictionary = {}
 var _player: Player
 var _spawner: EnemySpawner
 var _hud: CanvasLayer
+var _pause_menu: CanvasLayer
+var _falcon: Node2D
+var _combo_system: Node
+var _danger_ind: Node2D
 
 var _score: int = 0
 var _gas_count: int = 3
@@ -39,6 +43,10 @@ func _ready() -> void:
 	_build_hud()
 	_build_spawner()
 	_wire_collisions()
+	_build_pause_menu()
+	_build_falcon()
+	_build_combo_system()
+	_build_danger_indicator()
 	_start_mission_timer()
 
 
@@ -76,6 +84,7 @@ func _build_player() -> void:
 	_player.lives_changed.connect(_on_lives_changed)
 	_player.damaged.connect(_on_player_damaged)
 	_player.died.connect(_on_player_died)
+	_player.shield_changed.connect(func(active: bool): _hud.call("update_shield", active))
 	add_child(_player)
 
 
@@ -106,14 +115,60 @@ func _build_spawner() -> void:
 
 	_spawner.enemy_killed.connect(_on_enemy_killed)
 	_spawner.all_waves_done.connect(_on_all_waves_launched)
+	_spawner.boss_spawned.connect(_on_boss_spawned)
 	_spawner.setup(waves)
 
 
 func _wire_collisions() -> void:
-	# We use Area2D overlap check manually via groups or direct area_entered signals
-	# Player vs enemies + enemy bullets: checked via area_entered on player's area or overlap query
-	# We'll use a periodic overlap check approach for simplicity
 	pass
+
+
+func _build_pause_menu() -> void:
+	var scene := load("res://scenes/PauseMenu.tscn")
+	_pause_menu = scene.instantiate()
+	_pause_menu.visible = false
+	_pause_menu.resume_pressed.connect(_toggle_pause)
+	_pause_menu.quit_pressed.connect(func():
+		get_tree().paused = false
+		get_tree().change_scene_to_file("res://scenes/WorldMap.tscn")
+	)
+	add_child(_pause_menu)
+
+
+func _build_falcon() -> void:
+	var state := SaveSystem.load_game()
+	var upgrades: Dictionary = state.get("upgrades", {})
+	var falcon_level: int = int(upgrades.get("falcon_level", 0))
+	if falcon_level < 1:
+		return
+	_falcon = Falcon.new()
+	(_falcon as Falcon).setup(falcon_level, _player)
+	(_falcon as Falcon).falcon_shoot.connect(func(pos: Vector2): _spawn_bullet(pos, Vector2(900, 0)))
+	add_child(_falcon)
+
+
+func _build_combo_system() -> void:
+	_combo_system = ComboSystem.new()
+	(_combo_system as ComboSystem).combo_changed.connect(_on_combo_changed)
+	(_combo_system as ComboSystem).combo_lost.connect(_on_combo_lost)
+	add_child(_combo_system)
+
+
+func _build_danger_indicator() -> void:
+	_danger_ind = _DangerIndicator.new()
+	_danger_ind.z_index = 15
+	add_child(_danger_ind)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not _level_done:
+		_toggle_pause()
+
+
+func _toggle_pause() -> void:
+	var paused := not get_tree().paused
+	get_tree().paused = paused
+	_pause_menu.visible = paused
 
 
 func _process(delta: float) -> void:
@@ -278,15 +333,30 @@ func _on_player_died() -> void:
 
 
 func _on_enemy_killed(_enemy: BaseEnemy) -> void:
-	_score += 10
+	var points := (_combo_system as ComboSystem).register_kill()
+	_score += points
 	_hud.call("update_score", _score)
 	_enemies_killed += 1
 	_check_level_complete()
 
 
+func _on_combo_changed(combo: int, multiplier: int) -> void:
+	if multiplier > 1:
+		_hud.call("update_combo", combo, multiplier)
+		AudioSystem.play_combo_up(multiplier)
+
+
+func _on_combo_lost() -> void:
+	_hud.call("update_combo", 0, 1)
+
+
 func _on_all_waves_launched() -> void:
-	# All waves spawned — completion will trigger when all kills are confirmed
 	pass
+
+
+func _on_boss_spawned(boss: BossEnemy) -> void:
+	var bar := BossEnemy.create_health_bar(boss)
+	add_child(bar)
 
 
 func _collect_powerup(pu: PowerUp) -> void:
@@ -299,7 +369,7 @@ func _collect_powerup(pu: PowerUp) -> void:
 		"speed":
 			_flash_screen(Color(0, 0.8, 1.0, 0.25))
 		"shield":
-			_flash_screen(Color(0.27, 1.0, 0.53, 0.25))
+			_player.activate_shield()
 	_score += 50
 	_hud.call("update_score", _score)
 	pu.collect()
@@ -308,6 +378,9 @@ func _collect_powerup(pu: PowerUp) -> void:
 func _check_level_complete() -> void:
 	if _level_done:
 		return
+	var mission_type: String = _level_config.get("mission", {}).get("type", "")
+	if mission_type == "boss":
+		return  # Boss missions complete only via boss_defeated signal
 	if _enemies_killed >= _total_enemies:
 		_complete_level()
 
@@ -325,6 +398,7 @@ func _complete_level() -> void:
 
 	SaveSystem.mark_level_complete(_level_id)
 	SaveSystem.add_coins(int(_score / 10))
+	var is_new_record := SaveSystem.save_high_score(_level_id, _score)
 
 	var is_world_complete := GameData.is_last_level_in_world(_world_id, _level_id)
 	var all_done := _are_all_worlds_done()
@@ -338,6 +412,8 @@ func _complete_level() -> void:
 				"world_id": _world_id,
 				"score": _score,
 				"is_world_complete": is_world_complete,
+				"is_new_record": is_new_record,
+				"high_score": SaveSystem.get_high_score(_level_id),
 			}
 			get_tree().change_scene_to_file("res://scenes/MissionComplete.tscn")
 	)
@@ -353,10 +429,25 @@ func _are_all_worlds_done() -> bool:
 
 func _start_mission_timer() -> void:
 	var mission: Dictionary = _level_config.get("mission", {})
-	if mission.get("type", "") == "timed":
-		_mission_timer_active = true
-		_mission_time_left = float(mission.get("time_limit", 60))
-		_hud.call("update_timer", int(_mission_time_left))
+	match mission.get("type", ""):
+		"timed":
+			_mission_timer_active = true
+			_mission_time_left = float(mission.get("time_limit", 60))
+			_hud.call("update_timer", int(_mission_time_left))
+		"boss":
+			# Boss spawns after all normal waves complete
+			_spawner.all_waves_done.connect(_spawn_boss, CONNECT_ONE_SHOT)
+			_spawner.boss_defeated.connect(func():
+				if not _level_done:
+					_force_level_complete()
+			, CONNECT_ONE_SHOT)
+
+
+func _spawn_boss() -> void:
+	var boss_wave := [{"type": "boss", "count": 1, "formation": "line", "delay": 0.0}]
+	_spawner.setup(boss_wave)
+	_hud.call("update_mission", "BOSS!")
+	AudioSystem.play_boss_hit()
 
 
 func _camera_shake() -> void:
@@ -375,6 +466,40 @@ func _flash_screen(color: Color) -> void:
 	flash.z_index = 20
 	add_child(flash)
 	get_tree().create_timer(0.25).timeout.connect(func(): flash.queue_free())
+
+
+# ── Danger indicator ─────────────────────────────────────────────────────────
+
+class _DangerIndicator extends Node2D:
+	var _pulse: float = 0.0
+
+	func _process(delta: float) -> void:
+		_pulse += delta * 4.0
+		queue_redraw()
+
+	func _draw() -> void:
+		if not get_parent():
+			return
+		var alpha := 0.5 + sin(_pulse) * 0.35
+		for child in get_parent().get_children():
+			if not child is BaseEnemy:
+				continue
+			if not child.is_inside_tree():
+				continue
+			var ex: float = child.position.x
+			var ey: float = child.position.y
+			if ex > GameData.GAME_WIDTH - 80.0:
+				# Enemy off right edge — draw arrow on right
+				var ax := float(GameData.GAME_WIDTH) - 18.0
+				var ay := clampf(ey, 40.0, GameData.GAME_HEIGHT - 40.0)
+				draw_colored_polygon(
+					PackedVector2Array([
+						Vector2(ax + 14, ay),
+						Vector2(ax - 2, ay - 10),
+						Vector2(ax - 2, ay + 10),
+					]),
+					PackedColorArray([Color(1.0, 0.2, 0.2, alpha)])
+				)
 
 
 # ── Parallax star layer ───────────────────────────────────────────────────────

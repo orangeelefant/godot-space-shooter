@@ -4,6 +4,8 @@ extends Node
 signal enemy_killed(enemy: BaseEnemy)
 signal wave_started(index: int)
 signal all_waves_done
+signal boss_defeated
+signal boss_spawned(boss: BossEnemy)
 
 var _waves: Array = []
 var _current_wave: int = 0
@@ -92,6 +94,16 @@ func _do_spawn(etype: String, pos: Vector2) -> void:
 			enemy = InvisibleEnemy.new()
 		"fly":
 			enemy = FlyEnemy.new()
+		"boss":
+			var boss := BossEnemy.new()
+			boss.shoot_at.connect(_on_enemy_shoot)
+			boss.spawn_minions.connect(_on_boss_spawn_minions)
+			boss.health_changed.connect(_on_boss_health_changed)
+			boss.position = pos
+			boss.died.connect(_on_boss_died)
+			get_parent().add_child(boss)
+			boss_spawned.emit(boss)
+			return
 		_:
 			enemy = GreenEnemy.new()
 
@@ -120,6 +132,25 @@ func _maybe_drop_powerup(pos: Vector2) -> void:
 	pu.power_type = types[randi() % types.size()]
 	pu.position = pos
 	get_parent().add_child(pu)
+
+
+func _on_boss_died(_enemy: BaseEnemy) -> void:
+	AudioSystem.play_boss_defeated()
+	boss_defeated.emit()
+
+
+func _on_boss_spawn_minions(pos: Vector2, count: int) -> void:
+	for i in count:
+		var entry := {
+			"type": "green",
+			"pos": pos + Vector2(randf_range(-80, 80), randf_range(-120, 120)),
+			"delay": 0.12,
+		}
+		_spawn_queue.append(entry)
+
+
+func _on_boss_health_changed(_current: int, _maximum: int) -> void:
+	pass  # Game.gd connects directly to boss for HUD updates
 
 
 func kill_all() -> void:

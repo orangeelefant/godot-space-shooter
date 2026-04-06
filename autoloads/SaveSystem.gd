@@ -15,6 +15,7 @@ const DEFAULT_STATE := {
 		"falcon_level": 1,
 	},
 	"completed_levels": [],
+	"high_scores": {},
 }
 
 
@@ -81,6 +82,24 @@ func add_coins(amount: int) -> void:
 	var state := load_game()
 	state["coins"] = int(state.get("coins", 0)) + amount
 	save_game(state)
+
+
+func save_high_score(level_id: String, score: int) -> bool:
+	var state := load_game()
+	var scores: Dictionary = state.get("high_scores", {})
+	var prev: int = int(scores.get(level_id, 0))
+	if score > prev:
+		scores[level_id] = score
+		state["high_scores"] = scores
+		save_game(state)
+		return true
+	return false
+
+
+func get_high_score(level_id: String) -> int:
+	var state := load_game()
+	var scores: Dictionary = state.get("high_scores", {})
+	return int(scores.get(level_id, 0))
 
 
 func reset() -> void:

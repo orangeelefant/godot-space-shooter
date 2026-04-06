@@ -6,6 +6,8 @@ func _ready() -> void:
 	var score: int = int(result.get("score", 0))
 	var world_id: String = result.get("world_id", "world-1")
 	var is_world_complete: bool = bool(result.get("is_world_complete", false))
+	var is_new_record: bool = bool(result.get("is_new_record", false))
+	var high_score: int = int(result.get("high_score", score))
 
 	_draw_background()
 
@@ -15,6 +17,11 @@ func _ready() -> void:
 
 	var coins := int(score / 10)
 	_add_label("+" + str(coins) + " MYNT", 450, 28, Color(0.27, 1.0, 0.53))
+
+	if is_new_record:
+		_add_label("NYTT REKORD!", 510, 26, Color(1.0, 0.87, 0.0))
+	elif high_score > 0:
+		_add_label("REKORD: " + str(high_score).lpad(6, "0"), 510, 20, Color(0.5, 0.55, 0.65))
 
 	# Continue button
 	var cont := Button.new()
