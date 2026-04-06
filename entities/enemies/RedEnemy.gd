@@ -46,6 +46,8 @@ func _get_radius() -> float:
 
 func _draw_shape() -> void:
 	var r := _get_radius()
+	draw_circle(Vector2.ZERO, r * 1.5, Color(_color.r, _color.g, _color.b, 0.12))  # outer glow
+	draw_circle(Vector2.ZERO, r * 1.2, Color(_color.r, _color.g, _color.b, 0.2))   # inner glow
 	# Spiky shape — star-like
 	var pts := PackedVector2Array()
 	for i in 8:

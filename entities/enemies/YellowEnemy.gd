@@ -33,6 +33,8 @@ func _get_radius() -> float:
 func _draw_shape() -> void:
 	# Diamond
 	var r := _get_radius()
+	draw_circle(Vector2.ZERO, r * 1.5, Color(_color.r, _color.g, _color.b, 0.12))  # outer glow
+	draw_circle(Vector2.ZERO, r * 1.2, Color(_color.r, _color.g, _color.b, 0.2))   # inner glow
 	var pts := PackedVector2Array([
 		Vector2(0, -r), Vector2(r * 0.7, 0),
 		Vector2(0, r),  Vector2(-r * 0.7, 0),

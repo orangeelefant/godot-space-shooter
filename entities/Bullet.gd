@@ -7,6 +7,8 @@ var velocity: Vector2 = Vector2.ZERO
 var _lifetime: float = 0.0
 const MAX_LIFETIME := 2.0
 
+var _trail: Array[Vector2] = []
+
 
 func _ready() -> void:
 	collision_layer = 4
@@ -27,6 +29,9 @@ func fire(from: Vector2, vel: Vector2) -> void:
 
 
 func _process(delta: float) -> void:
+	_trail.push_front(position)
+	if _trail.size() > 6:
+		_trail.pop_back()
 	position += velocity * delta
 	_lifetime += delta
 	if _lifetime > MAX_LIFETIME or position.x > GameData.GAME_WIDTH + 50.0:
@@ -34,5 +39,16 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	for i in _trail.size():
+		if i == 0:
+			continue
+		var alpha := 0.5 * (1.0 - float(i) / float(_trail.size()))
+		var local_pos := to_local(_trail[i])
+		draw_rect(Rect2(local_pos.x - 4, local_pos.y - 1.5, 8, 3), Color(0.3, 0.8, 1.0, alpha))
+	# Outer glow
+	draw_rect(Rect2(-12, -5, 24, 10), Color(0.2, 0.8, 1.0, 0.15))
+	draw_rect(Rect2(-10, -4, 20, 8), Color(0.4, 0.9, 1.0, 0.25))
+	# Original body + bright core
 	draw_rect(Rect2(-10, -2.5, 20, 5), Color(0.0, 1.0, 1.0))
-	draw_rect(Rect2(-8, -1.5, 16, 3), Color(0.7, 1.0, 1.0, 0.8))
+	draw_rect(Rect2(-8, -2, 16, 4), Color(0.5, 1.0, 1.0))   # bright cyan tip
+	draw_rect(Rect2(-6, -1.5, 12, 3), Color(1.0, 1.0, 1.0, 0.9))  # white core

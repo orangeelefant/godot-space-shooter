@@ -30,5 +30,7 @@ func _process(delta: float) -> void:
 
 
 func _draw() -> void:
+	draw_rect(Rect2(-10, -4, 20, 8), Color(1.0, 0.3, 0.0, 0.2))  # glow
+	draw_rect(Rect2(-9, -3, 18, 6), Color(1.0, 0.4, 0.0, 0.3))   # inner glow
 	draw_rect(Rect2(-8, -2, 16, 4), Color(1.0, 0.4, 0.0))
 	draw_rect(Rect2(-6, -1, 12, 2), Color(1.0, 0.8, 0.3, 0.8))

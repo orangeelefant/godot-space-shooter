@@ -49,6 +49,10 @@ func hit(damage_amount: int = 1) -> void:
 	hp -= damage_amount
 	_tint_timer = 0.08
 	modulate = Color(2.0, 2.0, 2.0)
+	var spark := _HitSpark.new()
+	spark.color = _color
+	spark.position = position
+	get_parent().add_child(spark)
 	if hp <= 0:
 		_die()
 
@@ -85,15 +89,15 @@ class _ExplosionBurst extends Node2D:
 	var color: Color = Color.ORANGE
 	var _particles: Array[Dictionary] = []
 	var _elapsed: float = 0.0
-	const DURATION := 0.4
+	const DURATION := 0.6
 
 	func _ready() -> void:
 		z_index = 10
-		for i in 10:
+		for i in 14:
 			_particles.append({
-				"vel": Vector2.from_angle(randf() * TAU) * randf_range(40.0, 180.0),
+				"vel": Vector2.from_angle(randf() * TAU) * randf_range(60.0, 240.0),
 				"pos": Vector2.ZERO,
-				"size": randf_range(3.0, 8.0),
+				"size": randf_range(4.0, 12.0),
 			})
 		queue_redraw()
 
@@ -111,3 +115,33 @@ class _ExplosionBurst extends Node2D:
 		for p in _particles:
 			var c := Color(color.r, color.g, color.b, alpha)
 			draw_circle(p["pos"], p["size"] * alpha, c)
+
+class _HitSpark extends Node2D:
+	var color: Color = Color.WHITE
+	var _particles: Array[Dictionary] = []
+	var _elapsed: float = 0.0
+	const DURATION := 0.18
+
+	func _ready() -> void:
+		z_index = 11
+		for i in randi_range(3, 5):
+			_particles.append({
+				"vel": Vector2.from_angle(randf() * TAU) * randf_range(60.0, 140.0),
+				"pos": Vector2.ZERO,
+				"size": randf_range(1.5, 3.5),
+			})
+		queue_redraw()
+
+	func _process(delta: float) -> void:
+		_elapsed += delta
+		for p in _particles:
+			p["pos"] += p["vel"] * delta
+			p["vel"] *= 0.85
+		queue_redraw()
+		if _elapsed >= DURATION:
+			queue_free()
+
+	func _draw() -> void:
+		var alpha := 1.0 - (_elapsed / DURATION)
+		for p in _particles:
+			draw_circle(p["pos"], p["size"] * alpha, Color(color.r, color.g, color.b, alpha))

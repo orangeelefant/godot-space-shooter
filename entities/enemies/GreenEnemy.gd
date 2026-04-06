@@ -15,6 +15,8 @@ func _ready() -> void:
 func _draw_shape() -> void:
 	# Hexagon
 	var r := _get_radius()
+	draw_circle(Vector2.ZERO, r * 1.5, Color(_color.r, _color.g, _color.b, 0.12))  # outer glow
+	draw_circle(Vector2.ZERO, r * 1.2, Color(_color.r, _color.g, _color.b, 0.2))   # inner glow
 	var pts := PackedVector2Array()
 	for i in 6:
 		var angle := i * TAU / 6.0 - PI / 6.0

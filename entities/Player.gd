@@ -128,12 +128,18 @@ func _draw() -> void:
 	)
 
 	# Ship silhouette — arrow pointing right
-	var pts := PackedVector2Array([
+	var body_pts := PackedVector2Array([
 		Vector2(34, 0),
 		Vector2(-20, -18),
 		Vector2(-10, 0),
 		Vector2(-20, 18),
 	])
+	# Ship glow
+	var glow_pts := PackedVector2Array()
+	for p in body_pts:
+		glow_pts.append(p * 1.35)
+	draw_polygon(glow_pts, [Color(0.3, 0.7, 1.0, 0.12)])
+	var pts := body_pts
 	draw_polygon(pts, PackedColorArray([c]))
 	# Cockpit
 	draw_circle(Vector2(12, 0), 6.0, Color(0.7, 0.9, 1.0, 0.8))

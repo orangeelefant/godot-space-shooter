@@ -27,6 +27,9 @@ const SHOOT_RATE := 0.18  # seconds between shots
 # Parallax
 var _stars_far: Node2D
 var _stars_near: Node2D
+var _nebula: Node2D
+var _planet: Node2D
+var _asteroids: Node2D
 var _far_offset: float = 0.0
 var _near_offset: float = 0.0
 
@@ -66,15 +69,27 @@ func _load_save() -> void:
 
 
 func _build_background() -> void:
+	# Nebula layer (behind everything)
+	_nebula = _NebulaLayer.new()
+	add_child(_nebula)
+
 	# Far parallax layer
 	_stars_far = _StarLayer.new(80, 0.5, 1.5, Color(0.27, 0.53, 0.8), 0.15, 0.5)
 	_stars_far.z_index = 0
 	add_child(_stars_far)
 
+	# Planet layer
+	_planet = _PlanetLayer.new()
+	add_child(_planet)
+
 	# Near parallax layer
 	_stars_near = _StarLayer.new(40, 1.5, 3.0, Color(1, 1, 1), 0.5, 1.0)
 	_stars_near.z_index = 1
 	add_child(_stars_near)
+
+	# Asteroid belt layer
+	_asteroids = _AsteroidLayer.new()
+	add_child(_asteroids)
 
 
 func _build_player() -> void:
@@ -184,6 +199,9 @@ func _process(delta: float) -> void:
 	if _stars_far.has_method("scroll_to"):
 		_stars_far.call("scroll_to", _far_offset)
 		_stars_near.call("scroll_to", _near_offset)
+		_nebula.call("scroll_to", _far_offset)
+		_planet.call("scroll_to", _far_offset)
+		_asteroids.call("scroll_to", _near_offset)
 
 	# Shooting
 	_shoot_cooldown -= delta
@@ -225,6 +243,7 @@ func _process(delta: float) -> void:
 func _fire_bullet() -> void:
 	AudioSystem.play_shoot()
 	var muzzle := _player.get_muzzle_pos()
+	_spawn_muzzle_flash(muzzle)
 	match _cannon_level:
 		"enkel":
 			_spawn_bullet(muzzle, Vector2(900, 0))
@@ -516,6 +535,35 @@ func _flash_screen(color: Color) -> void:
 	get_tree().create_timer(0.25).timeout.connect(func(): flash.queue_free())
 
 
+func _spawn_muzzle_flash(pos: Vector2) -> void:
+	var flash := _MuzzleFlash.new()
+	flash.position = pos
+	flash.z_index = 6
+	add_child(flash)
+
+
+# ── Muzzle flash ─────────────────────────────────────────────────────────────
+
+class _MuzzleFlash extends Node2D:
+	var _elapsed: float = 0.0
+	const DURATION := 0.08
+
+	func _process(delta: float) -> void:
+		_elapsed += delta
+		queue_redraw()
+		if _elapsed >= DURATION:
+			queue_free()
+
+	func _draw() -> void:
+		var t := 1.0 - (_elapsed / DURATION)
+		draw_circle(Vector2.ZERO, 10.0 * t, Color(1.0, 0.9, 0.4, t * 0.8))
+		draw_circle(Vector2.ZERO, 5.0 * t, Color(1.0, 1.0, 1.0, t))
+		# Three spike lines
+		for i in 3:
+			var a := float(i) / 3.0 * TAU
+			draw_line(Vector2.ZERO, Vector2(cos(a), sin(a)) * 14.0 * t, Color(1.0, 0.8, 0.2, t * 0.6), 1.5)
+
+
 # ── Danger indicator ─────────────────────────────────────────────────────────
 
 class _DangerIndicator extends Node2D:
@@ -580,3 +628,107 @@ class _StarLayer extends Node2D:
 			draw_circle(Vector2(x, star.y), star.r, Color(star.c.r, star.c.g, star.c.b, star.a))
 
 
+# ── Nebula layer ──────────────────────────────────────────────────────────────
+
+class _NebulaLayer extends Node2D:
+	var _offset: float = 0.0
+	var _blobs: Array[Dictionary] = []
+
+	func _ready() -> void:
+		z_index = -1
+		for i in 8:
+			_blobs.append({
+				"x": randf_range(0, GameData.GAME_WIDTH),
+				"y": randf_range(0, GameData.GAME_HEIGHT),
+				"r": randf_range(120.0, 280.0),
+				"color": [
+					Color(0.2, 0.05, 0.4, 0.07),
+					Color(0.0, 0.1, 0.35, 0.06),
+					Color(0.3, 0.0, 0.2, 0.05),
+				][randi() % 3],
+			})
+		queue_redraw()
+
+	func scroll_to(offset: float) -> void:
+		_offset = offset
+		queue_redraw()
+
+	func _draw() -> void:
+		for b in _blobs:
+			var x := fmod(b["x"] - _offset * 0.03, GameData.GAME_WIDTH + b["r"] * 2) - b["r"]
+			draw_circle(Vector2(x, b["y"]), b["r"], b["color"])
+			draw_circle(Vector2(x, b["y"]), b["r"] * 0.6, Color(b["color"].r, b["color"].g, b["color"].b, b["color"].a * 1.5))
+
+
+# ── Planet layer ──────────────────────────────────────────────────────────────
+
+class _PlanetLayer extends Node2D:
+	var _offset: float = 0.0
+	const PLANET_X := GameData.GAME_WIDTH * 0.78
+	const PLANET_Y := GameData.GAME_HEIGHT * 0.35
+	const PLANET_R := 320.0
+
+	func _ready() -> void:
+		z_index = 1
+		queue_redraw()
+
+	func scroll_to(offset: float) -> void:
+		_offset = offset
+		queue_redraw()
+
+	func _draw() -> void:
+		var px := PLANET_X - _offset * 0.01
+		# Planet body
+		draw_circle(Vector2(px, PLANET_Y), PLANET_R, Color(0.08, 0.12, 0.22))
+		# Atmosphere rim
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R, 0, TAU, 64, Color(0.15, 0.3, 0.6, 0.4), 8.0)
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R + 6, 0, TAU, 64, Color(0.1, 0.2, 0.5, 0.15), 4.0)
+		# Surface bands (horizontal stripes via arcs)
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 0.75, 0.1, PI - 0.1, 32, Color(0.1, 0.15, 0.28, 0.6), 3.0)
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 0.45, 0.2, PI - 0.2, 24, Color(0.12, 0.18, 0.3, 0.5), 2.0)
+		# Ring system
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 1.5, -0.3, PI + 0.3, 48, Color(0.3, 0.4, 0.6, 0.18), 3.0)
+		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 1.65, -0.25, PI + 0.25, 48, Color(0.25, 0.35, 0.55, 0.1), 2.0)
+
+
+# ── Asteroid layer ────────────────────────────────────────────────────────────
+
+class _AsteroidLayer extends Node2D:
+	var _offset: float = 0.0
+	var _rocks: Array[Dictionary] = []
+
+	func _ready() -> void:
+		z_index = 2
+		for i in 12:
+			var pts := PackedVector2Array()
+			var sides := randi_range(5, 8)
+			var base_r := randf_range(8.0, 22.0)
+			for j in sides:
+				var a := float(j) / float(sides) * TAU
+				var r := base_r * randf_range(0.7, 1.3)
+				pts.append(Vector2(cos(a), sin(a)) * r)
+			_rocks.append({
+				"x": randf_range(0, GameData.GAME_WIDTH),
+				"y": randf_range(30, GameData.GAME_HEIGHT - 30),
+				"pts": pts,
+				"speed": randf_range(0.04, 0.12),
+				"rot": randf() * TAU,
+				"rot_speed": randf_range(-0.3, 0.3),
+			})
+		queue_redraw()
+
+	func scroll_to(offset: float) -> void:
+		_offset = offset
+		queue_redraw()
+
+	func _draw() -> void:
+		for r in _rocks:
+			var x := fmod(r["x"] - _offset * r["speed"], GameData.GAME_WIDTH + 50.0) - 25.0
+			var rot_pts := PackedVector2Array()
+			var cos_r := cos(r["rot"] + _offset * r["rot_speed"] * 0.01)
+			var sin_r := sin(r["rot"] + _offset * r["rot_speed"] * 0.01)
+			for p in r["pts"]:
+				rot_pts.append(Vector2(p.x * cos_r - p.y * sin_r, p.x * sin_r + p.y * cos_r))
+			draw_colored_polygon(rot_pts, PackedColorArray([Color(0.18, 0.16, 0.14, 0.7)]))
+			draw_polyline(rot_pts, Color(0.3, 0.27, 0.24, 0.5), 1.0)
+			draw_line(rot_pts[rot_pts.size()-1], rot_pts[0], Color(0.3, 0.27, 0.24, 0.5), 1.0)

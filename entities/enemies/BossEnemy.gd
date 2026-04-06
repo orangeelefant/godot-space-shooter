@@ -102,6 +102,10 @@ func _draw_shape() -> void:
 
 	# Inner core — pulsing
 	var core_r := 22.0 + sin(_pulse) * 4.0
+	# Additional outer glow pulse
+	var outer_glow_r := core_r * 2.0 + sin(_pulse * 0.7) * 6.0
+	draw_circle(Vector2.ZERO, outer_glow_r, Color(1.0, 0.1, 0.2, 0.06))
+	draw_circle(Vector2.ZERO, core_r * 1.4, Color(1.0, 0.2, 0.0, 0.15))
 	draw_circle(Vector2.ZERO, core_r, Color(1.0, 0.1, 0.2, 0.9))
 	draw_circle(Vector2.ZERO, core_r * 0.6, Color(1.0, 0.6, 0.0, 0.8))
 
