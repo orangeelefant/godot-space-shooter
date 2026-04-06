@@ -18,6 +18,7 @@ var _total_enemies: int = 0
 var _enemies_killed: int = 0
 var _level_done: bool = false
 
+var _cannon_level: String = "enkel"
 var _shoot_cooldown: float = 0.0
 const SHOOT_RATE := 0.18  # seconds between shots
 
@@ -58,6 +59,8 @@ func setup(world_id: String, level_id: String) -> void:
 func _load_save() -> void:
 	var state := SaveSystem.load_game()
 	_gas_count = int(state.get("gas_grenades", 3))
+	var upgrades: Dictionary = state.get("upgrades", {})
+	_cannon_level = upgrades.get("cannon_level", "enkel")
 
 
 func _build_background() -> void:
@@ -194,6 +197,11 @@ func _process(delta: float) -> void:
 	_check_player_enemy_overlap()
 	_check_player_enemy_bullets()
 	_check_player_powerups()
+	_check_player_boss_sweep()
+
+	# Handle enemies that escaped off-screen without being killed
+	if _spawner._all_launched and not _level_done:
+		_check_level_complete()
 
 	# Mission timer
 	if _mission_timer_active:
@@ -213,11 +221,7 @@ func _process(delta: float) -> void:
 func _fire_bullet() -> void:
 	AudioSystem.play_shoot()
 	var muzzle := _player.get_muzzle_pos()
-	var state := SaveSystem.load_game()
-	var upgrades: Dictionary = state.get("upgrades", {})
-	var cannon: String = upgrades.get("cannon_level", "enkel")
-
-	match cannon:
+	match _cannon_level:
 		"enkel":
 			_spawn_bullet(muzzle, Vector2(900, 0))
 		"dubbel":
@@ -317,6 +321,23 @@ func _check_player_powerups() -> void:
 			_collect_powerup(pu as PowerUp)
 
 
+func _check_player_boss_sweep() -> void:
+	if _player._invincible or _player._frozen:
+		return
+	for child in get_children():
+		if not child is BossEnemy:
+			continue
+		var boss := child as BossEnemy
+		if not boss.is_sweep_active():
+			return
+		var a := boss.position
+		var b := boss.get_sweep_end()
+		var ab := b - a
+		var t := clampf(((_player.position - a).dot(ab)) / ab.length_squared(), 0.0, 1.0)
+		if (a + ab * t).distance_to(_player.position) < 30.0:
+			_player.take_damage(1)
+
+
 # ── Event handlers ────────────────────────────────────────────────────────────
 
 func _on_lives_changed(lives: int) -> void:
@@ -381,8 +402,12 @@ func _check_level_complete() -> void:
 	var mission_type: String = _level_config.get("mission", {}).get("type", "")
 	if mission_type == "boss":
 		return  # Boss missions complete only via boss_defeated signal
-	if _enemies_killed >= _total_enemies:
-		_complete_level()
+	if not _spawner._all_launched:
+		return
+	for child in get_children():
+		if child is BaseEnemy:
+			return
+	_complete_level()
 
 
 func _force_level_complete() -> void:

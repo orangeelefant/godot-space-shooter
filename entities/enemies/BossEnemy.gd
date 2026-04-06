@@ -2,6 +2,7 @@ class_name BossEnemy
 extends BaseEnemy
 
 signal shoot_at(pos: Vector2)
+signal shoot_directed(pos: Vector2, vel: Vector2)
 signal spawn_minions(pos: Vector2, count: int)
 signal health_changed(current_hp: int, max_hp_val: int)
 
@@ -60,11 +61,11 @@ func _process(delta: float) -> void:
 
 func _execute_phase() -> void:
 	match _phase:
-		0:  # Burst fire — 5 shots with spread
+		0:  # Burst fire — 5-shot fan spread
 			for i in 5:
 				var angle := deg_to_rad(-40.0 + i * 20.0)
-				var spread_pos := position + Vector2(cos(angle), sin(angle)) * 60.0
-				shoot_at.emit(spread_pos)
+				var vel := Vector2(cos(angle + PI), sin(angle + PI)) * 420.0
+				shoot_directed.emit(position, vel)
 			AudioSystem.play_boss_hit()
 		1:  # Spawn minions
 			spawn_minions.emit(position + Vector2(-50, 0), 4)

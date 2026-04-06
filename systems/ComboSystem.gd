@@ -1,3 +1,4 @@
+class_name ComboSystem
 extends Node
 
 signal combo_changed(combo: int, multiplier: int)

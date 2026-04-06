@@ -2,8 +2,12 @@ class_name EnemyBullet
 extends Area2D
 
 var _lifetime: float = 0.0
-const SPEED := -380.0
+var _velocity: Vector2 = Vector2(-380.0, 0.0)
 const MAX_LIFETIME := 3.5
+
+
+func fire(vel: Vector2) -> void:
+	_velocity = vel
 
 
 func _ready() -> void:
@@ -19,7 +23,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	position.x += SPEED * delta
+	position += _velocity * delta
 	_lifetime += delta
 	if _lifetime > MAX_LIFETIME or position.x < -50.0:
 		queue_free()

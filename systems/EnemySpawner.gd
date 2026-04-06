@@ -97,6 +97,7 @@ func _do_spawn(etype: String, pos: Vector2) -> void:
 		"boss":
 			var boss := BossEnemy.new()
 			boss.shoot_at.connect(_on_enemy_shoot)
+			boss.shoot_directed.connect(_on_enemy_shoot_directed)
 			boss.spawn_minions.connect(_on_boss_spawn_minions)
 			boss.health_changed.connect(_on_boss_health_changed)
 			boss.position = pos
@@ -121,6 +122,13 @@ func _on_enemy_died(enemy: BaseEnemy) -> void:
 func _on_enemy_shoot(pos: Vector2) -> void:
 	var bullet := EnemyBullet.new()
 	bullet.position = pos
+	get_parent().add_child(bullet)
+
+
+func _on_enemy_shoot_directed(pos: Vector2, vel: Vector2) -> void:
+	var bullet := EnemyBullet.new()
+	bullet.position = pos
+	bullet.fire(vel)
 	get_parent().add_child(bullet)
 
 
@@ -155,7 +163,9 @@ func _on_boss_health_changed(_current: int, _maximum: int) -> void:
 
 func kill_all() -> void:
 	for child in get_parent().get_children():
-		if child is BaseEnemy:
+		if child is BossEnemy:
+			child.hit(child.hp)  # trigger proper death chain so boss_defeated fires
+		elif child is BaseEnemy:
 			child.queue_free()
 		elif child is EnemyBullet:
 			child.queue_free()
