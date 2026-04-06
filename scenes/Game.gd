@@ -335,7 +335,7 @@ func _check_player_boss_sweep() -> void:
 			continue
 		var boss := child as BossEnemy
 		if not boss.is_sweep_active():
-			return
+			continue
 		var a := boss.position
 		var b := boss.get_sweep_end()
 		var ab := b - a

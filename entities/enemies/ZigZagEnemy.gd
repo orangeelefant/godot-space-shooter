@@ -3,6 +3,7 @@ extends BaseEnemy
 
 var _time: float = 0.0
 var _base_y: float = 0.0
+var _base_y_set: bool = false
 var _amplitude: float = 80.0
 var _frequency: float = 2.5
 
@@ -15,10 +16,12 @@ func _ready() -> void:
 	enemy_type = "zigzag"
 	_color = Color(1.0, 0.7, 0.0)
 	super._ready()
-	_base_y = position.y
 
 
 func _process(delta: float) -> void:
+	if not _base_y_set:
+		_base_y = position.y
+		_base_y_set = true
 	_time += delta
 	position.x -= speed * delta
 	position.y = _base_y + sin(_time * _frequency) * _amplitude

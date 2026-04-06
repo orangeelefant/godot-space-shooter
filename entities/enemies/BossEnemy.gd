@@ -44,6 +44,8 @@ func _process(delta: float) -> void:
 	else:
 		# Gentle vertical drift
 		position.y += sin(_rotation_angle * 0.7) * 0.6
+		if _sweep_active:
+			_sweep_angle -= delta * 1.5
 
 	if _tint_timer > 0.0:
 		_tint_timer -= delta
@@ -111,7 +113,6 @@ func _draw_shape() -> void:
 
 	# Sweep beam visual
 	if _sweep_active:
-		_sweep_angle -= get_process_delta_time() * 1.5
 		var beam_end := Vector2(cos(_sweep_angle), sin(_sweep_angle)) * 600.0
 		draw_line(Vector2.ZERO, beam_end, Color(1.0, 0.3, 0.0, 0.6), 6.0)
 		draw_line(Vector2.ZERO, beam_end, Color(1.0, 0.8, 0.0, 0.3), 12.0)
@@ -157,6 +158,9 @@ class _BossHealthBar extends Node2D:
 		position = Vector2(GameData.GAME_WIDTH / 2.0 - BAR_W / 2.0, 8)
 
 	func _process(_delta: float) -> void:
+		if not boss_ref or not is_instance_valid(boss_ref):
+			queue_free()
+			return
 		queue_redraw()
 
 	func _draw() -> void:

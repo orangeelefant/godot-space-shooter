@@ -89,10 +89,14 @@ func get_coins() -> int:
 	return int(state.get("coins", 0))
 
 
-func spend_coins(amount: int) -> void:
+func spend_coins(amount: int) -> bool:
 	var state := load_game()
-	state["coins"] = maxi(0, int(state.get("coins", 0)) - amount)
+	var current := int(state.get("coins", 0))
+	if current < amount:
+		return false
+	state["coins"] = current - amount
 	save_game(state)
+	return true
 
 
 func save_high_score(level_id: String, score: int) -> bool:

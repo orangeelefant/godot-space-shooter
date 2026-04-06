@@ -72,6 +72,9 @@ func _add_upgrade_card(upg: Dictionary, pos: Vector2, w: float, h: float) -> voi
 	var owned := false
 	if upg.target is int:
 		owned = int(current_val) >= int(upg.target)
+	elif upg.stat == "cannon_level":
+		const CANNON_ORDER := ["enkel", "dubbel", "spread", "laser"]
+		owned = CANNON_ORDER.find(str(current_val)) >= CANNON_ORDER.find(str(upg.target))
 	else:
 		owned = str(current_val) == str(upg.target)
 
