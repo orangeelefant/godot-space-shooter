@@ -16,6 +16,9 @@ const LOW_FPS_FRAMES      := 60     # consecutive low-fps frames before logging
 # Show overlay only in debug builds; set false to silence in release too
 var overlay_enabled: bool = OS.is_debug_build()
 
+enum Severity { INFO = 0, WARN = 1, ERROR = 2 }
+var min_severity: int = Severity.INFO
+
 # ── State ─────────────────────────────────────────────────────────────────────
 const DEDUP_WINDOW_S := 5.0
 const DEDUP_MAX_BURST := 3
@@ -50,6 +53,8 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_open_log()
 	_json_log.open()
+	if not OS.is_debug_build():
+		min_severity = Severity.WARN
 	_build_overlay()
 	log_info("=== Session start | Godot %s | %s ===" % [
 		Engine.get_version_info().string,
@@ -114,6 +119,17 @@ func record_event(tag: String, detail: String = "") -> void:
 	_events.record(tag, detail)
 
 
+func copy_log_to_clipboard(lines: int = 50) -> void:
+	var f := FileAccess.open(LOG_PATH, FileAccess.READ)
+	if f == null:
+		return
+	var all_lines := f.get_as_text().split("\n")
+	f.close()
+	var tail := all_lines.slice(maxi(0, all_lines.size() - lines))
+	DisplayServer.clipboard_set("\n".join(tail))
+	log_info("Log tail (%d lines) copied to clipboard" % lines)
+
+
 ## Dump a manual state snapshot to log
 func snapshot(label: String = "manual") -> void:
 	log_info("[SNAPSHOT:%s] scene=%s fps=%.0f mem=%dMB ctx=%s" % [
@@ -143,6 +159,8 @@ func _notification(what: int) -> void:
 func _process(delta: float) -> void:
 	_mem_watcher.tick(delta, get_tree())
 	_inputs.tick()
+	if OS.is_debug_build() and Input.is_key_pressed(KEY_F12) and Input.is_key_pressed(KEY_SHIFT):
+		copy_log_to_clipboard()
 
 	# ── Heartbeat (also updated by update_context, but this covers non-Game scenes)
 	_heartbeat_ms = Time.get_ticks_msec()
@@ -239,6 +257,12 @@ func _write_freeze_report(gap_ms: int) -> void:
 # ── Internal ──────────────────────────────────────────────────────────────────
 
 func _record(level: String, msg: String, color: Color) -> void:
+	var sev := Severity.INFO
+	match level:
+		"WARN":  sev = Severity.WARN
+		"ERROR": sev = Severity.ERROR
+	if sev < min_severity:
+		return
 	var ts    := Time.get_time_string_from_system()
 	var scene := _current_scene_name()
 	var line  := "[%s][%s][%s] %s" % [ts, level, scene, msg]
