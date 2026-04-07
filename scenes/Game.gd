@@ -769,6 +769,9 @@ class _StarLayer extends Node2D:
 	var _stars: Array[Dictionary] = []
 	var _offset: float = 0.0
 
+	func _ready() -> void:
+		queue_redraw()
+
 	func _init(count: int, min_r: float, max_r: float, color: Color, min_a: float, max_a: float) -> void:
 		var rng := RandomNumberGenerator.new()
 		rng.seed = hash(str(count) + str(min_r))
@@ -935,8 +938,9 @@ class _AsteroidLayer extends Node2D:
 			var rot_pts := PackedVector2Array()
 			var cos_r: float = cos(float(r["rot"]) + _offset * float(r["rot_speed"]) * 0.01)
 			var sin_r: float = sin(float(r["rot"]) + _offset * float(r["rot_speed"]) * 0.01)
+			var ey: float = float(r["y"])
 			for p in r["pts"]:
-				rot_pts.append(Vector2(p.x * cos_r - p.y * sin_r, p.x * sin_r + p.y * cos_r))
+				rot_pts.append(Vector2(p.x * cos_r - p.y * sin_r + x, p.x * sin_r + p.y * cos_r + ey))
 			draw_colored_polygon(rot_pts, Color(0.18, 0.16, 0.14, 0.7))
 			draw_polyline(rot_pts, Color(0.3, 0.27, 0.24, 0.5), 1.0)
 			draw_line(rot_pts[rot_pts.size()-1], rot_pts[0], Color(0.3, 0.27, 0.24, 0.5), 1.0)
