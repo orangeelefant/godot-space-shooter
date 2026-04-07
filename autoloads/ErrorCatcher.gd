@@ -33,6 +33,7 @@ var _events: EventBuffer = EventBuffer.new()
 var _inputs: InputRecorder = InputRecorder.new()
 
 var _mem_watcher: MemoryWatcher = MemoryWatcher.new()
+var _json_log: StructuredLog = StructuredLog.new()
 
 # Watchdog
 var _heartbeat_ms: int = 0            # written by main thread, read by watchdog
@@ -48,6 +49,7 @@ func _ready() -> void:
 	name = "ErrorCatcher"
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_open_log()
+	_json_log.open()
 	_build_overlay()
 	log_info("=== Session start | Godot %s | %s ===" % [
 		Engine.get_version_info().string,
@@ -132,6 +134,7 @@ func _notification(what: int) -> void:
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			snapshot("shutdown")
 			_stop_watchdog()
+			_json_log.close()
 			_flush_log()
 		NOTIFICATION_PREDELETE:
 			_stop_watchdog()
@@ -225,6 +228,12 @@ func _write_freeze_report(gap_ms: int) -> void:
 	if _log_file:
 		_log_file.flush()
 	_mutex.unlock()
+	_json_log.write("FREEZE", "watchdog", "main loop frozen %dms" % gap_ms, {
+		"gap_ms":  gap_ms,
+		"context": _last_context,
+		"events":  _events.dump(),
+		"inputs":  _inputs.dump(),
+	})
 
 
 # ── Internal ──────────────────────────────────────────────────────────────────
@@ -236,6 +245,8 @@ func _record(level: String, msg: String, color: Color) -> void:
 	_mutex.lock()
 	_write_line_unsafe(line)
 	_mutex.unlock()
+
+	_json_log.write(level, scene, msg)
 
 	if overlay_enabled:
 		_entries.append({ "text": "[%s] %s" % [level, msg], "ttl": OVERLAY_TTL, "color": color })
@@ -356,6 +367,12 @@ func _write_crash_report(kind: String) -> void:
 	if _log_file:
 		_log_file.flush()
 	_mutex.unlock()
+	_json_log.write("CRASH", _current_scene_name(), "game crashed", {
+		"context": _last_context,
+		"events":  _events.dump(),
+		"inputs":  _inputs.dump(),
+		"mem":     _mem_watcher.dump(),
+	})
 
 
 func _current_scene_name() -> String:
