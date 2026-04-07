@@ -47,6 +47,9 @@ var _watchdog_running: bool = false
 var _low_fps_streak: int = 0
 var _last_frame_ms: int = 0
 
+# Clipboard shortcut edge detection
+var _clipboard_key_held: bool = false
+
 
 func _ready() -> void:
 	name = "ErrorCatcher"
@@ -159,8 +162,10 @@ func _notification(what: int) -> void:
 func _process(delta: float) -> void:
 	_mem_watcher.tick(delta, get_tree())
 	_inputs.tick()
-	if OS.is_debug_build() and Input.is_key_pressed(KEY_F12) and Input.is_key_pressed(KEY_SHIFT):
+	var f12_combo := OS.is_debug_build() and Input.is_key_pressed(KEY_F12) and Input.is_key_pressed(KEY_SHIFT)
+	if f12_combo and not _clipboard_key_held:
 		copy_log_to_clipboard()
+	_clipboard_key_held = f12_combo
 
 	# ── Heartbeat (also updated by update_context, but this covers non-Game scenes)
 	_heartbeat_ms = Time.get_ticks_msec()
