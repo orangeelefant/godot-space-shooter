@@ -399,7 +399,8 @@ func _on_player_died() -> void:
 	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 
 
-func _on_enemy_killed(_enemy: BaseEnemy) -> void:
+func _on_enemy_killed(enemy: BaseEnemy) -> void:
+	_spawn_explosion(enemy.position, 1.0)
 	var points := (_combo_system as ComboSystem).register_kill()
 	_score += points
 	_hud.call("update_score", _score)
@@ -524,6 +525,11 @@ func _start_mission_timer() -> void:
 			# Boss spawns after all normal waves complete
 			_spawner.all_waves_done.connect(_spawn_boss, CONNECT_ONE_SHOT)
 			_spawner.boss_defeated.connect(func():
+				for child in get_children():
+					if child is BossEnemy:
+						_spawn_explosion(child.position, 2.5)
+						_camera_shake(1.5)
+						break
 				if not _level_done:
 					_force_level_complete()
 			, CONNECT_ONE_SHOT)
@@ -557,12 +563,12 @@ func _apply_magnet_pull(delta: float, bosses: Array) -> void:
 			_player.position.y = clampf(_player.position.y, 70.0, GameData.GAME_HEIGHT - 30.0)
 
 
-func _camera_shake() -> void:
+func _camera_shake(intensity: float = 1.0) -> void:
 	var tween := create_tween()
 	var original := position
-	for _i in 6:
+	for _i in int(4 + intensity * 4):
 		tween.tween_property(self, "position",
-			original + Vector2(randf_range(-8, 8), randf_range(-6, 6)), 0.03)
+			original + Vector2(randf_range(-8, 8), randf_range(-6, 6)) * intensity, 0.03)
 	tween.tween_property(self, "position", original, 0.03)
 
 
@@ -580,6 +586,13 @@ func _spawn_muzzle_flash(pos: Vector2) -> void:
 	flash.position = pos
 	flash.z_index = 6
 	add_child(flash)
+
+
+func _spawn_explosion(pos: Vector2, size: float) -> void:
+	var ex := _Explosion.new(size)
+	ex.position = pos
+	ex.z_index = 8
+	add_child(ex)
 
 
 # ── Muzzle flash ─────────────────────────────────────────────────────────────
@@ -735,6 +748,47 @@ class _PlanetLayer extends Node2D:
 		# Ring system
 		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 1.5, -0.3, PI + 0.3, 48, Color(0.3, 0.4, 0.6, 0.18), 3.0)
 		draw_arc(Vector2(px, PLANET_Y), PLANET_R * 1.65, -0.25, PI + 0.25, 48, Color(0.25, 0.35, 0.55, 0.1), 2.0)
+
+
+# ── Explosion effect ──────────────────────────────────────────────────────────
+
+class _Explosion extends Node2D:
+	var _elapsed: float = 0.0
+	var _particles: Array[Dictionary] = []
+	const DURATION := 0.55
+
+	func _init(size: float) -> void:
+		var count := int(8 + size * 4)
+		for i in count:
+			var angle := randf() * TAU
+			var speed := randf_range(40.0, 120.0) * size
+			_particles.append({
+				"pos": Vector2.ZERO,
+				"vel": Vector2(cos(angle), sin(angle)) * speed,
+				"r":   randf_range(2.0, 5.0) * size,
+				"col": [Color(1.0, 0.6, 0.1), Color(1.0, 0.2, 0.0), Color(1.0, 0.9, 0.3)][randi() % 3],
+			})
+
+	func _process(delta: float) -> void:
+		_elapsed += delta
+		for p in _particles:
+			p["pos"] += p["vel"] * delta
+			p["vel"] *= 0.88
+		queue_redraw()
+		if _elapsed >= DURATION:
+			queue_free()
+
+	func _draw() -> void:
+		var t := _elapsed / DURATION
+		var alpha := 1.0 - t
+		for p in _particles:
+			var r := p["r"] * (1.0 - t * 0.5)
+			var col: Color = p["col"]
+			draw_circle(p["pos"], r, Color(col.r, col.g, col.b, alpha))
+		# Central flash (fades fast)
+		if t < 0.25:
+			var flash_a := (1.0 - t / 0.25) * 0.7
+			draw_circle(Vector2.ZERO, 18.0 * (1.0 - t / 0.25), Color(1.0, 1.0, 0.8, flash_a))
 
 
 # ── Asteroid layer ────────────────────────────────────────────────────────────

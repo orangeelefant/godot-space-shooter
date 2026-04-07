@@ -25,6 +25,7 @@ GameData="*res://autoloads/GameData.gd"
 SaveSystem="*res://autoloads/SaveSystem.gd"
 AudioSystem="*res://autoloads/AudioSystem.gd"
 GameState="*res://autoloads/GameState.gd"
+MusicSystem="*res://autoloads/MusicSystem.gd"
 
 [display]
 
