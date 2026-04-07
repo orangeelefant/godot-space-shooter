@@ -890,7 +890,7 @@ class _Explosion extends Node2D:
 		var t := _elapsed / DURATION
 		var alpha := 1.0 - t
 		for p in _particles:
-			var r := p["r"] * (1.0 - t * 0.5)
+			var r: float = float(p["r"]) * (1.0 - t * 0.5)
 			var col: Color = p["col"]
 			draw_circle(p["pos"], r, Color(col.r, col.g, col.b, alpha))
 		# Central flash (fades fast)
@@ -931,10 +931,10 @@ class _AsteroidLayer extends Node2D:
 
 	func _draw() -> void:
 		for r in _rocks:
-			var x := fmod(r["x"] - _offset * r["speed"], GameData.GAME_WIDTH + 50.0) - 25.0
+			var x: float = fmod(float(r["x"]) - _offset * float(r["speed"]), GameData.GAME_WIDTH + 50.0) - 25.0
 			var rot_pts := PackedVector2Array()
-			var cos_r := cos(r["rot"] + _offset * r["rot_speed"] * 0.01)
-			var sin_r := sin(r["rot"] + _offset * r["rot_speed"] * 0.01)
+			var cos_r: float = cos(float(r["rot"]) + _offset * float(r["rot_speed"]) * 0.01)
+			var sin_r: float = sin(float(r["rot"]) + _offset * float(r["rot_speed"]) * 0.01)
 			for p in r["pts"]:
 				rot_pts.append(Vector2(p.x * cos_r - p.y * sin_r, p.x * sin_r + p.y * cos_r))
 			draw_colored_polygon(rot_pts, Color(0.18, 0.16, 0.14, 0.7))
