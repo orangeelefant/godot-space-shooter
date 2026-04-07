@@ -290,6 +290,14 @@ func _fire_bullet() -> void:
 			var b := _spawn_bullet(muzzle, Vector2(1400, 0))
 			b.damage = 3
 			_spawn_laser_beam(muzzle)
+		"slash":
+			var angles := [-60.0, -30.0, 0.0, 30.0, 60.0]
+			for deg in angles:
+				var rad := deg_to_rad(deg)
+				var vel := Vector2(cos(rad), sin(rad)) * 950.0
+				var b := _spawn_bullet(muzzle, vel)
+				b.damage = 2
+			_spawn_slash_arc(muzzle)
 		_:
 			_spawn_bullet(muzzle, Vector2(900, 0))
 
@@ -419,6 +427,29 @@ func _on_combo_changed(combo: int, multiplier: int) -> void:
 	if multiplier > 1:
 		_hud.call("update_combo", combo, multiplier)
 		AudioSystem.play_combo_up(multiplier)
+	if combo in [5, 10, 20] and is_instance_valid(_player):
+		_spawn_combo_burst(_player.position, multiplier)
+
+
+func _spawn_combo_burst(pos: Vector2, tier: int) -> void:
+	var size := 60.0 + float(tier) * 30.0
+	var burst := ColorRect.new()
+	burst.size = Vector2(size * 2.0, size * 2.0)
+	burst.position = pos - Vector2(size, size)
+	burst.z_index = 9
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/starburst.gdshader")
+	if shader:
+		mat.shader = shader
+		var col := Color(1.0, 0.8, 0.2) if tier < 5 else Color(0.5, 0.2, 1.0)
+		mat.set_shader_parameter("flare_color", col)
+		mat.set_shader_parameter("ray_count", float(tier + 4))
+		mat.set_shader_parameter("lifespan", 1.0)
+		burst.material = mat
+	add_child(burst)
+	var t := create_tween()
+	t.tween_method(func(v: float): if is_instance_valid(burst) and burst.material: (burst.material as ShaderMaterial).set_shader_parameter("lifespan", v), 1.0, 0.0, 0.55)
+	t.tween_callback(func(): if is_instance_valid(burst): burst.queue_free())
 
 
 func _on_combo_lost() -> void:
@@ -620,6 +651,25 @@ func _spawn_laser_beam(start: Vector2) -> void:
 	add_child(beam)
 	# Auto-remove after brief flash
 	get_tree().create_timer(0.09).timeout.connect(func(): if is_instance_valid(beam): beam.queue_free())
+
+
+func _spawn_slash_arc(pos: Vector2) -> void:
+	var arc := ColorRect.new()
+	arc.size = Vector2(180, 180)
+	arc.position = pos + Vector2(-20, -90)
+	arc.z_index = 7
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/slash_arc.gdshader")
+	if shader:
+		mat.shader = shader
+		mat.set_shader_parameter("slash_color", Color(0.8, 0.3, 1.0, 1.0))
+		mat.set_shader_parameter("progress", 1.0)
+		arc.material = mat
+	add_child(arc)
+	# Animate fade-out
+	var t := create_tween()
+	t.tween_method(func(v: float): if is_instance_valid(arc) and arc.material: (arc.material as ShaderMaterial).set_shader_parameter("progress", v), 1.0, 0.0, 0.25)
+	t.tween_callback(func(): if is_instance_valid(arc): arc.queue_free())
 
 
 func _spawn_starburst(pos: Vector2) -> void:
