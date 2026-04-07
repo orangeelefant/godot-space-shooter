@@ -10,6 +10,7 @@ var _pool_size := 8
 
 
 func _ready() -> void:
+	_enabled = SaveSystem.get_audio_enabled()
 	for i in _pool_size:
 		var p := AudioStreamPlayer.new()
 		p.volume_db = -6.0
@@ -78,6 +79,7 @@ func play_combo_up(level: int) -> void:
 
 func set_enabled(on: bool) -> void:
 	_enabled = on
+	SaveSystem.set_audio_enabled(on)
 
 
 # ── Private ─────────────────────────────────────────────────────────────────

@@ -11,7 +11,10 @@ func _ready() -> void:
 	_add_label("GAME OVER", 300, 110, Color(1, 0.15, 0.3, 0.2))
 	_add_label("GAME OVER", 300, 106, Color(1, 0.15, 0.3))
 
-	_add_label("DU FÖRLORADE", 440, 28, Color(0.6, 0.6, 0.7))
+	_add_label("DU FÖRLORADE", 430, 28, Color(0.6, 0.6, 0.7))
+
+	if GameState.last_score > 0:
+		_add_label("POÄNG: " + str(GameState.last_score).lpad(6, "0"), 478, 26, Color(1, 0.87, 0))
 
 	var retry := Button.new()
 	retry.text = "[ FÖRSÖK IGEN ]"

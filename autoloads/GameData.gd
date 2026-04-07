@@ -46,7 +46,7 @@ const WORLDS: Array[Dictionary] = [
 		]
 	},
 	{
-		"id": "world-2", "name": "Asteroidbältet",
+		"id": "world-2", "name": "Asteroidbältet", "unlock_after": "world-1",
 		"levels": [
 			{
 				"id": "w2-l1", "name": "Stenhavet",
@@ -76,7 +76,7 @@ const WORLDS: Array[Dictionary] = [
 		]
 	},
 	{
-		"id": "world-3", "name": "Nebulosans Hjärta",
+		"id": "world-3", "name": "Nebulosans Hjärta", "unlock_after": "world-2",
 		"levels": [
 			{
 				"id": "w3-l1", "name": "Gasmoln",
@@ -106,7 +106,7 @@ const WORLDS: Array[Dictionary] = [
 		]
 	},
 	{
-		"id": "world-4", "name": "Isplaneten",
+		"id": "world-4", "name": "Isplaneten", "unlock_after": "world-3",
 		"levels": [
 			{
 				"id": "w4-l1", "name": "Frusen Rymd",
@@ -135,7 +135,7 @@ const WORLDS: Array[Dictionary] = [
 		]
 	},
 	{
-		"id": "world-5", "name": "Korallrevet",
+		"id": "world-5", "name": "Korallrevet", "unlock_after": "world-4",
 		"levels": [
 			{
 				"id": "w5-l1", "name": "Djuphavet",

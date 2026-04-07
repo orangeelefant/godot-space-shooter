@@ -16,6 +16,7 @@ const DEFAULT_STATE := {
 	},
 	"completed_levels": [],
 	"high_scores": {},
+	"audio_enabled": true,
 }
 
 
@@ -27,9 +28,10 @@ func load_game() -> Dictionary:
 		return DEFAULT_STATE.duplicate(true)
 	var text := file.get_as_text()
 	file.close()
-	var result := JSON.parse_string(text)
-	if result == null or not result is Dictionary:
+	var parsed: Variant = JSON.parse_string(text)
+	if parsed == null or not parsed is Dictionary:
 		return DEFAULT_STATE.duplicate(true)
+	var result: Dictionary = parsed
 	# Merge with defaults to handle missing keys
 	var state: Dictionary = DEFAULT_STATE.duplicate(true)
 	state.merge(result, true)
@@ -115,6 +117,17 @@ func get_high_score(level_id: String) -> int:
 	var state := load_game()
 	var scores: Dictionary = state.get("high_scores", {})
 	return int(scores.get(level_id, 0))
+
+
+func get_audio_enabled() -> bool:
+	var state := load_game()
+	return bool(state.get("audio_enabled", true))
+
+
+func set_audio_enabled(on: bool) -> void:
+	var state := load_game()
+	state["audio_enabled"] = on
+	save_game(state)
 
 
 func reset() -> void:

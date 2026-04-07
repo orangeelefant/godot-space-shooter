@@ -17,8 +17,8 @@ func _ready() -> void:
 
 	var panel := ColorRect.new()
 	panel.color = Color(0, 0.04, 0.1)
-	panel.size = Vector2(480, 300)
-	panel.position = Vector2(GameData.GAME_WIDTH / 2.0 - 240, GameData.GAME_HEIGHT / 2.0 - 150)
+	panel.size = Vector2(480, 380)
+	panel.position = Vector2(GameData.GAME_WIDTH / 2.0 - 240, GameData.GAME_HEIGHT / 2.0 - 190)
 	add_child(panel)
 
 	var border := _make_border(panel.position, panel.size)
@@ -26,7 +26,7 @@ func _ready() -> void:
 
 	var title := Label.new()
 	title.text = "PAUS"
-	title.position = Vector2(GameData.GAME_WIDTH / 2.0 - 240, GameData.GAME_HEIGHT / 2.0 - 110)
+	title.position = Vector2(GameData.GAME_WIDTH / 2.0 - 240, GameData.GAME_HEIGHT / 2.0 - 150)
 	title.size = Vector2(480, 80)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 64)
@@ -43,10 +43,26 @@ func _ready() -> void:
 	resume.pressed.connect(func(): resume_pressed.emit())
 	add_child(resume)
 
+	var audio_btn := Button.new()
+	audio_btn.text = "LJUD:  PÅ" if AudioSystem._enabled else "LJUD:  AV"
+	audio_btn.size = Vector2(320, 55)
+	audio_btn.position = Vector2(GameData.GAME_WIDTH / 2.0 - 160, GameData.GAME_HEIGHT / 2.0 + 90)
+	audio_btn.add_theme_font_size_override("font_size", 24)
+	audio_btn.add_theme_color_override("font_color",
+		Color(0.4, 0.8, 1.0) if AudioSystem._enabled else Color(0.7, 0.3, 0.3))
+	audio_btn.flat = true
+	audio_btn.pressed.connect(func():
+		AudioSystem.set_enabled(not AudioSystem._enabled)
+		audio_btn.text = "LJUD:  PÅ" if AudioSystem._enabled else "LJUD:  AV"
+		audio_btn.add_theme_color_override("font_color",
+			Color(0.4, 0.8, 1.0) if AudioSystem._enabled else Color(0.7, 0.3, 0.3))
+	)
+	add_child(audio_btn)
+
 	var quit := Button.new()
 	quit.text = "AVSLUTA UPPDRAG"
 	quit.size = Vector2(320, 60)
-	quit.position = Vector2(GameData.GAME_WIDTH / 2.0 - 160, GameData.GAME_HEIGHT / 2.0 + 90)
+	quit.position = Vector2(GameData.GAME_WIDTH / 2.0 - 160, GameData.GAME_HEIGHT / 2.0 + 162)
 	quit.add_theme_font_size_override("font_size", 24)
 	quit.add_theme_color_override("font_color", Color(0.8, 0.3, 0.3))
 	quit.flat = true

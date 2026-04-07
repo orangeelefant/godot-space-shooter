@@ -26,6 +26,14 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# Track real player position
+	var parent := get_parent()
+	if parent:
+		for child in parent.get_children():
+			if child is Player:
+				_player_pos = child.position
+				break
+
 	# Homing
 	var dir := (_player_pos - position).normalized()
 	position += dir * speed * delta

@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 		_spawn_timer -= delta
 		if _spawn_timer <= 0.0:
 			var entry: Dictionary = _spawn_queue.pop_front()
-			_do_spawn(entry.type, entry.pos)
+			_do_spawn(entry.type, entry.pos, str(entry.get("boss_type", "standard")))
 			_spawn_timer = entry.get("delay", 0.1)
 
 	# Launch next wave after gap
@@ -57,11 +57,14 @@ func _launch_wave(index: int) -> void:
 	var etype: String = wave.get("type", "green")
 
 	for i in count:
-		_spawn_queue.append({
+		var entry := {
 			"type": etype,
 			"pos": Vector2(SPAWN_X + i * 10.0, _formation_y(i, count, formation)),
 			"delay": delay,
-		})
+		}
+		if etype == "boss":
+			entry["boss_type"] = wave.get("boss_type", "standard")
+		_spawn_queue.append(entry)
 
 	# Schedule next wave after all spawns + gap
 	var total_time := count * delay + GAP_BETWEEN_WAVES
@@ -79,7 +82,7 @@ func _formation_y(index: int, total: int, formation: String) -> float:
 			return randf_range(80.0, GameData.GAME_HEIGHT - 80.0)
 
 
-func _do_spawn(etype: String, pos: Vector2) -> void:
+func _do_spawn(etype: String, pos: Vector2, boss_type: String = "standard") -> void:
 	var enemy: BaseEnemy
 	match etype:
 		"green":
@@ -99,7 +102,7 @@ func _do_spawn(etype: String, pos: Vector2) -> void:
 		"zigzag":
 			enemy = ZigZagEnemy.new()
 		"boss":
-			var boss := BossEnemy.new()
+			var boss: BossEnemy = MagnetBoss.new() if boss_type == "magnet" else BossEnemy.new()
 			boss.shoot_at.connect(_on_enemy_shoot)
 			boss.shoot_directed.connect(_on_enemy_shoot_directed)
 			boss.spawn_minions.connect(_on_boss_spawn_minions)

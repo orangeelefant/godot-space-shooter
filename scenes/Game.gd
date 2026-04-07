@@ -214,6 +214,9 @@ func _process(delta: float) -> void:
 	if _player.is_gas_pressed() and _gas_count > 0:
 		_use_gas()
 
+	# Magnet boss pull
+	_apply_magnet_pull(delta)
+
 	# Collision checks (manual overlap)
 	_check_bullet_enemy_overlap()
 	_check_player_enemy_overlap()
@@ -378,6 +381,7 @@ func _on_player_damaged() -> void:
 
 
 func _on_player_died() -> void:
+	GameState.last_score = _score
 	get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 
 
@@ -407,9 +411,9 @@ func _on_wave_started(index: int) -> void:
 		return
 	_shop_open = true
 	get_tree().paused = true
-	var overlay := load("res://scenes/ShopOverlay.gd").new()
-	overlay.setup(_cannon_level, func(new_cannon: String): _cannon_level = new_cannon)
-	overlay.closed.connect(func(): _shop_open = false)
+	var overlay: CanvasLayer = load("res://scenes/ShopOverlay.gd").new()
+	overlay.call("setup", _cannon_level, func(new_cannon: String): _cannon_level = new_cannon)
+	overlay.connect("closed", func(): _shop_open = false)
 	add_child(overlay)
 
 
@@ -511,10 +515,28 @@ func _start_mission_timer() -> void:
 
 
 func _spawn_boss() -> void:
-	var boss_wave := [{"type": "boss", "count": 1, "formation": "line", "delay": 0.0}]
+	var mission: Dictionary = _level_config.get("mission", {})
+	var boss_type: String = mission.get("boss_type", "standard")
+	var boss_wave := [{"type": "boss", "count": 1, "formation": "line", "delay": 0.0, "boss_type": boss_type}]
 	_spawner.setup(boss_wave)
 	_hud.call("update_mission", "BOSS!")
 	AudioSystem.play_boss_hit()
+
+
+func _apply_magnet_pull(delta: float) -> void:
+	for child in get_children():
+		if not child is MagnetBoss:
+			continue
+		var boss := child as MagnetBoss
+		if not boss.is_pulling():
+			continue
+		var toward := boss.position - _player.position
+		var dist := toward.length()
+		if dist > 20.0:
+			var strength := 90.0 * (1.0 - clampf(dist / 700.0, 0.0, 1.0))
+			_player.position += toward.normalized() * strength * delta
+			_player.position.x = clampf(_player.position.x, 30.0, GameData.GAME_WIDTH - 30.0)
+			_player.position.y = clampf(_player.position.y, 70.0, GameData.GAME_HEIGHT - 30.0)
 
 
 func _camera_shake() -> void:
@@ -594,7 +616,7 @@ class _DangerIndicator extends Node2D:
 						Vector2(ax - 2, ay - 10),
 						Vector2(ax - 2, ay + 10),
 					]),
-					PackedColorArray([Color(1.0, 0.2, 0.2, alpha)])
+					Color(1.0, 0.2, 0.2, alpha)
 				)
 
 
@@ -655,9 +677,11 @@ class _NebulaLayer extends Node2D:
 
 	func _draw() -> void:
 		for b in _blobs:
-			var x := fmod(b["x"] - _offset * 0.03, GameData.GAME_WIDTH + b["r"] * 2) - b["r"]
-			draw_circle(Vector2(x, b["y"]), b["r"], b["color"])
-			draw_circle(Vector2(x, b["y"]), b["r"] * 0.6, Color(b["color"].r, b["color"].g, b["color"].b, b["color"].a * 1.5))
+			var radius: float = float(b["r"])
+			var color: Color = b["color"]
+			var x: float = fmod(float(b["x"]) - _offset * 0.03, GameData.GAME_WIDTH + radius * 2.0) - radius
+			draw_circle(Vector2(x, float(b["y"])), radius, color)
+			draw_circle(Vector2(x, float(b["y"])), radius * 0.6, Color(color.r, color.g, color.b, color.a * 1.5))
 
 
 # ── Planet layer ──────────────────────────────────────────────────────────────
@@ -729,6 +753,6 @@ class _AsteroidLayer extends Node2D:
 			var sin_r := sin(r["rot"] + _offset * r["rot_speed"] * 0.01)
 			for p in r["pts"]:
 				rot_pts.append(Vector2(p.x * cos_r - p.y * sin_r, p.x * sin_r + p.y * cos_r))
-			draw_colored_polygon(rot_pts, PackedColorArray([Color(0.18, 0.16, 0.14, 0.7)]))
+			draw_colored_polygon(rot_pts, Color(0.18, 0.16, 0.14, 0.7))
 			draw_polyline(rot_pts, Color(0.3, 0.27, 0.24, 0.5), 1.0)
 			draw_line(rot_pts[rot_pts.size()-1], rot_pts[0], Color(0.3, 0.27, 0.24, 0.5), 1.0)

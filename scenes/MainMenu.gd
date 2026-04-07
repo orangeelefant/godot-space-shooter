@@ -95,21 +95,58 @@ func _select_ship(index: int) -> void:
 
 
 func _build_start_button() -> void:
-	var btn := Button.new()
-	btn.text = "STARTA SPELET"
-	btn.add_theme_font_size_override("font_size", 38)
-	btn.add_theme_color_override("font_color", Color(0, 1, 0.53))
-	btn.size = Vector2(480, 70)
-	btn.position = Vector2(720, 865)
-	btn.flat = true
-	btn.pressed.connect(_on_start)
-	add_child(btn)
+	var state := SaveSystem.load_game()
+	var has_progress: bool = (state.get("completed_levels", []) as Array).size() > 0
+
+	if has_progress:
+		var cont := Button.new()
+		cont.text = "FORTSÄTT SPELET"
+		cont.add_theme_font_size_override("font_size", 38)
+		cont.add_theme_color_override("font_color", Color(0, 1, 0.53))
+		cont.size = Vector2(480, 70)
+		cont.position = Vector2(720, 800)
+		cont.flat = true
+		cont.pressed.connect(_on_start)
+		add_child(cont)
+
+		var new_game := Button.new()
+		new_game.text = "NYTT SPEL"
+		new_game.add_theme_font_size_override("font_size", 24)
+		new_game.add_theme_color_override("font_color", Color(0.7, 0.35, 0.35))
+		new_game.size = Vector2(480, 50)
+		new_game.position = Vector2(720, 882)
+		new_game.flat = true
+		new_game.pressed.connect(func():
+			SaveSystem.reset()
+			_on_start()
+		)
+		add_child(new_game)
+	else:
+		var btn := Button.new()
+		btn.text = "STARTA SPELET"
+		btn.add_theme_font_size_override("font_size", 38)
+		btn.add_theme_color_override("font_color", Color(0, 1, 0.53))
+		btn.size = Vector2(480, 70)
+		btn.position = Vector2(720, 840)
+		btn.flat = true
+		btn.pressed.connect(_on_start)
+		add_child(btn)
+
+	var settings_btn := Button.new()
+	settings_btn.text = "INSTÄLLNINGAR"
+	settings_btn.add_theme_font_size_override("font_size", 18)
+	settings_btn.add_theme_color_override("font_color", Color(0.4, 0.5, 0.6))
+	settings_btn.size = Vector2(280, 40)
+	settings_btn.position = Vector2(820, 940)
+	settings_btn.flat = true
+	settings_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/Settings.tscn"))
+	add_child(settings_btn)
 
 	var hint := Label.new()
 	hint.text = "PILAR = RÖRELSE   |   MELLANSLAG = SKJUT   |   G = GASGRANAT"
 	hint.add_theme_font_size_override("font_size", 15)
 	hint.add_theme_color_override("font_color", Color(0.2, 0.2, 0.35))
-	hint.position = Vector2(0, 985)
+	hint.position = Vector2(0, 990)
 	hint.size = Vector2(GameData.GAME_WIDTH, 30)
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(hint)
