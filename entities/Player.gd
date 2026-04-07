@@ -117,7 +117,7 @@ func _draw() -> void:
 	var c := _color
 
 	# Animated thruster flame
-	var thrust_len := 12.0 + abs(velocity.x) * 0.025 + sin(_thruster_phase * 14.0) * 4.0
+	var thrust_len: float = 12.0 + absf(velocity.x) * 0.025 + sin(_thruster_phase * 14.0) * 4.0
 	draw_polygon(
 		PackedVector2Array([Vector2(-18, -4), Vector2(-18 - thrust_len, 0), Vector2(-18, 4)]),
 		PackedColorArray([Color(1.0, 0.55, 0.1, 0.85)])

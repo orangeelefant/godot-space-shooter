@@ -88,14 +88,14 @@ func _draw_shape() -> void:
 		var p2 := Vector2(cos(a2), sin(a2)) * (r + 18.0)
 		var p3 := Vector2(cos(a + TAU / 8.0), sin(a + TAU / 8.0)) * (r + 12.0)
 		draw_colored_polygon(PackedVector2Array([p1, p2, p3]),
-			PackedColorArray([Color(1.0, 0.5, 0.1, 0.7)]))
+			Color(1.0, 0.5, 0.1, 0.7))
 
 	# Body — octagon
 	var pts := PackedVector2Array()
 	for i in 8:
 		var a := float(i) / 8.0 * TAU - PI / 8.0
 		pts.append(Vector2(cos(a), sin(a)) * r)
-	draw_colored_polygon(pts, PackedColorArray([Color(0.35, 0.0, 0.1)]))
+	draw_colored_polygon(pts, Color(0.35, 0.0, 0.1))
 	draw_polyline(pts, Color(1.0, 0.2, 0.3), 2.0)
 	# close the polyline
 	draw_line(pts[7], pts[0], Color(1.0, 0.2, 0.3), 2.0)

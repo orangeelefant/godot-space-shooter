@@ -56,12 +56,12 @@ func _draw() -> void:
 	draw_polyline(pts, Color(0, 1, 1, 0.8), 1.0)
 
 	# Blinking wing lights
-	var blink := abs(sin(_wing_phase))
+	var blink: float = absf(sin(_wing_phase))
 	draw_circle(Vector2(-6, -7), 2.5, Color(0, 1, 0.53, blink))
 	draw_circle(Vector2(-6, 7), 2.5, Color(0, 1, 0.53, blink))
 
 	# Thruster glow
-	var thrust_len := 6.0 + sin(_wing_phase * 3.0) * 2.0
+	var thrust_len: float = 6.0 + sin(_wing_phase * 3.0) * 2.0
 	draw_polygon(
 		PackedVector2Array([Vector2(-8, -3), Vector2(-8 - thrust_len, 0), Vector2(-8, 3)]),
 		[Color(0.3, 0.6, 1.0, 0.7)]

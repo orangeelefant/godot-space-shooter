@@ -527,9 +527,12 @@ func _apply_magnet_pull(delta: float) -> void:
 	for child in get_children():
 		if not child.has_method("is_pulling"):
 			continue
-		if not child.is_pulling():
+		if not child.call("is_pulling"):
 			continue
-		var toward := child.position - _player.position
+		var node := child as Node2D
+		if node == null:
+			continue
+		var toward := node.position - _player.position
 		var dist := toward.length()
 		if dist > 20.0:
 			var strength := 90.0 * (1.0 - clampf(dist / 700.0, 0.0, 1.0))
