@@ -3,7 +3,7 @@ extends CanvasLayer
 signal closed
 
 const CANNON_ORDER := ["enkel", "dubbel", "spread", "laser", "slash"]
-const UPGRADE_COST := 15
+const UPGRADE_COST := 150
 
 var _current_cannon: String = "enkel"
 var _on_purchase: Callable

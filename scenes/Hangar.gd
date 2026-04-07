@@ -1,12 +1,13 @@
 extends Node2D
 
 const UPGRADES := [
-	{"id": "motor_2",   "name": "Motor Lv2",   "desc": "Snabbare rörelse",      "cost": 50,  "stat": "motor_level",   "target": 2},
-	{"id": "cannon_2",  "name": "Dubbel Kanon", "desc": "Två kulor på en gång",  "cost": 80,  "stat": "cannon_level",  "target": "dubbel"},
-	{"id": "shield_2",  "name": "Sköld Lv2",   "desc": "+1 träff att ta",        "cost": 60,  "stat": "shield_level",  "target": 2},
-	{"id": "cannon_3",  "name": "Sprid-Kanon",  "desc": "Tre kulor i en spread",  "cost": 120, "stat": "cannon_level",  "target": "spread"},
-	{"id": "falcon_2",  "name": "Falk Lv2",     "desc": "Falken skjuter snabbare","cost": 100, "stat": "falcon_level",  "target": 2},
-	{"id": "motor_3",   "name": "Motor Lv3",   "desc": "Topphastighet",           "cost": 120, "stat": "motor_level",   "target": 3},
+	{"id": "motor_2",   "name": "Motor Lv2",   "desc": "Snabbare rörelse",      "cost": 500,  "stat": "motor_level",   "target": 2},
+	{"id": "cannon_2",  "name": "Dubbel Kanon", "desc": "Två kulor på en gång",  "cost": 800,  "stat": "cannon_level",  "target": "dubbel"},
+	{"id": "shield_2",  "name": "Sköld Lv2",   "desc": "+1 träff att ta",        "cost": 600,  "stat": "shield_level",  "target": 2},
+	{"id": "cannon_3",  "name": "Sprid-Kanon",  "desc": "Tre kulor i en spread",  "cost": 1200, "stat": "cannon_level",  "target": "spread"},
+	{"id": "falcon_2",  "name": "Falk Lv2",     "desc": "Falken skjuter snabbare","cost": 1000, "stat": "falcon_level",  "target": 2},
+	{"id": "motor_3",   "name": "Motor Lv3",   "desc": "Topphastighet",           "cost": 1200, "stat": "motor_level",   "target": 3},
+	{"id": "gas_1",     "name": "Gas Granat",   "desc": "Köp en granat (max 3)",  "cost": 300,  "stat": "gas_grenades",  "target": 0},
 ]
 
 
@@ -39,9 +40,11 @@ func _draw_title() -> void:
 
 	var coins_lbl := Label.new()
 	coins_lbl.text = "MYNT: " + str(coins)
-	coins_lbl.position = Vector2(GameData.GAME_WIDTH - 280, 60)
-	coins_lbl.add_theme_font_size_override("font_size", 28)
-	coins_lbl.add_theme_color_override("font_color", Color(1, 0.87, 0))
+	coins_lbl.position = Vector2(GameData.GAME_WIDTH / 2.0 - 200, 140)
+	coins_lbl.size = Vector2(400, 48)
+	coins_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	coins_lbl.add_theme_font_size_override("font_size", 36)
+	coins_lbl.add_theme_color_override("font_color", Color(1.0, 0.87, 0.0))
 	add_child(coins_lbl)
 
 
@@ -73,8 +76,11 @@ func _add_upgrade_card(upg: Dictionary, pos: Vector2, w: float, h: float) -> voi
 	if upg.target is int:
 		owned = int(current_val) >= int(upg.target)
 	elif upg.stat == "cannon_level":
-		const CANNON_ORDER := ["enkel", "dubbel", "spread", "laser"]
+		const CANNON_ORDER := ["enkel", "dubbel", "spread", "laser", "slash"]
 		owned = CANNON_ORDER.find(str(current_val)) >= CANNON_ORDER.find(str(upg.target))
+	elif upg.stat == "gas_grenades":
+		var gas: int = int(state.get("gas_grenades", GameData.MAX_GAS))
+		owned = gas >= GameData.MAX_GAS
 	else:
 		owned = str(current_val) == str(upg.target)
 
@@ -96,11 +102,14 @@ func _purchase(upg: Dictionary) -> void:
 	if coins < int(upg.cost):
 		return
 	state["coins"] = coins - int(upg.cost)
-	var upgrades: Dictionary = state.get("upgrades", {})
-	upgrades[upg.stat] = upg.target
-	state["upgrades"] = upgrades
+	if upg.stat == "gas_grenades":
+		var gas: int = int(state.get("gas_grenades", GameData.MAX_GAS))
+		state["gas_grenades"] = mini(gas + 1, GameData.MAX_GAS)
+	else:
+		var upgrades: Dictionary = state.get("upgrades", {})
+		upgrades[upg.stat] = upg.target
+		state["upgrades"] = upgrades
 	SaveSystem.save_game(state)
-	# Refresh
 	get_tree().reload_current_scene()
 
 

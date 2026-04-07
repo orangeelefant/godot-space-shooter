@@ -471,6 +471,8 @@ func _on_combo_lost() -> void:
 func _on_wave_started(index: int) -> void:
 	if index == 0 or _shop_open or _level_done:
 		return
+	if _cannon_level == "slash":  # max level, skip shop
+		return
 	var mission_type: String = _level_config.get("mission", {}).get("type", "")
 	if mission_type == "boss":
 		return
