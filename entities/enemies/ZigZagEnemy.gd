@@ -32,6 +32,7 @@ func _process(delta: float) -> void:
 
 	if position.x < -80.0:
 		queue_free()
+		return
 
 	queue_redraw()
 

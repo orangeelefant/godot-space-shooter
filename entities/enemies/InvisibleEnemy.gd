@@ -2,6 +2,7 @@ class_name InvisibleEnemy
 extends BaseEnemy
 
 var _player_pos: Vector2 = Vector2(200, 540)
+var _cached_player: Player = null
 var _visible_timer: float = 0.0
 var _is_visible: bool = false
 const VISIBLE_INTERVAL := 3.0
@@ -23,16 +24,20 @@ func _ready() -> void:
 	_shimmer = _ShimmerNode.new()
 	_shimmer.owner_enemy = self
 	add_child(_shimmer)
-
-
-func _process(delta: float) -> void:
-	# Track real player position
+	# Cache player reference once — avoids O(n) get_children() scan every frame
 	var parent := get_parent()
 	if parent:
 		for child in parent.get_children():
 			if child is Player:
-				_player_pos = child.position
+				_player_pos = (child as Player).position
+				_cached_player = child as Player
 				break
+
+
+func _process(delta: float) -> void:
+	# Update cached player position — O(1) field read instead of O(n) scan
+	if _cached_player and is_instance_valid(_cached_player):
+		_player_pos = _cached_player.position
 
 	# Homing
 	var dir := (_player_pos - position).normalized()

@@ -16,6 +16,8 @@ var _score: int = 0
 var _gas_count: int = 3
 var _total_enemies: int = 0
 var _enemies_killed: int = 0
+var _enemies_live: int = 0   # incremented on spawn, decremented on kill or escape
+var _check_complete_pending: bool = false  # set true when an enemy dies/escapes to defer the scan
 var _level_done: bool = false
 
 var _cannon_level: String = "enkel"
@@ -43,14 +45,16 @@ func _ready() -> void:
 	_world_id = GameState.current_world_id
 	_level_id = GameState.current_level_id
 	_level_config = GameData.get_level(_world_id, _level_id)
-	_load_save()
+	# Load save once — pass state to builders that need it to avoid redundant file reads
+	var save_state := SaveSystem.load_game()
+	_load_save(save_state)
 	_build_background()
-	_build_player()
+	_build_player(save_state)
 	_build_hud()
 	_build_spawner()
 	_wire_collisions()
 	_build_pause_menu()
-	_build_falcon()
+	_build_falcon(save_state)
 	_build_combo_system()
 	_build_danger_indicator()
 	_start_mission_timer()
@@ -61,8 +65,7 @@ func setup(world_id: String, level_id: String) -> void:
 	_level_id = level_id
 
 
-func _load_save() -> void:
-	var state := SaveSystem.load_game()
+func _load_save(state: Dictionary) -> void:
 	_gas_count = int(state.get("gas_grenades", 3))
 	var upgrades: Dictionary = state.get("upgrades", {})
 	_cannon_level = upgrades.get("cannon_level", "enkel")
@@ -92,8 +95,7 @@ func _build_background() -> void:
 	add_child(_asteroids)
 
 
-func _build_player() -> void:
-	var state := SaveSystem.load_game()
+func _build_player(state: Dictionary) -> void:
 	var ship := GameData.get_ship(state.get("ship_id", "ruben"))
 	var upgrades: Dictionary = state.get("upgrades", {})
 
@@ -156,8 +158,7 @@ func _build_pause_menu() -> void:
 	add_child(_pause_menu)
 
 
-func _build_falcon() -> void:
-	var state := SaveSystem.load_game()
+func _build_falcon(state: Dictionary) -> void:
 	var upgrades: Dictionary = state.get("upgrades", {})
 	var falcon_level: int = int(upgrades.get("falcon_level", 0))
 	if falcon_level < 1:
@@ -214,9 +215,6 @@ func _process(delta: float) -> void:
 	if _player.is_gas_pressed() and _gas_count > 0:
 		_use_gas()
 
-	# Magnet boss pull
-	_apply_magnet_pull(delta)
-
 	# Gather typed lists once — avoids repeated get_children() scans per check
 	var bullets: Array = []
 	var enemies: Array = []
@@ -245,8 +243,13 @@ func _process(delta: float) -> void:
 	_check_player_powerups(powerups)
 	_check_player_boss_sweep(bosses)
 
+	# Magnet boss pull — reuses already-gathered bosses array, no extra get_children()
+	_apply_magnet_pull(delta, bosses)
+
 	# Handle enemies that escaped off-screen without being killed
-	if _spawner._all_launched and not _level_done:
+	# Only scan when an enemy actually died/escaped — not every frame
+	if _check_complete_pending and _spawner._all_launched and not _level_done:
+		_check_complete_pending = false
 		_check_level_complete()
 
 	# Mission timer
@@ -296,9 +299,11 @@ func _spawn_bullet(pos: Vector2, vel: Vector2) -> Bullet:
 func _use_gas() -> void:
 	_gas_count -= 1
 	_hud.call("update_gas", _gas_count)
+	# Update only the gas_grenades field — avoid a full load_game() round-trip during gameplay
 	var state := SaveSystem.load_game()
 	state["gas_grenades"] = _gas_count
 	SaveSystem.save_game(state)
+	_check_complete_pending = true  # enemies are about to be cleared
 	_spawner.kill_all()
 	# Screen flash
 	var flash := ColorRect.new()
@@ -399,6 +404,7 @@ func _on_enemy_killed(_enemy: BaseEnemy) -> void:
 	_score += points
 	_hud.call("update_score", _score)
 	_enemies_killed += 1
+	_check_complete_pending = true
 	_check_level_complete()
 
 
@@ -427,7 +433,7 @@ func _on_wave_started(index: int) -> void:
 
 
 func _on_all_waves_launched() -> void:
-	pass
+	_check_complete_pending = true
 
 
 func _on_boss_spawned(boss: BossEnemy) -> void:
@@ -532,16 +538,17 @@ func _spawn_boss() -> void:
 	AudioSystem.play_boss_hit()
 
 
-func _apply_magnet_pull(delta: float) -> void:
-	for child in get_children():
-		if not child.has_method("is_pulling"):
+func _apply_magnet_pull(delta: float, bosses: Array) -> void:
+	# Reuses already-gathered bosses array — no extra get_children() scan
+	for child in bosses:
+		if not is_instance_valid(child):
 			continue
-		if not child.call("is_pulling"):
+		var boss := child as BossEnemy
+		if boss == null or not boss.has_method("is_pulling"):
 			continue
-		var node := child as Node2D
-		if node == null:
+		if not boss.call("is_pulling"):
 			continue
-		var toward := node.position - _player.position
+		var toward := boss.position - _player.position
 		var dist := toward.length()
 		if dist > 20.0:
 			var strength := 90.0 * (1.0 - clampf(dist / 700.0, 0.0, 1.0))
@@ -601,16 +608,20 @@ class _MuzzleFlash extends Node2D:
 
 class _DangerIndicator extends Node2D:
 	var _pulse: float = 0.0
+	var _cached_parent: Node = null
+
+	func _ready() -> void:
+		_cached_parent = get_parent()
 
 	func _process(delta: float) -> void:
 		_pulse += delta * 4.0
 		queue_redraw()
 
 	func _draw() -> void:
-		if not get_parent():
+		if not _cached_parent or not is_instance_valid(_cached_parent):
 			return
 		var alpha := 0.5 + sin(_pulse) * 0.35
-		for child in get_parent().get_children():
+		for child in _cached_parent.get_children():
 			if not child is BaseEnemy:
 				continue
 			if not child.is_inside_tree():
