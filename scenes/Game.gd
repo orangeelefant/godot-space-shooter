@@ -289,6 +289,7 @@ func _fire_bullet() -> void:
 		"laser":
 			var b := _spawn_bullet(muzzle, Vector2(1400, 0))
 			b.damage = 3
+			_spawn_laser_beam(muzzle)
 		_:
 			_spawn_bullet(muzzle, Vector2(900, 0))
 
@@ -461,6 +462,7 @@ func _collect_powerup(pu: PowerUp) -> void:
 	_score += 50
 	_hud.call("update_score", _score)
 	pu.collect()
+	_spawn_starburst(pu.position)
 
 
 func _check_level_complete() -> void:
@@ -598,6 +600,41 @@ func _spawn_explosion(pos: Vector2, size: float) -> void:
 	ex.position = pos
 	ex.z_index = 8
 	add_child(ex)
+
+
+func _spawn_laser_beam(start: Vector2) -> void:
+	var beam := ColorRect.new()
+	beam.size = Vector2(GameData.GAME_WIDTH - start.x, 6)
+	beam.position = start + Vector2(0, -3)
+	beam.z_index = 6
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/energy_beam.gdshader")
+	if shader:
+		mat.shader = shader
+		mat.set_shader_parameter("color", Color(0.0, 1.0, 0.9, 1.0))
+		mat.set_shader_parameter("outline_color", Color(0.3, 0.8, 1.0, 0.6))
+		mat.set_shader_parameter("speed", 3.0)
+		mat.set_shader_parameter("thickness", 0.015)
+		mat.set_shader_parameter("beams", 1)
+		beam.material = mat
+	add_child(beam)
+	# Auto-remove after brief flash
+	get_tree().create_timer(0.09).timeout.connect(func(): if is_instance_valid(beam): beam.queue_free())
+
+
+func _spawn_starburst(pos: Vector2) -> void:
+	var burst := ColorRect.new()
+	burst.size = Vector2(80, 80)
+	burst.position = pos - Vector2(40, 40)
+	burst.z_index = 9
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/starburst.gdshader")
+	if shader:
+		mat.shader = shader
+		mat.set_shader_parameter("lifespan", 1.0)
+		burst.material = mat
+	add_child(burst)
+	get_tree().create_timer(0.5).timeout.connect(func(): if is_instance_valid(burst): burst.queue_free())
 
 
 # ── Muzzle flash ─────────────────────────────────────────────────────────────
