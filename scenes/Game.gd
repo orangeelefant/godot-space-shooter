@@ -30,6 +30,7 @@ const SHOOT_RATE := 0.18  # seconds between shots
 var _stars_far: Node2D
 var _stars_near: Node2D
 var _nebula: Node2D
+var _god_rays: ColorRect
 var _planet: Node2D
 var _asteroids: Node2D
 var _far_offset: float = 0.0
@@ -75,6 +76,10 @@ func _build_background() -> void:
 	# Nebula layer (behind everything)
 	_nebula = _NebulaLayer.new()
 	add_child(_nebula)
+
+	# God rays layer (behind stars)
+	_god_rays = _GodRaysLayer.new()
+	add_child(_god_rays)
 
 	# Far parallax layer
 	_stars_far = _StarLayer.new(80, 0.5, 1.5, Color(0.27, 0.53, 0.8), 0.15, 0.5)
@@ -717,6 +722,25 @@ class _NebulaLayer extends Node2D:
 			var x: float = fmod(float(b["x"]) - _offset * 0.03, GameData.GAME_WIDTH + radius * 2.0) - radius
 			draw_circle(Vector2(x, float(b["y"])), radius, color)
 			draw_circle(Vector2(x, float(b["y"])), radius * 0.6, Color(color.r, color.g, color.b, color.a * 1.5))
+
+
+# ── God rays layer ────────────────────────────────────────────────────────────
+
+class _GodRaysLayer extends ColorRect:
+	func _ready() -> void:
+		z_index = -1
+		size = Vector2(GameData.GAME_WIDTH, GameData.GAME_HEIGHT)
+		var mat := ShaderMaterial.new()
+		var shader := load("res://shaders/god_rays.gdshader")
+		if shader:
+			mat.shader = shader
+			mat.set_shader_parameter("color", Color(0.08, 0.2, 0.6, 0.12))
+			mat.set_shader_parameter("angle", -0.25)
+			mat.set_shader_parameter("spread", 0.4)
+			mat.set_shader_parameter("speed", 0.6)
+			mat.set_shader_parameter("ray1_density", 6.0)
+			mat.set_shader_parameter("ray2_density", 25.0)
+			material = mat
 
 
 # ── Planet layer ──────────────────────────────────────────────────────────────

@@ -27,6 +27,8 @@ const SHIELD_DURATION := 8.0
 const SHIELD_HITS := 3
 var _shield_hits_left: int = 0
 var _thruster_phase: float = 0.0
+var _shield_visual: ColorRect
+var _engine_trail: ColorRect
 
 
 func _ready() -> void:
@@ -44,6 +46,8 @@ func _ready() -> void:
 	if not ship_data.is_empty():
 		_apply_ship_data()
 
+	_build_engine_trail()
+	_build_shield_visual()
 	queue_redraw()
 
 
@@ -106,6 +110,8 @@ func _process(delta: float) -> void:
 		_shield_pulse += delta * 4.0
 		if _shield_timer <= 0.0:
 			_shield_active = false
+			if _shield_visual:
+				_shield_visual.visible = false
 			shield_changed.emit(false)
 		queue_redraw()
 
@@ -153,11 +159,38 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, r + 4.0, 0, TAU, 40, Color(shield_color.r, shield_color.g, shield_color.b, a * 0.3), 1.0)
 
 
+func _build_shield_visual() -> void:
+	_shield_visual = ColorRect.new()
+	_shield_visual.size = Vector2(80, 80)
+	_shield_visual.position = Vector2(-40, -40)
+	_shield_visual.visible = false
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/shield_forcefield.gdshader")
+	if shader:
+		mat.shader = shader
+		_shield_visual.material = mat
+	add_child(_shield_visual)
+
+
+func _build_engine_trail() -> void:
+	_engine_trail = ColorRect.new()
+	_engine_trail.size = Vector2(60, 16)
+	_engine_trail.position = Vector2(-75, -8)
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/engine_trail.gdshader")
+	if shader:
+		mat.shader = shader
+		_engine_trail.material = mat
+	add_child(_engine_trail)
+
+
 func activate_shield() -> void:
 	_shield_active = true
 	_shield_timer = SHIELD_DURATION
 	_shield_hits_left = SHIELD_HITS
 	_shield_pulse = 0.0
+	if _shield_visual:
+		_shield_visual.visible = true
 	shield_changed.emit(true)
 	AudioSystem.play_shield_activate()
 
@@ -171,6 +204,8 @@ func take_damage(amount: int = 1) -> void:
 		_shield_pulse = 0.0  # reset pulse for visual pop
 		if _shield_hits_left <= 0:
 			_shield_active = false
+			if _shield_visual:
+				_shield_visual.visible = false
 			shield_changed.emit(false)
 		return
 	lives -= amount
