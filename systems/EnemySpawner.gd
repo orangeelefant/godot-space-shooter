@@ -102,7 +102,11 @@ func _do_spawn(etype: String, pos: Vector2, boss_type: String = "standard") -> v
 		"zigzag":
 			enemy = ZigZagEnemy.new()
 		"boss":
-			var boss: BossEnemy = MagnetBoss.new() if boss_type == "magnet" else BossEnemy.new()
+			var boss: BossEnemy
+			if boss_type == "magnet":
+				boss = load("res://entities/enemies/MagnetBoss.gd").new()
+			else:
+				boss = BossEnemy.new()
 			boss.shoot_at.connect(_on_enemy_shoot)
 			boss.shoot_directed.connect(_on_enemy_shoot_directed)
 			boss.spawn_minions.connect(_on_boss_spawn_minions)
