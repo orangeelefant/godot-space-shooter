@@ -17,6 +17,10 @@ const LOW_FPS_FRAMES      := 60     # consecutive low-fps frames before logging
 var overlay_enabled: bool = OS.is_debug_build()
 
 # ── State ─────────────────────────────────────────────────────────────────────
+const DEDUP_WINDOW_S := 5.0
+const DEDUP_MAX_BURST := 3
+var _dedup: Dictionary = {}
+
 var _log_file: FileAccess = null
 var _mutex: Mutex = Mutex.new()        # guards all _log_file writes
 var _line_count: int = 0
@@ -56,12 +60,18 @@ func log_info(msg: String) -> void:
 
 
 func log_warn(msg: String) -> void:
-	_record("WARN", msg, Color(1.0, 0.9, 0.3))
+	if not _should_log(msg):
+		return
+	var full_msg := msg + _get_callstack()
+	_record("WARN", full_msg, Color(1.0, 0.9, 0.3))
 	push_warning("[ErrorCatcher] " + msg)
 
 
 func log_error(msg: String) -> void:
-	_record("ERROR", msg, Color(1.0, 0.35, 0.35))
+	if not _should_log(msg):
+		return
+	var full_msg := msg + _get_callstack()
+	_record("ERROR", full_msg, Color(1.0, 0.35, 0.35))
 	push_error("[ErrorCatcher] " + msg)
 
 
@@ -214,6 +224,46 @@ func _record(level: String, msg: String, color: Color) -> void:
 		if _entries.size() > MAX_OVERLAY:
 			_entries.pop_front()
 		_refresh_label()
+
+
+func _write_line_direct(line: String) -> void:
+	_mutex.lock()
+	_write_line_unsafe(line)
+	if _log_file:
+		_log_file.flush()
+	_mutex.unlock()
+
+
+func _get_callstack() -> String:
+	if not OS.is_debug_build():
+		return ""
+	var frames := get_stack()
+	var result: PackedStringArray = []
+	for i in range(2, min(8, frames.size())):
+		var f := frames[i]
+		result.append("    at %s:%d in %s()" % [f.get("source", "?"), f.get("line", 0), f.get("function", "?")])
+	return "\n".join(result)
+
+
+func _should_log(msg: String) -> bool:
+	var h := hash(msg)
+	var now := Time.get_ticks_msec() / 1000.0
+	if _dedup.has(h):
+		var entry: Dictionary = _dedup[h]
+		if now - entry.get("time", 0.0) < DEDUP_WINDOW_S:
+			entry["count"] = entry.get("count", 0) + 1
+			if entry["count"] > DEDUP_MAX_BURST:
+				if entry["count"] == DEDUP_MAX_BURST + 1:
+					_write_line_direct("[%s][DEDUP] suppressing repeated: %s" % [
+						Time.get_time_string_from_system(), msg
+					])
+				return false
+		else:
+			entry["time"] = now
+			entry["count"] = 1
+	else:
+		_dedup[h] = {"time": now, "count": 1}
+	return true
 
 
 # Must be called with _mutex held
