@@ -257,6 +257,18 @@ func _process(delta: float) -> void:
 		_check_complete_pending = false
 		_check_level_complete()
 
+	# Feed crash-context to ErrorCatcher every frame (cheap dict, no alloc)
+	ErrorCatcher.update_context({
+		"level": _level_id,
+		"score": _score,
+		"lives": _player.lives if is_instance_valid(_player) else -1,
+		"enemies_live": _enemies_live,
+		"enemies_killed": _enemies_killed,
+		"wave": _spawner._current_wave if is_instance_valid(_spawner) else -1,
+		"gas": _gas_count,
+		"pos": str(_player.position) if is_instance_valid(_player) else "?",
+	})
+
 	# Mission timer
 	if _mission_timer_active:
 		_mission_time_left -= delta
