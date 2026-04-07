@@ -817,6 +817,8 @@ class _GodRaysLayer extends ColorRect:
 	func _ready() -> void:
 		z_index = -1
 		size = Vector2(GameData.GAME_WIDTH, GameData.GAME_HEIGHT)
+		color = Color(0, 0, 0, 0)  # transparent fallback so no white flash if shader missing
+		mouse_filter = Control.MOUSE_FILTER_IGNORE  # never block input
 		var mat := ShaderMaterial.new()
 		var shader := load("res://shaders/god_rays.gdshader")
 		if shader:

@@ -176,6 +176,8 @@ func _build_engine_trail() -> void:
 	_engine_trail = ColorRect.new()
 	_engine_trail.size = Vector2(60, 16)
 	_engine_trail.position = Vector2(-75, -8)
+	_engine_trail.color = Color(0, 0, 0, 0)
+	_engine_trail.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	var mat := ShaderMaterial.new()
 	var shader := load("res://shaders/engine_trail.gdshader")
 	if shader:

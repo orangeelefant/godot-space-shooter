@@ -65,7 +65,7 @@ func _process(_delta: float) -> void:
 
 		# Lead: square wave with envelope
 		var mel_env := 1.0 - clampf(_step_t / STEP_LEN, 0.0, 1.0) * 0.4
-		var mel := (fmod(_mel_phase, 1.0) > 0.5) * 2.0 - 1.0
+		var mel := (1.0 if fmod(_mel_phase, 1.0) > 0.5 else -1.0)
 		mel *= mel_env * 0.18
 		_mel_phase += mel_freq / SAMPLE_RATE
 
@@ -75,7 +75,7 @@ func _process(_delta: float) -> void:
 		_bass_phase += bass_freq / SAMPLE_RATE
 
 		# Arpeggio: pulse wave
-		var arp := (fmod(_chord_phases[_arp_idx], 1.0) > 0.3) * 2.0 - 1.0
+		var arp := (1.0 if fmod(_chord_phases[_arp_idx], 1.0) > 0.3 else -1.0)
 		arp *= 0.10
 		_chord_phases[_arp_idx] += chord_freq / SAMPLE_RATE
 
