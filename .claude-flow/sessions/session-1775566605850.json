@@ -1,0 +1,19 @@
+{
+  "id": "session-1775566605850",
+  "startedAt": "2026-04-07T12:56:45.850Z",
+  "cwd": "/Users/christofferholmgren/Claude/godot-space-shooter",
+  "context": {
+    "lastMatchedPatterns": [
+      "mem-kungalvs-kott-investigation-summary-deployment-infrastructure"
+    ]
+  },
+  "metrics": {
+    "edits": 18,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "updatedAt": "2026-04-07T17:45:04.723Z",
+  "endedAt": "2026-04-07T17:48:38.563Z",
+  "duration": 17512714
+}

@@ -1,0 +1,23 @@
+{
+  "id": "session-1775501117039",
+  "startedAt": "2026-04-06T18:45:17.039Z",
+  "cwd": "/Users/christofferholmgren/Claude/godot-space-shooter",
+  "context": {
+    "lastMatchedPatterns": [
+      "mem-stadly-project-phase-2-status--as-of-2026-03-",
+      "mem-stadly-project-real-team-members",
+      "mem-kungalvs-kott-investigation-summary-code-patterns---implementation",
+      "mem-kungalvs-kott-investigation-summary-related-configuration-files",
+      "mem-stadly-project-blog-authors--e-e-a-t-"
+    ]
+  },
+  "metrics": {
+    "edits": 1,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "updatedAt": "2026-04-06T18:46:46.948Z",
+  "endedAt": "2026-04-06T18:47:25.662Z",
+  "duration": 128623
+}

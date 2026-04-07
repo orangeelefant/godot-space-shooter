@@ -1,0 +1,14 @@
+{
+  "id": "session-1775413653685",
+  "startedAt": "2026-04-05T18:27:33.685Z",
+  "cwd": "/Users/christofferholmgren/Claude/godot-space-shooter",
+  "context": {},
+  "metrics": {
+    "edits": 53,
+    "commands": 0,
+    "tasks": 0,
+    "errors": 0
+  },
+  "endedAt": "2026-04-05T18:51:51.870Z",
+  "duration": 1458185
+}

@@ -1,0 +1,351 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1775501117169,
+  "projectRoot": "/Users/christofferholmgren/Claude/godot-space-shooter",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "autoloads": {
+      "path": "autoloads",
+      "purpose": null,
+      "fileCount": 8,
+      "lastAccessed": 1775501117162,
+      "keyFiles": [
+        "AudioSystem.gd",
+        "AudioSystem.gd.uid",
+        "GameData.gd",
+        "GameData.gd.uid",
+        "GameState.gd"
+      ]
+    },
+    "entities": {
+      "path": "entities",
+      "purpose": null,
+      "fileCount": 14,
+      "lastAccessed": 1775501117162,
+      "keyFiles": [
+        "Bullet.gd",
+        "Bullet.gd.uid",
+        "Bullet.tscn",
+        "EnemyBullet.gd",
+        "EnemyBullet.gd.uid"
+      ]
+    },
+    "scenes": {
+      "path": "scenes",
+      "purpose": null,
+      "fileCount": 34,
+      "lastAccessed": 1775501117163,
+      "keyFiles": [
+        "Boot.gd",
+        "Boot.gd.uid",
+        "Boot.tscn",
+        "Game.gd",
+        "Game.gd.uid"
+      ]
+    },
+    "systems": {
+      "path": "systems",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1775501117163,
+      "keyFiles": [
+        "ComboSystem.gd",
+        "ComboSystem.gd.uid",
+        "EnemySpawner.gd",
+        "EnemySpawner.gd.uid"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "scenes/Game.gd",
+      "accessCount": 93,
+      "lastAccessed": 1775584343632,
+      "type": "file"
+    },
+    {
+      "path": "autoloads/AudioSystem.gd",
+      "accessCount": 25,
+      "lastAccessed": 1775584277701,
+      "type": "file"
+    },
+    {
+      "path": "systems/EnemySpawner.gd",
+      "accessCount": 19,
+      "lastAccessed": 1775583939483,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/BossEnemy.gd",
+      "accessCount": 19,
+      "lastAccessed": 1775583940778,
+      "type": "file"
+    },
+    {
+      "path": "entities/Player.gd",
+      "accessCount": 18,
+      "lastAccessed": 1775583935816,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 17,
+      "lastAccessed": 1775583931867,
+      "type": "directory"
+    },
+    {
+      "path": "autoloads/SaveSystem.gd",
+      "accessCount": 15,
+      "lastAccessed": 1775583939115,
+      "type": "file"
+    },
+    {
+      "path": "scenes/HUD.gd",
+      "accessCount": 15,
+      "lastAccessed": 1775583942467,
+      "type": "file"
+    },
+    {
+      "path": "autoloads/GameData.gd",
+      "accessCount": 11,
+      "lastAccessed": 1775584277765,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/BaseEnemy.gd",
+      "accessCount": 10,
+      "lastAccessed": 1775583936232,
+      "type": "file"
+    },
+    {
+      "path": "systems/ComboSystem.gd",
+      "accessCount": 10,
+      "lastAccessed": 1775583939901,
+      "type": "file"
+    },
+    {
+      "path": "entities/Falcon.gd",
+      "accessCount": 9,
+      "lastAccessed": 1775583942057,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/InvisibleEnemy.gd",
+      "accessCount": 9,
+      "lastAccessed": 1775584114835,
+      "type": "file"
+    },
+    {
+      "path": "scenes/MissionComplete.gd",
+      "accessCount": 9,
+      "lastAccessed": 1775584452149,
+      "type": "file"
+    },
+    {
+      "path": "entities/EnemyBullet.gd",
+      "accessCount": 8,
+      "lastAccessed": 1775583937792,
+      "type": "file"
+    },
+    {
+      "path": "scenes/PauseMenu.gd",
+      "accessCount": 8,
+      "lastAccessed": 1775584298776,
+      "type": "file"
+    },
+    {
+      "path": "scenes/Hangar.gd",
+      "accessCount": 8,
+      "lastAccessed": 1775584424190,
+      "type": "file"
+    },
+    {
+      "path": "scenes/WorldMap.gd",
+      "accessCount": 8,
+      "lastAccessed": 1775584486639,
+      "type": "file"
+    },
+    {
+      "path": "entities/Bullet.gd",
+      "accessCount": 7,
+      "lastAccessed": 1775583936647,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/ShieldEnemy.gd",
+      "accessCount": 6,
+      "lastAccessed": 1775583947675,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/ZigZagEnemy.gd",
+      "accessCount": 6,
+      "lastAccessed": 1775583998287,
+      "type": "file"
+    },
+    {
+      "path": "scenes/ShopOverlay.gd",
+      "accessCount": 6,
+      "lastAccessed": 1775584280109,
+      "type": "file"
+    },
+    {
+      "path": "scenes/MainMenu.gd",
+      "accessCount": 6,
+      "lastAccessed": 1775584352065,
+      "type": "file"
+    },
+    {
+      "path": "scenes/Victory.gd",
+      "accessCount": 6,
+      "lastAccessed": 1775584465098,
+      "type": "file"
+    },
+    {
+      "path": "autoloads/GameState.gd",
+      "accessCount": 4,
+      "lastAccessed": 1775583938378,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/RedEnemy.gd",
+      "accessCount": 4,
+      "lastAccessed": 1775583948520,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/YellowEnemy.gd",
+      "accessCount": 4,
+      "lastAccessed": 1775583948849,
+      "type": "file"
+    },
+    {
+      "path": "scenes/GameOver.gd",
+      "accessCount": 4,
+      "lastAccessed": 1775584310724,
+      "type": "file"
+    },
+    {
+      "path": "entities/PowerUp.gd",
+      "accessCount": 3,
+      "lastAccessed": 1775583941643,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/GreenEnemy.gd",
+      "accessCount": 3,
+      "lastAccessed": 1775583948196,
+      "type": "file"
+    },
+    {
+      "path": "scenes/LevelSelect.gd",
+      "accessCount": 3,
+      "lastAccessed": 1775583952141,
+      "type": "file"
+    },
+    {
+      "path": "scenes/Settings.gd",
+      "accessCount": 3,
+      "lastAccessed": 1775584387624,
+      "type": "file"
+    },
+    {
+      "path": "scenes/PauseMenu.tscn",
+      "accessCount": 2,
+      "lastAccessed": 1775415014631,
+      "type": "file"
+    },
+    {
+      "path": ".tasks/handover.md",
+      "accessCount": 2,
+      "lastAccessed": 1775584182676,
+      "type": "file"
+    },
+    {
+      "path": "project.godot",
+      "accessCount": 2,
+      "lastAccessed": 1775584310386,
+      "type": "file"
+    },
+    {
+      "path": ".tasks/v2-plan.md",
+      "accessCount": 1,
+      "lastAccessed": 1775414309188,
+      "type": "file"
+    },
+    {
+      "path": "systems",
+      "accessCount": 1,
+      "lastAccessed": 1775498928429,
+      "type": "directory"
+    },
+    {
+      "path": ".tasks/v3-plan.md",
+      "accessCount": 1,
+      "lastAccessed": 1775500082972,
+      "type": "file"
+    },
+    {
+      "path": "scenes/Hangar.tscn",
+      "accessCount": 1,
+      "lastAccessed": 1775566041423,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/MagnetBoss.gd",
+      "accessCount": 1,
+      "lastAccessed": 1775583941249,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/FlyEnemy.gd",
+      "accessCount": 1,
+      "lastAccessed": 1775583946796,
+      "type": "file"
+    },
+    {
+      "path": "scenes/Boot.gd",
+      "accessCount": 1,
+      "lastAccessed": 1775583953796,
+      "type": "file"
+    },
+    {
+      "path": "autoloads/MusicSystem.gd",
+      "accessCount": 1,
+      "lastAccessed": 1775584305684,
+      "type": "file"
+    },
+    {
+      "path": "entities/enemies/MagnetBoss.gd.uid",
+      "accessCount": 1,
+      "lastAccessed": 1775584486939,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

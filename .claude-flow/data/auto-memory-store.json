@@ -1,0 +1,770 @@
+[
+  {
+    "id": "mem-MEMORY-user",
+    "key": "user",
+    "content": "- [user_profile.md](user_profile.md) — Christoffer, IT Security Manager at Gunnebo, Webraketen agency owner",
+    "summary": "User",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653705
+  },
+  {
+    "id": "mem-MEMORY-projects",
+    "key": "projects",
+    "content": "- [stadly-project.md](stadly-project.md) — Städly website, Astro/React/Tailwind\n- [rastahunden-project.md](rastahunden-project.md) — Dog-friendly places platform, Next.js/Supabase\n- [webraketen-agency.md](webraketen-agency.md) — Web agency, 10 client sites\n- [gunnebo_policy_review.md](gunnebo_policy_review.md) — 2026 IT policy review cycle\n- [gunnebo-intel-project.md](gunnebo-intel-project.md) — Security Intel Digest via Firehose + Resend\n- [autopilot-project.md](autopilot-project.md) — Autonomo",
+    "summary": "Projects",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653705
+  },
+  {
+    "id": "mem-MEMORY-infrastructure",
+    "key": "infrastructure",
+    "content": "- [webraketen-monitoring.md](webraketen-monitoring.md) — Client health monitor\n- [webraketen-ci-optimization.md](webraketen-ci-optimization.md) — CI/CD minute reduction\n- [google_api_setup.md](google_api_setup.md) — Google Cloud OAuth setup\n- [seo_portfolio_overhaul_2026_03_17.md](seo_portfolio_overhaul_2026_03_17.md) — SEO overhaul, 10 sites",
+    "summary": "Infrastructure",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653705
+  },
+  {
+    "id": "mem-MEMORY-feedback",
+    "key": "feedback",
+    "content": "- [feedback_maintenance_philosophy.md](feedback_maintenance_philosophy.md) — Real work is maintenance, finish end-to-end\n- [feedback_meta_work_trap.md](feedback_meta_work_trap.md) — Don't optimize the system instead of doing real work\n- [feedback_self_improvement.md](feedback_self_improvement.md) — Surface maintenance vs deep evolution\n- [feedback_raket_crawler_no_ai.md](feedback_raket_crawler_no_ai.md) — Always use --no-ai flag\n- [feedback_perplexity_removed.md](feedback_perplexity_removed.md) ",
+    "summary": "Feedback",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653705
+  },
+  {
+    "id": "mem-MEMORY-reminders",
+    "key": "reminders",
+    "content": "- [reminder_johanna_bday.md](reminder_johanna_bday.md) — Johanna's birthday 2026-04-13",
+    "summary": "Reminders",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653705
+  },
+  {
+    "id": "mem-autopilot-project----",
+    "key": "-",
+    "content": "name: autopilot-project\ndescription: Webraketen Autopilot — autonomous portfolio scanner and work driver. GitHub Actions scanner + Claude Code driver skill.\ntype: project\n---\n\nWebraketen Autopilot (`~/webraketen-autopilot`, repo: orangeelefant/webraketen-autopilot)\n\n**What it does:** Autonomous portfolio scanner that gathers signals from all services daily via GitHub Actions, then a Claude Code \"Driver\" skill reads reports and drives work autonomously.\n\n**Architecture:**\n- Scanner: GitHub Action",
+    "summary": "---",
+    "namespace": "autopilot-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/autopilot-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653710
+  },
+  {
+    "id": "mem-feedback_maintenance_philosophy----",
+    "key": "-",
+    "content": "name: maintenance_philosophy\ndescription: Christoffer's core operating philosophy — the real work is maintenance, not inspiration. Applies to how Claude should work with him.\ntype: feedback\n---\n\nChristoffer's life runs on maintenance, not romance. Love is cultivated daily. Business is relational, not technical. Home is where commitments anchor you.\n\n**Why:** Extracted through structured conversation — these aren't abstract values, they're how he actually operates across all domains (parenting, s",
+    "summary": "---",
+    "namespace": "feedback_maintenance_philosophy",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_maintenance_philosophy.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653715
+  },
+  {
+    "id": "mem-feedback_meta_work_trap----",
+    "key": "-",
+    "content": "name: feedback_meta_work_trap\ndescription: The #1 risk is spending sessions building/optimizing the system instead of doing real work. Meta-work feels productive but doesn't ship.\ntype: feedback\n---\n\nThe system's biggest risk is optimizing itself instead of doing actual work.\n\nEvidence from March 15 analysis: ~70% of documented activity was meta-work (LifeOS building, setup optimization, skill creation, self-improvement). Zero sessions logged doing client work, policy reviews, or shipping featur",
+    "summary": "---",
+    "namespace": "feedback_meta_work_trap",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_meta_work_trap.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653720
+  },
+  {
+    "id": "mem-feedback_perplexity_removed----",
+    "key": "-",
+    "content": "name: feedback_perplexity_removed\ndescription: Perplexity MCP server requires paid billing — was removed 2026-03-15. Do not reinstall.\ntype: feedback\n---\n\nRemoved on 2026-03-15:\n- **Perplexity MCP** — requires paid billing (401 Unauthorized)\n- **Exa Search MCP** — invalid API key (401)\n- **Tavily MCP** — invalid API key\n\n**Why:** All three require paid API keys that Christoffer doesn't want to pay for.\n\n**How to apply:** Don't suggest reinstalling any of these. Use WebSearch (built-in) or Firecr",
+    "summary": "---",
+    "namespace": "feedback_perplexity_removed",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_perplexity_removed.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653724
+  },
+  {
+    "id": "mem-feedback_proactive_followups----",
+    "key": "-",
+    "content": "name: proactive-followups\ndescription: Proactively create follow-up reminders from conversation context without being asked\ntype: feedback\n---\n\nProactively create follow-up reminders when conversations surface things that need future attention — don't wait for Christoffer to say \"remind me.\"\n\n**Why:** Things come up naturally in conversation (apartment search, pending decisions, waiting on someone, deadlines mentioned in passing) that deserve a follow-up. Christoffer shouldn't have to be his own",
+    "summary": "---",
+    "namespace": "feedback_proactive_followups",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_proactive_followups.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653729
+  },
+  {
+    "id": "mem-feedback_raket_crawler_no_ai----",
+    "key": "-",
+    "content": "name: feedback_raket_crawler_no_ai\ndescription: Always crawl with --no-ai flag using raket-crawler, do extraction in-session instead\ntype: feedback\n---\n\nAlways use `--no-ai` when running raket-crawler. Do AI extraction in the Claude Code session instead of via the crawler's built-in API call.\n\n**Why:** Avoids burning separate Anthropic API credits when Claude Code can do the same extraction in-session for free. The `--no-ai` flag should be the only option — don't even present AI extraction as an",
+    "summary": "---",
+    "namespace": "feedback_raket_crawler_no_ai",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_raket_crawler_no_ai.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653734
+  },
+  {
+    "id": "mem-feedback_self_improvement----",
+    "key": "-",
+    "content": "name: feedback_self_improvement\ndescription: Self-improvement has two distinct modes — surface maintenance vs deep behavioral evolution. Never conflate them.\ntype: feedback\n---\n\n\"Self improve\" means two completely different things. Don't mix them.\n\n**Surface maintenance** — config hygiene, temp file cleanup, stale session purge, uptime checks. This is janitorial. Useful but not growth. Run it on autopilot.\n\n**Real self-improvement** — analyze past mistakes, study correction patterns, review git ",
+    "summary": "---",
+    "namespace": "feedback_self_improvement",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/feedback_self_improvement.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653738
+  },
+  {
+    "id": "mem-google_api_setup----",
+    "key": "-",
+    "content": "name: Google API Setup\ndescription: Google Cloud project webraketen-monitor with 53 APIs enabled, OAuth credentials, and broad-scope refresh token for programmatic access\ntype: reference\n---",
+    "summary": "---",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-google-cloud-project",
+    "key": "google-cloud-project",
+    "content": "- **Project:** webraketen-monitor (ID: 860840487775)\n- **Service account:** webraketen@webraketen-monitor.iam.gserviceaccount.com\n- **Service account key:** ~/.config/gcloud/webraketen-service-account.json\n- **ADC credentials:** ~/.config/gcloud/application_default_credentials.json",
+    "summary": "Google Cloud Project",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-oauth-2-0--desktop-app-",
+    "key": "oauth-2-0-desktop-app-",
+    "content": "- **Client ID:** 860840487775-l2lrcmrbk45l6kcqak6g2173d6s10pvt.apps.googleusercontent.com\n- **Client Secret:** stored in webraketen-monitor/.env and GitHub secrets\n- **Refresh Token:** broad-scope token (2026-03-17) with Analytics, Search Console, Gmail, Calendar, Drive, Sheets, Contacts, Tasks, Docs\n- **Account type:** Personal Gmail (not Workspace) — no domain-wide delegation",
+    "summary": "OAuth 2.0 (Desktop App)",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-53-apis-enabled--key-ones-",
+    "key": "53-apis-enabled-key-ones-",
+    "content": "- Gmail, Calendar, Drive, Sheets, Docs, Forms, Keep, Tasks\n- Analytics Admin, Analytics Data, Search Console, PageSpeed\n- Google Ads, Campaign Manager 360, Search Ads 360\n- People/Contacts, Vision, Geocoding, Pub/Sub, Firestore\n- IAM, Cloud Resource Manager, BigQuery suite, Cloud Storage",
+    "summary": "53 APIs Enabled (key ones)",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-billing-blocked-apis--need-bil",
+    "key": "billing-blocked-apis-need-billing-account-",
+    "content": "Cloud Build, Cloud Run, Functions, Secret Manager, Scheduler, DNS, Translate, TTS, STT, NLP, Places, Maps Backend",
+    "summary": "Billing-Blocked APIs (need billing account)",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-where-credentials-live",
+    "key": "where-credentials-live",
+    "content": "- GitHub Secrets (webraketen-monitor repo): GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN\n- Local: ~/webraketen-monitor/.env\n- Auth script: ~/webraketen-monitor/scripts/auth.js (expanded scopes)",
+    "summary": "Where Credentials Live",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-google_api_setup-ga4-property-ids--all-11-webra",
+    "key": "ga4-property-ids-all-11-webraketen-sites-",
+    "content": "Mapped in ~/webraketen-monitor/src/sites.js — each site has ga4PropertyId field.",
+    "summary": "GA4 Property IDs (all 11 Webraketen sites)",
+    "namespace": "google_api_setup",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/google_api_setup.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653744
+  },
+  {
+    "id": "mem-gunnebo-intel-project----",
+    "key": "-",
+    "content": "name: gunnebo-intel-project\ndescription: Gunnebo Security Intel — Firehose-powered threat intel with daily digest, urgent alerts, NVD enrichment, IOC extraction, Notion logging, LifeOS escalation, monthly reports\ntype: project\n---\n\nGunnebo Security Intel — automated threat intelligence pipeline.\n\n**Repo:** https://github.com/orangeelefant/gunnebo-intel (private)\n**Stack:** TypeScript, Firehose SSE API, Resend, Notion API, NVD API, GitHub Actions\n**Notion dashboard:** Security Intel page under Li",
+    "summary": "---",
+    "namespace": "gunnebo-intel-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/gunnebo-intel-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653751
+  },
+  {
+    "id": "mem-gunnebo_policy_review----",
+    "key": "-",
+    "content": "name: gunnebo_policy_review\ndescription: Gunnebo IT policy review 2026 cycle — status, repo structure, approval gate\ntype: project\n---\n\nRepo: `/Users/christofferholmgren/gunnebocms`\nIT Security Manager role. Annual policy review cycle, ISC/GET approval gate: **2026-03-27**.\n\n**All pre-approval items closed as of 2026-03-13:**\n- IS-02-025 Supplier Checklist v2.0 — generated via `scripts/create_supplier_checklist.py`\n- JetBrains AI Pro compliance — accepted Low Risk, deferred to pre-production\n- B",
+    "summary": "---",
+    "namespace": "gunnebo_policy_review",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/gunnebo_policy_review.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653757
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-kung-lvs-k-tt-broken-assets-in",
+    "key": "kung-lvs-k-tt-broken-assets-investigation-technica",
+    "content": "**Date:** 2026-03-17  \n**Project:** Kungälvs Kött Website  \n**Issue:** Broken assets (ervis logo, graphics) on live domain  \n**Root Cause:** DNS/domain routing mismatch — live domain serves legacy PHP/Loopia hosting instead of Vite-built React SPA\n\n---",
+    "summary": "Kungälvs Kött Broken Assets Investigation — Technical Summary",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-executive-summary",
+    "key": "executive-summary",
+    "content": "Investigation determined that the reported broken assets on https://kungalvskott.se are not due to missing or misconfigured static files, but rather a **DNS routing configuration mismatch**. The live domain currently resolves to legacy PHP/Loopia hosting infrastructure instead of the modern Vite-built React application deployed on Netlify.\n\n**Key Finding:** The React application appears correctly deployed to an alternate domain (`kungalvskottochchark.se`), but DNS for the user-reported domain (`",
+    "summary": "Executive Summary",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-technical-architecture",
+    "key": "technical-architecture",
+    "content": "### Build Tool & Frontend Framework\n- **Framework:** React 18.3.1 with React DOM 18.3.1\n- **Build Tool:** Vite with React plugin for client-side SPA bundling\n- **Build Output:** Static assets in `/dist/` directory\n- **Prerendering:** Enabled via `scripts/prerender-critical-routes.mjs` for critical routes\n\n### Build Pipeline\n```\nnpm run build\n├── vite build (bundles React application to dist/)\n└── node scripts/prerender-critical-routes.mjs (generates static HTML for critical routes)\n```\n\n### Stat",
+    "summary": "Technical Architecture",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-deployment-configuration",
+    "key": "deployment-configuration",
+    "content": "### Netlify Deployment (`netlify.toml`)\n\n**Build Configuration:**\n```toml\n[build]\ncommand = \"npm run build\"\npublish = \"dist\"\n```\n\n**Production Environment (PRERENDER_ENABLED=true):**\n- Prerendering enabled for critical routes\n- Reduces Time to First Contentful Paint (FCP)\n- Generates static HTML for Server-Side Rendering (SSR)-like experience on select routes\n\n**SPA Fallback Redirect:**\n```toml\n[[redirects]]\nfrom = \"/*\"\nto = \"/index.html\"\nstatus = 200\n```\nEnsures all non-matching routes return `",
+    "summary": "Deployment Configuration",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau",
+    "key": "dns-routing-mismatch-root-cause-",
+    "content": "### Domain Discrepancy\n**Memory configuration (webraketen-agency.md):** `kungalvskottochchark.se`  \n**User-reported issue domain:** `kungalvskott.se`\n\n### Current DNS Resolution\n- **`kungalvskott.se`** → IP 93.188.2.52 (Loopia legacy PHP hosting)\n  - Server response headers: `x-powered-by: PHP/8.3.29`, `x-loopia-node`\n  - Serves legacy PHP application\n\n- **`kungalvskottochchark.se`** → IPs 35.157.26.135, 63.176.8.218 (likely Netlify)\n  - Probable location of Vite-built React application deployme",
+    "summary": "DNS Routing Mismatch (Root Cause)",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-code-patterns---implementation",
+    "key": "code-patterns-implementation-details",
+    "content": "### React Asset References\nComponents reference assets using root-relative paths:\n```jsx\n<img src=\"/ervis.webp\" alt=\"Ervis Logo\" />\n<img src=\"/logo.webp\" alt=\"Logo\" />\n```\n\nThis pattern assumes:\n1. Assets are in the `public/` directory (copied to `dist/` root by Vite)\n2. The application is served from a domain root (not a subdirectory)\n3. All requests route through the React entry point (SPA model)\n\n### Netlify Configuration Pattern\nThe `netlify.toml` follows standard SPA deployment patterns:\n1.",
+    "summary": "Code Patterns & Implementation Details",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-deployment-infrastructure",
+    "key": "deployment-infrastructure",
+    "content": "### Netlify\n- Static site hosting with CDN\n- Automated deployments from git push\n- Serverless Functions for backend logic (form processing, etc.)\n- Edge Functions for request-level security logic\n- Preview deployments for branch/PR testing\n- Production domain supports custom domain CNAME configuration\n\n### Legacy Loopia Hosting\n- Shared PHP hosting infrastructure\n- Still serving the old application code\n- No connection to React/Vite build system\n- Blocks modern deployment on the user-reported do",
+    "summary": "Deployment Infrastructure",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-pending-resolution",
+    "key": "pending-resolution",
+    "content": "**To restore the React application to the live domain:**\n\n1. **Verify Netlify deployment:** Confirm actual Netlify deployment URL and that the application is correctly built and deployed\n2. **Update DNS configuration:** Point `kungalvskott.se` to Netlify (update CNAME to Netlify deployment domain)\n3. **Verify SPA routing:** Confirm SPA fallback and asset serving work correctly once DNS routes to Netlify\n4. **Decommission legacy hosting:** Once live domain routes to Netlify, legacy PHP/Loopia hos",
+    "summary": "Pending Resolution",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-kungalvs-kott-investigation-summary-related-configuration-files",
+    "key": "related-configuration-files",
+    "content": "- **Repository:** `kungalvs-kott-website`\n- **Package name:** `\"kungalvs-kott-website\"` (v2.0.0)\n- **Module type:** ES6 modules (`\"type\": \"module\"`)\n- **Memory reference:** See `webraketen-agency.md` for client details and deployment metadata\n- **Build verification:** Run `npm run build && npm run lighthouse:critical` to verify build output and performance",
+    "summary": "Related Configuration Files",
+    "namespace": "kungalvs-kott-investigation-summary",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/kungalvs-kott-investigation-summary.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653763
+  },
+  {
+    "id": "mem-rastahunden-project----",
+    "key": "-",
+    "content": "name: rastahunden-project\ndescription: Rastahunden.com — dog-friendly places platform (map-first, Next.js/Supabase/Mapbox, crawl+community data, business listings + affiliate revenue)\ntype: project\n---\n\nRastahunden.com — Sweden's platform for finding dog-friendly places (hundrastgårdar, off-leash areas, beaches, trails, cafés).\n\n**Domain:** rastahunden.com (purchased 2026-03-15)\n**Spec:** Design spec created 2026-03-15 (original path removed — spec was in a prior session)\n\n**Key decisions:**\n- M",
+    "summary": "---",
+    "namespace": "rastahunden-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/rastahunden-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653770
+  },
+  {
+    "id": "mem-reminder_johanna_bday----",
+    "key": "-",
+    "content": "name: johanna-birthday-jewelry\ndescription: Reminder — find jewelry gift for Johanna's birthday on 2026-04-13\ntype: project\n---",
+    "summary": "---",
+    "namespace": "reminder_johanna_bday",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/reminder_johanna_bday.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653774
+  },
+  {
+    "id": "mem-reminder_johanna_bday-johanna-s-birthday---2026-04-1",
+    "key": "johanna-s-birthday-2026-04-13",
+    "content": "**Task:** Start looking at jewelry as a birthday gift for Johanna.\n**Deadline:** 2026-04-13 (need to shop well before).\n\n**How to apply:** Surface this reminder in sessions from late March onward. Nudge Christoffer if he hasn't mentioned progress by early April.",
+    "summary": "Johanna's Birthday — 2026-04-13",
+    "namespace": "reminder_johanna_bday",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/reminder_johanna_bday.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653774
+  },
+  {
+    "id": "mem-seo_portfolio_overhaul_2026_03_17----",
+    "key": "-",
+    "content": "name: seo_portfolio_overhaul_2026_03_17\ndescription: Massive SEO overhaul of all 10 Webraketen client sites — infrastructure, performance, content, GSC, GA4\ntype: project\n---",
+    "summary": "---",
+    "namespace": "seo_portfolio_overhaul_2026_03_17",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/seo_portfolio_overhaul_2026_03_17.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653780
+  },
+  {
+    "id": "mem-seo_portfolio_overhaul_2026_03_17-2026-03-17--full-portfolio-seo",
+    "key": "2026-03-17-full-portfolio-seo-overhaul",
+    "content": "Complete SEO infrastructure + content deployed across all 10 Webraketen sites in one session.\n\n### What was done:\n- Audited all 10 repos for SEO infrastructure gaps\n- Fixed theresasstad.se domain typo in astro.config.mjs (single→double 's')\n- Added cookie consent to kraftrent + tittisstad\n- Added Sharp image optimization to 6 Astro sites\n- Fixed stadly.nu LCP (8.3s→~2s) — opacity:0 on h1 blocking paint\n- Fixed missprint.se: A11y (18 files), removed framer-motion (-223KB JS), resolved 5 Dependabo",
+    "summary": "2026-03-17: Full Portfolio SEO Overhaul",
+    "namespace": "seo_portfolio_overhaul_2026_03_17",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/seo_portfolio_overhaul_2026_03_17.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653780
+  },
+  {
+    "id": "mem-stadly-project----",
+    "key": "-",
+    "content": "name: stadly-project\ndescription: Stadly.nu cleaning company website — Astro/React/Tailwind, team members, Phase 2 status, blog, SEO, competitor pages\ntype: project\n---",
+    "summary": "---",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-stadly-website-project",
+    "key": "stadly-website-project",
+    "content": "**Webraketen client site** — managed under the Webraketen agency.",
+    "summary": "Stadly Website Project",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-repo",
+    "key": "repo",
+    "content": "`/Users/christofferholmgren/stadlytwodotzero`\n- Astro 5.5, React 19, Tailwind CSS, Radix UI, Lucide React\n- Deployed on Netlify, site: https://stadly.nu\n- GitHub: orangeelefant/stadlytwodotzero",
+    "summary": "Repo",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-nap",
+    "key": "nap",
+    "content": "- Company: Städly Lokalvård AB\n- Org.nr: 559444-2955\n- Address: Backa Bergögata 2F, Göteborg\n- Phone: 031 376 20 20\n- Email: kontakt@stadly.nu",
+    "summary": "NAP",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-social-links--correct-",
+    "key": "social-links-correct-",
+    "content": "- Facebook: https://www.facebook.com/stadlylokalvard\n- Instagram: https://www.instagram.com/stadly_goteborg/\n- LinkedIn: https://www.linkedin.com/company/106345631/\n- Google Reviews: https://www.google.com/maps/place/Städly/@57.7485657,11.9967614,17z\n- Reco: https://www.reco.se/stadly",
+    "summary": "Social Links (CORRECT)",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-real-team-members",
+    "key": "real-team-members",
+    "content": "- Mikel Seferi — VD (CEO)\n- Ada Seferi — Städansvarig (Cleaning Manager)\n- Fioralba Cena — Administrativt ansvarig (Administrative Manager)",
+    "summary": "Real Team Members",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-blog-authors--e-e-a-t-",
+    "key": "blog-authors-e-e-a-t-",
+    "content": "- Ada Seferi → cleaning tips articles\n- Fioralba Cena (\"Fiori\") → all other articles (RUT, guides, industry)",
+    "summary": "Blog Authors (E-E-A-T)",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-reviews",
+    "key": "reviews",
+    "content": "- Google: 4.9 rating\n- Reco: 4.7 rating, 81 reviews\n- System: Manual JSON file (`src/data/reviews.json`), user pastes real reviews",
+    "summary": "Reviews",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-colors",
+    "key": "colors",
+    "content": "- Primary: navy `221 51% 16%`\n- Accent: orange `37 97% 53%`\n- User wants MORE color variety: soft greens, beiges, blues for section backgrounds",
+    "summary": "Colors",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-current-pages---60--total--as-",
+    "key": "current-pages-60-total-as-of-2026-03-15-",
+    "content": "- 44 static .astro pages (service, info, competitor, pricing, neighborhood)\n- 16 dynamic location pages (stadfirma-[slug])\n- 15 blog articles (content collection markdown)\n- Notable additions since Phase 1: presentkort, referral, checklista, FAQ hub, kvalitetsprogram, vårstädning, neighborhood-specific pages, pricing sub-pages",
+    "summary": "Current Pages (~60+ total, as of 2026-03-15)",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-stadly-project-phase-2-status--as-of-2026-03-",
+    "key": "phase-2-status-as-of-2026-03-15-",
+    "content": "1. ✅ Real review system — reviews.json + recensioner.astro page\n2. ❓ Hero fix (text wrapping) + review badges — needs verification\n3. ❓ Fix icons on location pages — needs verification\n4. ❓ Color palette expansion — needs verification\n5. ❓ Image placeholders throughout — needs verification\n6. ❓ Team overhaul (3 office + ~10 cleaners) — needs verification\n7. ❓ E-E-A-T author attribution on blog — needs verification\n8. ✅ VS competitor pages — all 5 done (hemfrid, freska, makeclean, bettys-stad, re",
+    "summary": "Phase 2 Status (as of 2026-03-15)",
+    "namespace": "stadly-project",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/stadly-project.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653785
+  },
+  {
+    "id": "mem-user_profile----",
+    "key": "-",
+    "content": "name: user_profile\ndescription: Christoffer Holmgren - IT Security Manager at Gunnebo, Webraketen web agency founder, tech stack preferences, family, Gothenburg-based Swedish speaker\ntype: user\n---\n\nChristoffer Holmgren (christofferholmgrendokakis@gmail.com)\n\n- IT Security Manager at Gunnebo, 3 years tenure\n- Sambo (partner) finishing medical degree (expected ~2027)\n- Two sons: Charles (born 2017) and Ruben (born 2023)\n- Currently renting on Burgårdsgatan, Göteborg — too small, looking to move\n-",
+    "summary": "---",
+    "namespace": "user_profile",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/user_profile.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653789
+  },
+  {
+    "id": "mem-webraketen-agency----",
+    "key": "-",
+    "content": "name: webraketen-agency\ndescription: Webraketen web agency — business model, client roster, starter templates, tech stack\ntype: project\n---\n\nWebraketen (webraketen.se) — AI-assisted web agency run by Christoffer as a side project.\n\n**Business model:** Monthly subscription, no upfront payment.\n**Stack:** Astro (primary), React/Vite (Kungälvs Kött), Next.js (Miss Print), Netlify hosting, GitHub repos (account: `orangeelefant`).\n**Agency site:** `/Users/christofferholmgren/webraketentwodotzero` — b",
+    "summary": "---",
+    "namespace": "webraketen-agency",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/webraketen-agency.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653793
+  },
+  {
+    "id": "mem-webraketen-ci-optimization----",
+    "key": "-",
+    "content": "name: webraketen-ci-optimization\ndescription: 2026-03-16 CI/CD minute reduction — autopilot 2x/week, Netlify previews disabled, workflow consolidation, timeout caps\ntype: project\n---\n\nOn 2026-03-16, optimized GitHub Actions and Netlify build minute consumption across all Webraketen repos.\n\n**Changes made:**\n- Autopilot cron: daily → Mon+Thu (0 2 * * 1,4)\n- Netlify deploy previews + branch deploys: disabled via `ignore = \"exit 0\"` on all 11 sites\n- Miss Print: 4 workflows → 1 weekly-health.yml (S",
+    "summary": "---",
+    "namespace": "webraketen-ci-optimization",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/webraketen-ci-optimization.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653798
+  },
+  {
+    "id": "mem-webraketen-monitoring----",
+    "key": "-",
+    "content": "name: webraketen-monitoring\ndescription: Webraketen health monitor — weekly email + Notion dashboards for 11 client sites AND 11 project repos (tools, templates, Gunnebo)\ntype: project\n---\n\nAutomated weekly health monitor for all Webraketen client sites + project repos. Shipped and running.\n\n**Repo:** https://github.com/orangeelefant/webraketen-monitor\n**Architecture:** GitHub Actions (cron Monday 07:00 CET) + Node.js + Resend email + Notion API\n**Email recipients:** christoffer.holmgren@gunnebo",
+    "summary": "---",
+    "namespace": "webraketen-monitoring",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren/memory/webraketen-monitoring.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653801
+  },
+  {
+    "id": "mem-MEMORY-memory-index",
+    "key": "memory-index",
+    "content": "- [feedback_check_before_asking.md](feedback_check_before_asking.md) — Never ask \"how can I do this\" before checking skills, MCPs, secrets, and memory first\n\n- [feedback_check_repo_first.md](feedback_check_repo_first.md) — All projects on GitHub (orangeelefant) — NEVER search locally for project files, always use GitHub MCP\n- [project_webraketen_csp.md](project_webraketen_csp.md) — Webraketen CSP: global /* uses sha256 hashes, any interactive page needs its own unsafe-inline override in netlify.",
+    "summary": "Memory Index",
+    "namespace": "core",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/MEMORY.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653807
+  },
+  {
+    "id": "mem-feedback_always_commit_push----",
+    "key": "-",
+    "content": "name: feedback_always_commit_push\ndescription: Always commit and push after making file changes — don't wait to be asked\ntype: feedback\n---\n\nAfter making any file changes, always commit and push without waiting to be asked.\n\n**Why:** User explicitly stated \"ofc, always\" when asked if they wanted changes pushed.\n\n**How to apply:** As soon as edits are done, commit and push. For local files not yet in a repo, find the correct GitHub repo (check memory/ask) and push via GitHub MCP push_files.",
+    "summary": "---",
+    "namespace": "feedback_always_commit_push",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/feedback_always_commit_push.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653811
+  },
+  {
+    "id": "mem-feedback_check_before_asking----",
+    "key": "-",
+    "content": "name: feedback_check_before_asking\ndescription: Always investigate (skills, memory, MCPs, secrets) before asking clarifying questions\ntype: feedback\n---\n\nBefore asking ANY clarifying question, exhaust available context first:\n1. Invoke relevant skills (Skill tool)\n2. Check MEMORY.md for prior context\n3. Scan available MCPs for matching tools\n4. Check `~/.secrets` for credentials\n\nOnly ask if something is genuinely missing after all of the above.\n\n**Why:** Christoffer asked Claude to do something",
+    "summary": "---",
+    "namespace": "feedback_check_before_asking",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/feedback_check_before_asking.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653815
+  },
+  {
+    "id": "mem-feedback_check_repo_first----",
+    "key": "-",
+    "content": "name: Always pull from GitHub, never search locally\ndescription: All projects are on GitHub — never use Glob/Grep/Read to search local filesystem for project files\ntype: feedback\n---\n\n**Rule:** All projects are hosted on GitHub. Always pull files from GitHub first. Never search the local filesystem (Glob, Grep, Read, Bash find) for project code.\n\n**Why:** Repeated correction — user's projects live on GitHub, not locally. Local searches waste time and find nothing.\n\n**How to apply:** Any time you",
+    "summary": "---",
+    "namespace": "feedback_check_repo_first",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/feedback_check_repo_first.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653821
+  },
+  {
+    "id": "mem-feedback_stadly_domain----",
+    "key": "-",
+    "content": "name: feedback_stadly_domain\ndescription: Städly's correct domain is stadly.nu — never stadly.se\ntype: feedback\n---\n\nThe correct domain for Städly is **stadly.nu** — NEVER stadly.se.\n\n**Why:** This has been flagged as a critical error. Using the wrong domain in copy, links, schema markup, or any client output is unacceptable.\n\n**How to apply:** Any time Städly is mentioned in content, code, config, or communication — always use stadly.nu.",
+    "summary": "---",
+    "namespace": "feedback_stadly_domain",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/feedback_stadly_domain.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653826
+  },
+  {
+    "id": "mem-project_stadly_ads----",
+    "key": "-",
+    "content": "name: Stadly ad creative system\ndescription: Städly brand assets, colors, and HTML/Playwright ad template system location\ntype: project\n---\n\nBrand colors:\n- Navy: #14213d (primary — text, panels, backgrounds)\n- Orange: #fca311 (accent — CTAs, highlights, em text)\n- White: #ffffff (background)\n\nLogo URL: https://stadly.nu/wp-content/uploads/2023/02/cropped-STADLY-2023-Ny-Logotyp-Alt-2.png (2000×500px PNG, transparent bg — render white in dark panels via CSS filter)\n\nReco badges (official SVG URLs",
+    "summary": "---",
+    "namespace": "project_stadly_ads",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/project_stadly_ads.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653835
+  },
+  {
+    "id": "mem-project_webraketen_csp----",
+    "key": "-",
+    "content": "name: webraketen_csp\ndescription: Webraketen CSP setup — which pages need their own override and why\ntype: project\n---\n\nThe global `/*` CSP in `netlify.toml` uses sha256 hashes for all scripts. Any page whose Astro-bundled JS changes (i.e. after editing the `.astro` file) will break silently — the browser blocks the script, JS never runs.\n\n**Why:** Astro produces a new bundle hash on every rebuild. That hash isn't in the global hash list → script blocked → no JS = forms submit natively (page rel",
+    "summary": "---",
+    "namespace": "project_webraketen_csp",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/project_webraketen_csp.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653841
+  },
+  {
+    "id": "mem-reference_ads_mcps----",
+    "key": "-",
+    "content": "name: Ads MCPs (Meta + Google via Pipeboard)\ndescription: Pipeboard MCP endpoints for Meta Ads and Google Ads — both use PIPEBOARD_TOKEN from ~/.secrets\ntype: reference\n---\n\nBoth ad platform MCPs run via Pipeboard remote HTTP — no local server needed.\n\n- **Meta Ads MCP**: `https://mcp.pipeboard.co/meta-ads-mcp?token=${PIPEBOARD_TOKEN}`\n- **Google Ads MCP**: `https://google-ads.mcp.pipeboard.co/?token=${PIPEBOARD_TOKEN}`\n\nToken stored in `~/.secrets` as `PIPEBOARD_TOKEN`.\n\nConfigured in local Cla",
+    "summary": "---",
+    "namespace": "reference_ads_mcps",
+    "type": "semantic",
+    "metadata": {
+      "sourceFile": "/Users/christofferholmgren/.claude/projects/-Users-christofferholmgren-Claude/memory/reference_ads_mcps.md",
+      "bootstrapped": true
+    },
+    "createdAt": 1775413653845
+  },
+  {
+    "id": "insight-1775415111843-inc2",
+    "key": "frequent-edit-unknown",
+    "content": "File unknown was edited 83 times this session — likely a hot path worth monitoring.",
+    "summary": "Frequently edited: unknown (83x)",
+    "namespace": "insights",
+    "type": "procedural",
+    "metadata": {
+      "sourceFile": "unknown",
+      "editCount": 83,
+      "autoGenerated": true
+    },
+    "createdAt": 1775415111843
+  }
+]

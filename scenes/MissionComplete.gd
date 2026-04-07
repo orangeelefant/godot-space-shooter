@@ -29,8 +29,6 @@ func _ready() -> void:
 	cont.size = Vector2(300, 70)
 	cont.position = Vector2(GameData.GAME_WIDTH / 2.0 - 150, 600)
 	cont.add_theme_font_size_override("font_size", 32)
-	cont.add_theme_color_override("font_color", Color(0, 1, 0.53))
-	cont.flat = true
 	cont.pressed.connect(func():
 		if is_world_complete:
 			get_tree().change_scene_to_file("res://scenes/WorldMap.tscn")
@@ -38,6 +36,7 @@ func _ready() -> void:
 			GameState.current_world_id = world_id
 			get_tree().change_scene_to_file("res://scenes/LevelSelect.tscn")
 	)
+	_style_button(cont)
 	add_child(cont)
 
 	var hangar_btn := Button.new()
@@ -45,11 +44,10 @@ func _ready() -> void:
 	hangar_btn.size = Vector2(300, 70)
 	hangar_btn.position = Vector2(GameData.GAME_WIDTH / 2.0 - 150, 700)
 	hangar_btn.add_theme_font_size_override("font_size", 32)
-	hangar_btn.add_theme_color_override("font_color", Color(0.8, 0.8, 0.9))
-	hangar_btn.flat = true
 	hangar_btn.pressed.connect(func():
 		get_tree().change_scene_to_file("res://scenes/Hangar.tscn")
 	)
+	_style_button(hangar_btn)
 	add_child(hangar_btn)
 
 
@@ -69,3 +67,47 @@ func _add_label(text: String, y: float, size: int, color: Color) -> void:
 	lbl.add_theme_font_size_override("font_size", size)
 	lbl.add_theme_color_override("font_color", color)
 	add_child(lbl)
+
+
+func _style_button(btn: Button) -> void:
+	var style_normal := StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.1, 0.1, 0.3)
+	style_normal.border_width_left = 2
+	style_normal.border_width_right = 2
+	style_normal.border_width_top = 2
+	style_normal.border_width_bottom = 2
+	style_normal.border_color = Color(0.2, 0.6, 1.0, 0.8)
+	style_normal.corner_radius_top_left = 4
+	style_normal.corner_radius_top_right = 4
+	style_normal.corner_radius_bottom_left = 4
+	style_normal.corner_radius_bottom_right = 4
+
+	var style_hover := StyleBoxFlat.new()
+	style_hover.bg_color = Color(0.15, 0.25, 0.55)
+	style_hover.border_width_left = 2
+	style_hover.border_width_right = 2
+	style_hover.border_width_top = 2
+	style_hover.border_width_bottom = 2
+	style_hover.border_color = Color(0.3, 0.8, 1.0)
+	style_hover.corner_radius_top_left = 4
+	style_hover.corner_radius_top_right = 4
+	style_hover.corner_radius_bottom_left = 4
+	style_hover.corner_radius_bottom_right = 4
+
+	var style_pressed := StyleBoxFlat.new()
+	style_pressed.bg_color = Color(0.05, 0.1, 0.2)
+	style_pressed.border_width_left = 2
+	style_pressed.border_width_right = 2
+	style_pressed.border_width_top = 2
+	style_pressed.border_width_bottom = 2
+	style_pressed.border_color = Color(0.0, 1.0, 0.8)
+	style_pressed.corner_radius_top_left = 4
+	style_pressed.corner_radius_top_right = 4
+	style_pressed.corner_radius_bottom_left = 4
+	style_pressed.corner_radius_bottom_right = 4
+
+	btn.add_theme_stylebox_override("normal", style_normal)
+	btn.add_theme_stylebox_override("hover", style_hover)
+	btn.add_theme_stylebox_override("pressed", style_pressed)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))

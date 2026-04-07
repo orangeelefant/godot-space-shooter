@@ -1,0 +1,693 @@
+{
+  "version": 1,
+  "updatedAt": 1775584118512,
+  "nodeCount": 59,
+  "nodes": {
+    "mem-MEMORY-user": {
+      "id": "mem-MEMORY-user",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653705
+    },
+    "mem-MEMORY-projects": {
+      "id": "mem-MEMORY-projects",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653705
+    },
+    "mem-MEMORY-infrastructure": {
+      "id": "mem-MEMORY-infrastructure",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653705
+    },
+    "mem-MEMORY-feedback": {
+      "id": "mem-MEMORY-feedback",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653705
+    },
+    "mem-MEMORY-reminders": {
+      "id": "mem-MEMORY-reminders",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653705
+    },
+    "mem-autopilot-project----": {
+      "id": "mem-autopilot-project----",
+      "category": "autopilot-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653710
+    },
+    "mem-feedback_maintenance_philosophy----": {
+      "id": "mem-feedback_maintenance_philosophy----",
+      "category": "feedback_maintenance_philosophy",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653715
+    },
+    "mem-feedback_meta_work_trap----": {
+      "id": "mem-feedback_meta_work_trap----",
+      "category": "feedback_meta_work_trap",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653720
+    },
+    "mem-feedback_perplexity_removed----": {
+      "id": "mem-feedback_perplexity_removed----",
+      "category": "feedback_perplexity_removed",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653724
+    },
+    "mem-feedback_proactive_followups----": {
+      "id": "mem-feedback_proactive_followups----",
+      "category": "feedback_proactive_followups",
+      "confidence": 0.5750000000000001,
+      "accessCount": 2,
+      "createdAt": 1775413653729
+    },
+    "mem-feedback_raket_crawler_no_ai----": {
+      "id": "mem-feedback_raket_crawler_no_ai----",
+      "category": "feedback_raket_crawler_no_ai",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653734
+    },
+    "mem-feedback_self_improvement----": {
+      "id": "mem-feedback_self_improvement----",
+      "category": "feedback_self_improvement",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653738
+    },
+    "mem-google_api_setup----": {
+      "id": "mem-google_api_setup----",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-google-cloud-project": {
+      "id": "mem-google_api_setup-google-cloud-project",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-oauth-2-0--desktop-app-": {
+      "id": "mem-google_api_setup-oauth-2-0--desktop-app-",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-53-apis-enabled--key-ones-": {
+      "id": "mem-google_api_setup-53-apis-enabled--key-ones-",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-billing-blocked-apis--need-bil": {
+      "id": "mem-google_api_setup-billing-blocked-apis--need-bil",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-where-credentials-live": {
+      "id": "mem-google_api_setup-where-credentials-live",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-google_api_setup-ga4-property-ids--all-11-webra": {
+      "id": "mem-google_api_setup-ga4-property-ids--all-11-webra",
+      "category": "google_api_setup",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653744
+    },
+    "mem-gunnebo-intel-project----": {
+      "id": "mem-gunnebo-intel-project----",
+      "category": "gunnebo-intel-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653751
+    },
+    "mem-gunnebo_policy_review----": {
+      "id": "mem-gunnebo_policy_review----",
+      "category": "gunnebo_policy_review",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653757
+    },
+    "mem-kungalvs-kott-investigation-summary-kung-lvs-k-tt-broken-assets-in": {
+      "id": "mem-kungalvs-kott-investigation-summary-kung-lvs-k-tt-broken-assets-in",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-executive-summary": {
+      "id": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-technical-architecture": {
+      "id": "mem-kungalvs-kott-investigation-summary-technical-architecture",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-deployment-configuration": {
+      "id": "mem-kungalvs-kott-investigation-summary-deployment-configuration",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau": {
+      "id": "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.5750000000000001,
+      "accessCount": 2,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-code-patterns---implementation": {
+      "id": "mem-kungalvs-kott-investigation-summary-code-patterns---implementation",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-deployment-infrastructure": {
+      "id": "mem-kungalvs-kott-investigation-summary-deployment-infrastructure",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-pending-resolution": {
+      "id": "mem-kungalvs-kott-investigation-summary-pending-resolution",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-kungalvs-kott-investigation-summary-related-configuration-files": {
+      "id": "mem-kungalvs-kott-investigation-summary-related-configuration-files",
+      "category": "kungalvs-kott-investigation-summary",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653763
+    },
+    "mem-rastahunden-project----": {
+      "id": "mem-rastahunden-project----",
+      "category": "rastahunden-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653770
+    },
+    "mem-reminder_johanna_bday----": {
+      "id": "mem-reminder_johanna_bday----",
+      "category": "reminder_johanna_bday",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653774
+    },
+    "mem-reminder_johanna_bday-johanna-s-birthday---2026-04-1": {
+      "id": "mem-reminder_johanna_bday-johanna-s-birthday---2026-04-1",
+      "category": "reminder_johanna_bday",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653774
+    },
+    "mem-seo_portfolio_overhaul_2026_03_17----": {
+      "id": "mem-seo_portfolio_overhaul_2026_03_17----",
+      "category": "seo_portfolio_overhaul_2026_03_17",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653780
+    },
+    "mem-seo_portfolio_overhaul_2026_03_17-2026-03-17--full-portfolio-seo": {
+      "id": "mem-seo_portfolio_overhaul_2026_03_17-2026-03-17--full-portfolio-seo",
+      "category": "seo_portfolio_overhaul_2026_03_17",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653780
+    },
+    "mem-stadly-project----": {
+      "id": "mem-stadly-project----",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-stadly-website-project": {
+      "id": "mem-stadly-project-stadly-website-project",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-repo": {
+      "id": "mem-stadly-project-repo",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-nap": {
+      "id": "mem-stadly-project-nap",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-social-links--correct-": {
+      "id": "mem-stadly-project-social-links--correct-",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-real-team-members": {
+      "id": "mem-stadly-project-real-team-members",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-blog-authors--e-e-a-t-": {
+      "id": "mem-stadly-project-blog-authors--e-e-a-t-",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-reviews": {
+      "id": "mem-stadly-project-reviews",
+      "category": "stadly-project",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-colors": {
+      "id": "mem-stadly-project-colors",
+      "category": "stadly-project",
+      "confidence": 0.53,
+      "accessCount": 1,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-current-pages---60--total--as-": {
+      "id": "mem-stadly-project-current-pages---60--total--as-",
+      "category": "stadly-project",
+      "confidence": 0.545,
+      "accessCount": 1,
+      "createdAt": 1775413653785
+    },
+    "mem-stadly-project-phase-2-status--as-of-2026-03-": {
+      "id": "mem-stadly-project-phase-2-status--as-of-2026-03-",
+      "category": "stadly-project",
+      "confidence": 0.545,
+      "accessCount": 1,
+      "createdAt": 1775413653785
+    },
+    "mem-user_profile----": {
+      "id": "mem-user_profile----",
+      "category": "user_profile",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653789
+    },
+    "mem-webraketen-agency----": {
+      "id": "mem-webraketen-agency----",
+      "category": "webraketen-agency",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653793
+    },
+    "mem-webraketen-ci-optimization----": {
+      "id": "mem-webraketen-ci-optimization----",
+      "category": "webraketen-ci-optimization",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653798
+    },
+    "mem-webraketen-monitoring----": {
+      "id": "mem-webraketen-monitoring----",
+      "category": "webraketen-monitoring",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653801
+    },
+    "mem-MEMORY-memory-index": {
+      "id": "mem-MEMORY-memory-index",
+      "category": "core",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653807
+    },
+    "mem-feedback_always_commit_push----": {
+      "id": "mem-feedback_always_commit_push----",
+      "category": "feedback_always_commit_push",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653811
+    },
+    "mem-feedback_check_before_asking----": {
+      "id": "mem-feedback_check_before_asking----",
+      "category": "feedback_check_before_asking",
+      "confidence": 0.5750000000000001,
+      "accessCount": 2,
+      "createdAt": 1775413653815
+    },
+    "mem-feedback_check_repo_first----": {
+      "id": "mem-feedback_check_repo_first----",
+      "category": "feedback_check_repo_first",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653821
+    },
+    "mem-feedback_stadly_domain----": {
+      "id": "mem-feedback_stadly_domain----",
+      "category": "feedback_stadly_domain",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653826
+    },
+    "mem-project_stadly_ads----": {
+      "id": "mem-project_stadly_ads----",
+      "category": "project_stadly_ads",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653835
+    },
+    "mem-project_webraketen_csp----": {
+      "id": "mem-project_webraketen_csp----",
+      "category": "project_webraketen_csp",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653841
+    },
+    "mem-reference_ads_mcps----": {
+      "id": "mem-reference_ads_mcps----",
+      "category": "reference_ads_mcps",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775413653845
+    },
+    "insight-1775415111843-inc2": {
+      "id": "insight-1775415111843-inc2",
+      "category": "insights",
+      "confidence": 0.495,
+      "accessCount": 0,
+      "createdAt": 1775415111843
+    }
+  },
+  "edges": [
+    {
+      "sourceId": "mem-MEMORY-user",
+      "targetId": "mem-MEMORY-projects",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-MEMORY-projects",
+      "targetId": "mem-MEMORY-infrastructure",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-MEMORY-infrastructure",
+      "targetId": "mem-MEMORY-feedback",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-MEMORY-feedback",
+      "targetId": "mem-MEMORY-reminders",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup----",
+      "targetId": "mem-google_api_setup-google-cloud-project",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup-google-cloud-project",
+      "targetId": "mem-google_api_setup-oauth-2-0--desktop-app-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup-oauth-2-0--desktop-app-",
+      "targetId": "mem-google_api_setup-53-apis-enabled--key-ones-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup-53-apis-enabled--key-ones-",
+      "targetId": "mem-google_api_setup-billing-blocked-apis--need-bil",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup-billing-blocked-apis--need-bil",
+      "targetId": "mem-google_api_setup-where-credentials-live",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup-where-credentials-live",
+      "targetId": "mem-google_api_setup-ga4-property-ids--all-11-webra",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-kung-lvs-k-tt-broken-assets-in",
+      "targetId": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "targetId": "mem-kungalvs-kott-investigation-summary-technical-architecture",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-technical-architecture",
+      "targetId": "mem-kungalvs-kott-investigation-summary-deployment-configuration",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-deployment-configuration",
+      "targetId": "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau",
+      "targetId": "mem-kungalvs-kott-investigation-summary-code-patterns---implementation",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-code-patterns---implementation",
+      "targetId": "mem-kungalvs-kott-investigation-summary-deployment-infrastructure",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-deployment-infrastructure",
+      "targetId": "mem-kungalvs-kott-investigation-summary-pending-resolution",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-pending-resolution",
+      "targetId": "mem-kungalvs-kott-investigation-summary-related-configuration-files",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-reminder_johanna_bday----",
+      "targetId": "mem-reminder_johanna_bday-johanna-s-birthday---2026-04-1",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-seo_portfolio_overhaul_2026_03_17----",
+      "targetId": "mem-seo_portfolio_overhaul_2026_03_17-2026-03-17--full-portfolio-seo",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project----",
+      "targetId": "mem-stadly-project-stadly-website-project",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-stadly-website-project",
+      "targetId": "mem-stadly-project-repo",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-repo",
+      "targetId": "mem-stadly-project-nap",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-nap",
+      "targetId": "mem-stadly-project-social-links--correct-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-social-links--correct-",
+      "targetId": "mem-stadly-project-real-team-members",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-real-team-members",
+      "targetId": "mem-stadly-project-blog-authors--e-e-a-t-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-blog-authors--e-e-a-t-",
+      "targetId": "mem-stadly-project-reviews",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-reviews",
+      "targetId": "mem-stadly-project-colors",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-colors",
+      "targetId": "mem-stadly-project-current-pages---60--total--as-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-stadly-project-current-pages---60--total--as-",
+      "targetId": "mem-stadly-project-phase-2-status--as-of-2026-03-",
+      "type": "temporal",
+      "weight": 0.5
+    },
+    {
+      "sourceId": "mem-google_api_setup----",
+      "targetId": "mem-google_api_setup-where-credentials-live",
+      "type": "similar",
+      "weight": 0.312
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "targetId": "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau",
+      "type": "similar",
+      "weight": 0.38345864661654133
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "targetId": "mem-kungalvs-kott-investigation-summary-deployment-infrastructure",
+      "type": "similar",
+      "weight": 0.3263888888888889
+    },
+    {
+      "sourceId": "mem-kungalvs-kott-investigation-summary-executive-summary",
+      "targetId": "mem-kungalvs-kott-investigation-summary-pending-resolution",
+      "type": "similar",
+      "weight": 0.3670886075949367
+    },
+    {
+      "sourceId": "mem-stadly-project-real-team-members",
+      "targetId": "mem-stadly-project-blog-authors--e-e-a-t-",
+      "type": "similar",
+      "weight": 0.30303030303030304
+    }
+  ],
+  "pageRanks": {
+    "mem-MEMORY-user": 0.007590531448265599,
+    "mem-MEMORY-projects": 0.014042479655458741,
+    "mem-MEMORY-infrastructure": 0.01952663433390493,
+    "mem-MEMORY-feedback": 0.024188169675819476,
+    "mem-MEMORY-reminders": 0.028150486635070887,
+    "mem-autopilot-project----": 0.007590531448265599,
+    "mem-feedback_maintenance_philosophy----": 0.007590531448265599,
+    "mem-feedback_meta_work_trap----": 0.007590531448265599,
+    "mem-feedback_perplexity_removed----": 0.007590531448265599,
+    "mem-feedback_proactive_followups----": 0.007590531448265599,
+    "mem-feedback_raket_crawler_no_ai----": 0.007590531448265599,
+    "mem-feedback_self_improvement----": 0.007590531448265599,
+    "mem-google_api_setup----": 0.007590531448265599,
+    "mem-google_api_setup-google-cloud-project": 0.01081650555186217,
+    "mem-google_api_setup-oauth-2-0--desktop-app-": 0.016784556994681833,
+    "mem-google_api_setup-53-apis-enabled--key-ones-": 0.021857402004862202,
+    "mem-google_api_setup-billing-blocked-apis--need-bil": 0.02616932815544518,
+    "mem-google_api_setup-where-credentials-live": 0.033060452530987154,
+    "mem-google_api_setup-ga4-property-ids--all-11-webra": 0.035691935462597975,
+    "mem-gunnebo-intel-project----": 0.007590531448265599,
+    "mem-gunnebo_policy_review----": 0.007590531448265599,
+    "mem-kungalvs-kott-investigation-summary-kung-lvs-k-tt-broken-assets-in": 0.007590531448265599,
+    "mem-kungalvs-kott-investigation-summary-executive-summary": 0.014042479655458741,
+    "mem-kungalvs-kott-investigation-summary-technical-architecture": 0.01057455716967543,
+    "mem-kungalvs-kott-investigation-summary-deployment-configuration": 0.016578902160548924,
+    "mem-kungalvs-kott-investigation-summary-dns-routing-mismatch--root-cau": 0.02466662313060625,
+    "mem-kungalvs-kott-investigation-summary-code-patterns---implementation": 0.02855716731688236,
+    "mem-kungalvs-kott-investigation-summary-deployment-infrastructure": 0.03484816527976436,
+    "mem-kungalvs-kott-investigation-summary-pending-resolution": 0.040195525075025905,
+    "mem-kungalvs-kott-investigation-summary-related-configuration-files": 0.041756746599845254,
+    "mem-rastahunden-project----": 0.007590531448265599,
+    "mem-reminder_johanna_bday----": 0.007590531448265599,
+    "mem-reminder_johanna_bday-johanna-s-birthday---2026-04-1": 0.014042479655458741,
+    "mem-seo_portfolio_overhaul_2026_03_17----": 0.007590531448265599,
+    "mem-seo_portfolio_overhaul_2026_03_17-2026-03-17--full-portfolio-seo": 0.014042479655458741,
+    "mem-stadly-project----": 0.007590531448265599,
+    "mem-stadly-project-stadly-website-project": 0.014042479655458741,
+    "mem-stadly-project-repo": 0.01952663433390493,
+    "mem-stadly-project-nap": 0.024188169675819476,
+    "mem-stadly-project-social-links--correct-": 0.028150486635070887,
+    "mem-stadly-project-real-team-members": 0.03151847021971027,
+    "mem-stadly-project-blog-authors--e-e-a-t-": 0.03438124602703949,
+    "mem-stadly-project-reviews": 0.03681459619108192,
+    "mem-stadly-project-colors": 0.03888294660476725,
+    "mem-stadly-project-current-pages---60--total--as-": 0.04064106495807751,
+    "mem-stadly-project-phase-2-status--as-of-2026-03-": 0.042135416999951346,
+    "mem-user_profile----": 0.007590531448265599,
+    "mem-webraketen-agency----": 0.007590531448265599,
+    "mem-webraketen-ci-optimization----": 0.007590531448265599,
+    "mem-webraketen-monitoring----": 0.007590531448265599,
+    "mem-MEMORY-memory-index": 0.007590531448265599,
+    "mem-feedback_always_commit_push----": 0.007590531448265599,
+    "mem-feedback_check_before_asking----": 0.007590531448265599,
+    "mem-feedback_check_repo_first----": 0.007590531448265599,
+    "mem-feedback_stadly_domain----": 0.007590531448265599,
+    "mem-project_stadly_ads----": 0.007590531448265599,
+    "mem-project_webraketen_csp----": 0.007590531448265599,
+    "mem-reference_ads_mcps----": 0.007590531448265599,
+    "insight-1775415111843-inc2": 0.007590531448265599
+  }
+}

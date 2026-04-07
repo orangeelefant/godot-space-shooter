@@ -60,15 +60,11 @@ func _draw_options() -> void:
 	audio_btn.size = Vector2(300, 64)
 	audio_btn.position = Vector2(cx - 150, 290)
 	audio_btn.add_theme_font_size_override("font_size", 34)
-	audio_btn.add_theme_color_override("font_color",
-		Color(0, 1, 0.53) if AudioSystem._enabled else Color(0.7, 0.2, 0.2))
-	audio_btn.flat = true
 	audio_btn.pressed.connect(func():
 		AudioSystem.set_enabled(not AudioSystem._enabled)
 		audio_btn.text = "PÅ" if AudioSystem._enabled else "AV"
-		audio_btn.add_theme_color_override("font_color",
-			Color(0, 1, 0.53) if AudioSystem._enabled else Color(0.7, 0.2, 0.2))
 	)
+	_style_button(audio_btn)
 	add_child(audio_btn)
 
 	# Divider
@@ -93,9 +89,8 @@ func _draw_options() -> void:
 	reset_btn.size = Vector2(480, 64)
 	reset_btn.position = Vector2(cx - 240, 494)
 	reset_btn.add_theme_font_size_override("font_size", 26)
-	reset_btn.add_theme_color_override("font_color", Color(0.85, 0.2, 0.2))
-	reset_btn.flat = true
 	reset_btn.pressed.connect(_confirm_reset)
+	_style_button(reset_btn)
 	add_child(reset_btn)
 
 	var warn := Label.new()
@@ -143,12 +138,11 @@ func _confirm_reset() -> void:
 	yes_btn.size = Vector2(220, 58)
 	yes_btn.position = Vector2(GameData.GAME_WIDTH / 2.0 - 240, GameData.GAME_HEIGHT / 2.0 + 16)
 	yes_btn.add_theme_font_size_override("font_size", 20)
-	yes_btn.add_theme_color_override("font_color", Color(1, 0.2, 0.2))
-	yes_btn.flat = true
 	yes_btn.pressed.connect(func():
 		SaveSystem.reset()
 		get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 	)
+	_style_button(yes_btn)
 	overlay.add_child(yes_btn)
 
 	var no_btn := Button.new()
@@ -156,9 +150,8 @@ func _confirm_reset() -> void:
 	no_btn.size = Vector2(220, 58)
 	no_btn.position = Vector2(GameData.GAME_WIDTH / 2.0 + 20, GameData.GAME_HEIGHT / 2.0 + 16)
 	no_btn.add_theme_font_size_override("font_size", 20)
-	no_btn.add_theme_color_override("font_color", Color(0.6, 0.7, 0.8))
-	no_btn.flat = true
 	no_btn.pressed.connect(func(): overlay.queue_free())
+	_style_button(no_btn)
 	overlay.add_child(no_btn)
 
 
@@ -168,10 +161,53 @@ func _draw_back() -> void:
 	btn.size = Vector2(200, 50)
 	btn.position = Vector2(40, 40)
 	btn.add_theme_font_size_override("font_size", 20)
-	btn.add_theme_color_override("font_color", Color(0.6, 0.7, 0.8))
-	btn.flat = true
 	btn.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/MainMenu.tscn"))
+	_style_button(btn)
 	add_child(btn)
+
+
+func _style_button(btn: Button) -> void:
+	var style_normal := StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.1, 0.1, 0.3)
+	style_normal.border_width_left = 2
+	style_normal.border_width_right = 2
+	style_normal.border_width_top = 2
+	style_normal.border_width_bottom = 2
+	style_normal.border_color = Color(0.2, 0.6, 1.0, 0.8)
+	style_normal.corner_radius_top_left = 4
+	style_normal.corner_radius_top_right = 4
+	style_normal.corner_radius_bottom_left = 4
+	style_normal.corner_radius_bottom_right = 4
+
+	var style_hover := StyleBoxFlat.new()
+	style_hover.bg_color = Color(0.15, 0.25, 0.55)
+	style_hover.border_width_left = 2
+	style_hover.border_width_right = 2
+	style_hover.border_width_top = 2
+	style_hover.border_width_bottom = 2
+	style_hover.border_color = Color(0.3, 0.8, 1.0)
+	style_hover.corner_radius_top_left = 4
+	style_hover.corner_radius_top_right = 4
+	style_hover.corner_radius_bottom_left = 4
+	style_hover.corner_radius_bottom_right = 4
+
+	var style_pressed := StyleBoxFlat.new()
+	style_pressed.bg_color = Color(0.05, 0.1, 0.2)
+	style_pressed.border_width_left = 2
+	style_pressed.border_width_right = 2
+	style_pressed.border_width_top = 2
+	style_pressed.border_width_bottom = 2
+	style_pressed.border_color = Color(0.0, 1.0, 0.8)
+	style_pressed.corner_radius_top_left = 4
+	style_pressed.corner_radius_top_right = 4
+	style_pressed.corner_radius_bottom_left = 4
+	style_pressed.corner_radius_bottom_right = 4
+
+	btn.add_theme_stylebox_override("normal", style_normal)
+	btn.add_theme_stylebox_override("hover", style_hover)
+	btn.add_theme_stylebox_override("pressed", style_pressed)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
 
 
 class _BorderRect extends Node2D:

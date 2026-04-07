@@ -1,0 +1,55 @@
+{
+  "project": "Stjärnkrigaren v4 — Full Visual Overhaul",
+  "stories": [
+    {
+      "id": "US-001",
+      "title": "Visual Polish Pass — Glow/Bloom on All Entities",
+      "passes": true,
+      "acceptanceCriteria": [
+        "entities/Player.gd _draw() uses overdraw bloom (larger dimmer shape behind main shape)",
+        "entities/enemies/GreenEnemy.gd _draw_shape() has a glow ring behind body",
+        "entities/enemies/RedEnemy.gd _draw_shape() has a glow ring",
+        "entities/enemies/YellowEnemy.gd _draw_shape() has a glow ring",
+        "entities/Bullet.gd _draw() has a bright core with a soft outer glow",
+        "entities/EnemyBullet.gd _draw() has a glow layer",
+        "entities/enemies/BossEnemy.gd _draw_shape() enhanced with more ring detail and pulsing core glow"
+      ]
+    },
+    {
+      "id": "US-002",
+      "title": "Background Upgrade — Nebula, Asteroids, Planet",
+      "passes": true,
+      "acceptanceCriteria": [
+        "scenes/Game.gd has a nebula layer drawn behind stars (large soft translucent blobs)",
+        "scenes/Game.gd has a distant planet silhouette (partially visible circle with rings, far right or off-screen edge)",
+        "scenes/Game.gd has a slow-moving asteroid field layer (irregular polygons at z_index 2)",
+        "All new background layers scroll at different parallax speeds",
+        "Background additions are in inner classes (_NebulaLayer, _AsteroidLayer) matching existing _StarLayer pattern"
+      ]
+    },
+    {
+      "id": "US-003",
+      "title": "Bullet & Impact Effects — Muzzle Flash, Trails, Hit Sparks",
+      "passes": true,
+      "acceptanceCriteria": [
+        "scenes/Game.gd _fire_bullet() spawns a muzzle flash Node2D at muzzle position that fades in ~0.08s",
+        "entities/Bullet.gd has a trail: stores last 5 positions, draws fading line segments behind bullet",
+        "entities/enemies/BaseEnemy.gd hit() spawns a _HitSpark inner class (3-5 small particles that fly outward and fade)",
+        "_HitSpark uses color matching the enemy's _color",
+        "Explosion burst in BaseEnemy is enhanced: larger particles, longer duration (0.6s), more varied sizes"
+      ]
+    },
+    {
+      "id": "US-004",
+      "title": "HUD Visual Upgrade — Ship Icons, Score Pop, Combo Arc",
+      "passes": true,
+      "acceptanceCriteria": [
+        "scenes/HUD.gd update_lives() renders small ship silhouette icons instead of a number",
+        "scenes/HUD.gd update_score() triggers a brief scale-pop tween on the score label when score increases",
+        "scenes/HUD.gd update_combo() renders the multiplier as a colored arc/ring around the combo number",
+        "HUD ship icons match the player ship shape (small arrowhead polygon)",
+        "Score pop tween: scale to 1.3 then back to 1.0 over 0.2s"
+      ]
+    }
+  ]
+}

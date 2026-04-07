@@ -102,44 +102,40 @@ func _build_start_button() -> void:
 		var cont := Button.new()
 		cont.text = "FORTSÄTT SPELET"
 		cont.add_theme_font_size_override("font_size", 38)
-		cont.add_theme_color_override("font_color", Color(0, 1, 0.53))
 		cont.size = Vector2(480, 70)
 		cont.position = Vector2(720, 800)
-		cont.flat = true
 		cont.pressed.connect(_on_start)
+		_style_button(cont)
 		add_child(cont)
 
 		var new_game := Button.new()
 		new_game.text = "NYTT SPEL"
 		new_game.add_theme_font_size_override("font_size", 24)
-		new_game.add_theme_color_override("font_color", Color(0.7, 0.35, 0.35))
 		new_game.size = Vector2(480, 50)
 		new_game.position = Vector2(720, 882)
-		new_game.flat = true
 		new_game.pressed.connect(func():
 			SaveSystem.reset()
 			_on_start()
 		)
+		_style_button(new_game)
 		add_child(new_game)
 	else:
 		var btn := Button.new()
 		btn.text = "STARTA SPELET"
 		btn.add_theme_font_size_override("font_size", 38)
-		btn.add_theme_color_override("font_color", Color(0, 1, 0.53))
 		btn.size = Vector2(480, 70)
 		btn.position = Vector2(720, 840)
-		btn.flat = true
 		btn.pressed.connect(_on_start)
+		_style_button(btn)
 		add_child(btn)
 
 	var settings_btn := Button.new()
 	settings_btn.text = "INSTÄLLNINGAR"
 	settings_btn.add_theme_font_size_override("font_size", 18)
-	settings_btn.add_theme_color_override("font_color", Color(0.4, 0.5, 0.6))
 	settings_btn.size = Vector2(280, 40)
 	settings_btn.position = Vector2(820, 940)
-	settings_btn.flat = true
 	settings_btn.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/Settings.tscn"))
+	_style_button(settings_btn)
 	add_child(settings_btn)
 
 	var hint := Label.new()
@@ -160,7 +156,51 @@ func _on_start() -> void:
 	get_tree().change_scene_to_file("res://scenes/WorldMap.tscn")
 
 
-# ── Inner card node ──────────────────────────────────────────────────────────
+func _style_button(btn: Button) -> void:
+	var style_normal := StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.1, 0.1, 0.3)
+	style_normal.border_width_left = 2
+	style_normal.border_width_right = 2
+	style_normal.border_width_top = 2
+	style_normal.border_width_bottom = 2
+	style_normal.border_color = Color(0.2, 0.6, 1.0, 0.8)
+	style_normal.corner_radius_top_left = 4
+	style_normal.corner_radius_top_right = 4
+	style_normal.corner_radius_bottom_left = 4
+	style_normal.corner_radius_bottom_right = 4
+
+	var style_hover := StyleBoxFlat.new()
+	style_hover.bg_color = Color(0.15, 0.25, 0.55)
+	style_hover.border_width_left = 2
+	style_hover.border_width_right = 2
+	style_hover.border_width_top = 2
+	style_hover.border_width_bottom = 2
+	style_hover.border_color = Color(0.3, 0.8, 1.0)
+	style_hover.corner_radius_top_left = 4
+	style_hover.corner_radius_top_right = 4
+	style_hover.corner_radius_bottom_left = 4
+	style_hover.corner_radius_bottom_right = 4
+
+	var style_pressed := StyleBoxFlat.new()
+	style_pressed.bg_color = Color(0.05, 0.1, 0.2)
+	style_pressed.border_width_left = 2
+	style_pressed.border_width_right = 2
+	style_pressed.border_width_top = 2
+	style_pressed.border_width_bottom = 2
+	style_pressed.border_color = Color(0.0, 1.0, 0.8)
+	style_pressed.corner_radius_top_left = 4
+	style_pressed.corner_radius_top_right = 4
+	style_pressed.corner_radius_bottom_left = 4
+	style_pressed.corner_radius_bottom_right = 4
+
+	btn.add_theme_stylebox_override("normal", style_normal)
+	btn.add_theme_stylebox_override("hover", style_hover)
+	btn.add_theme_stylebox_override("pressed", style_pressed)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
+
+
+# -- Inner card node ----------------------------------------------------------
 
 class _ShipCard extends Node2D:
 	signal card_pressed
@@ -260,4 +300,3 @@ class _ShipCard extends Node2D:
 			var local := to_local(event.global_position)
 			if abs(local.x) < 120 and abs(local.y) < 155:
 				card_pressed.emit()
-

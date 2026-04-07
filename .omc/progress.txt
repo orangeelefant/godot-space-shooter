@@ -1,0 +1,28 @@
+# Ralph Progress — Stjärnkrigaren v2
+
+## Session Start
+PRD created with 6 stories. Beginning parallel implementation.
+
+## Implementation Plan
+- Batch 1: Create new files (PauseMenu, Falcon, ComboSystem, BossEnemy) — parallel
+- Batch 2: Modify shared files (Player.gd, SaveSystem, AudioSystem, EnemySpawner) — parallel
+- Batch 3: Wire everything in Game.gd — sequential (touches all features)
+- Batch 4: Update HUD, MissionComplete, GameData — parallel
+
+## Codebase Patterns (critical for agents)
+- All scene content built in _ready(), not in .tscn editor
+- Inner classes: class _Foo extends Node2D (inside parent .gd file)
+- Enemy signals: shoot_at(pos: Vector2), use add_child + queue_free manually
+- Collision: manual distance checks in Game._process(), not Area2D signals
+- Audio: _make_beep(freq, duration, player_index) in AudioSystem.gd
+- save/load: SaveSystem.load_game() returns Dictionary, SaveSystem.save_game(state)
+- Constants: GameData.GAME_WIDTH = 1920, GameData.GAME_HEIGHT = 1080
+- Enemy base: extends Area2D, _draw_shape() override, hit(damage) method
+
+## Stories Status
+- US-001 Pause Menu: pending
+- US-002 Shield Mechanic: pending
+- US-003 Thruster + Danger: pending
+- US-004 Falcon Companion: pending
+- US-005 Combo + HiScore: pending
+- US-006 Boss Enemies: pending

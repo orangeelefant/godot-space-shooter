@@ -110,10 +110,53 @@ func _draw_back() -> void:
 	btn.size = Vector2(200, 50)
 	btn.position = Vector2(40, 40)
 	btn.add_theme_font_size_override("font_size", 20)
-	btn.add_theme_color_override("font_color", Color(0.6, 0.7, 0.8))
-	btn.flat = true
 	btn.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/WorldMap.tscn"))
+	_style_button(btn)
 	add_child(btn)
+
+
+func _style_button(btn: Button) -> void:
+	var style_normal := StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.1, 0.1, 0.3)
+	style_normal.border_width_left = 2
+	style_normal.border_width_right = 2
+	style_normal.border_width_top = 2
+	style_normal.border_width_bottom = 2
+	style_normal.border_color = Color(0.2, 0.6, 1.0, 0.8)
+	style_normal.corner_radius_top_left = 4
+	style_normal.corner_radius_top_right = 4
+	style_normal.corner_radius_bottom_left = 4
+	style_normal.corner_radius_bottom_right = 4
+
+	var style_hover := StyleBoxFlat.new()
+	style_hover.bg_color = Color(0.15, 0.25, 0.55)
+	style_hover.border_width_left = 2
+	style_hover.border_width_right = 2
+	style_hover.border_width_top = 2
+	style_hover.border_width_bottom = 2
+	style_hover.border_color = Color(0.3, 0.8, 1.0)
+	style_hover.corner_radius_top_left = 4
+	style_hover.corner_radius_top_right = 4
+	style_hover.corner_radius_bottom_left = 4
+	style_hover.corner_radius_bottom_right = 4
+
+	var style_pressed := StyleBoxFlat.new()
+	style_pressed.bg_color = Color(0.05, 0.1, 0.2)
+	style_pressed.border_width_left = 2
+	style_pressed.border_width_right = 2
+	style_pressed.border_width_top = 2
+	style_pressed.border_width_bottom = 2
+	style_pressed.border_color = Color(0.0, 1.0, 0.8)
+	style_pressed.corner_radius_top_left = 4
+	style_pressed.corner_radius_top_right = 4
+	style_pressed.corner_radius_bottom_left = 4
+	style_pressed.corner_radius_bottom_right = 4
+
+	btn.add_theme_stylebox_override("normal", style_normal)
+	btn.add_theme_stylebox_override("hover", style_hover)
+	btn.add_theme_stylebox_override("pressed", style_pressed)
+	btn.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+	btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
 
 
 class _UpgradeCard extends Node2D:
@@ -162,12 +205,50 @@ class _UpgradeCard extends Node2D:
 			btn.size = Vector2(160, 40)
 			btn.position = Vector2(card_size.x / 2.0 - 80, card_size.y - 55)
 			btn.add_theme_font_size_override("font_size", 18)
-			btn.add_theme_color_override("font_color",
-				Color(0, 1, 0.53) if can_buy else Color(0.4, 0.4, 0.5))
 			btn.disabled = not can_buy
-			btn.flat = true
 			btn.pressed.connect(func(): buy_pressed.emit())
+			_apply_style(btn)
 			add_child(btn)
+
+	func _apply_style(btn: Button) -> void:
+		var style_normal := StyleBoxFlat.new()
+		style_normal.bg_color = Color(0.1, 0.1, 0.3)
+		style_normal.border_width_left = 2
+		style_normal.border_width_right = 2
+		style_normal.border_width_top = 2
+		style_normal.border_width_bottom = 2
+		style_normal.border_color = Color(0.2, 0.6, 1.0, 0.8)
+		style_normal.corner_radius_top_left = 4
+		style_normal.corner_radius_top_right = 4
+		style_normal.corner_radius_bottom_left = 4
+		style_normal.corner_radius_bottom_right = 4
+		var style_hover := StyleBoxFlat.new()
+		style_hover.bg_color = Color(0.15, 0.25, 0.55)
+		style_hover.border_width_left = 2
+		style_hover.border_width_right = 2
+		style_hover.border_width_top = 2
+		style_hover.border_width_bottom = 2
+		style_hover.border_color = Color(0.3, 0.8, 1.0)
+		style_hover.corner_radius_top_left = 4
+		style_hover.corner_radius_top_right = 4
+		style_hover.corner_radius_bottom_left = 4
+		style_hover.corner_radius_bottom_right = 4
+		var style_pressed := StyleBoxFlat.new()
+		style_pressed.bg_color = Color(0.05, 0.1, 0.2)
+		style_pressed.border_width_left = 2
+		style_pressed.border_width_right = 2
+		style_pressed.border_width_top = 2
+		style_pressed.border_width_bottom = 2
+		style_pressed.border_color = Color(0.0, 1.0, 0.8)
+		style_pressed.corner_radius_top_left = 4
+		style_pressed.corner_radius_top_right = 4
+		style_pressed.corner_radius_bottom_left = 4
+		style_pressed.corner_radius_bottom_right = 4
+		btn.add_theme_stylebox_override("normal", style_normal)
+		btn.add_theme_stylebox_override("hover", style_hover)
+		btn.add_theme_stylebox_override("pressed", style_pressed)
+		btn.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+		btn.add_theme_color_override("font_hover_color", Color(1.0, 1.0, 1.0))
 
 	func _draw() -> void:
 		var w := card_size.x
