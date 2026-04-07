@@ -1,24 +1,39 @@
 ## ErrorCatcher — autoload for rapid bug iteration
-## Catches crashes, logs context, writes to file, and shows a dev overlay.
-## Add to project.godot: ErrorCatcher="*res://autoloads/ErrorCatcher.gd"
+## Catches crashes, errors, silent freezes, and FPS drops.
+## Registered in project.godot: ErrorCatcher="*res://autoloads/ErrorCatcher.gd"
 extends Node
 
 # ── Config ────────────────────────────────────────────────────────────────────
-const LOG_PATH       := "user://error_log.txt"
-const MAX_OVERLAY    := 8     # lines shown on screen at once
-const MAX_LOG_LINES  := 2000  # rotate log after this many lines
-const OVERLAY_TTL    := 12.0  # seconds each entry stays visible
+const LOG_PATH            := "user://error_log.txt"
+const MAX_OVERLAY         := 8       # lines shown on screen at once
+const MAX_LOG_LINES       := 2000    # rotate log after this many lines
+const OVERLAY_TTL         := 12.0   # seconds each entry stays visible
+const FREEZE_THRESHOLD_MS := 3000   # ms of main-loop silence = freeze
+const STUTTER_THRESHOLD_S := 0.5    # single frame longer than this = stutter
+const LOW_FPS_THRESHOLD   := 15     # fps below this triggers a warning
+const LOW_FPS_FRAMES      := 60     # consecutive low-fps frames before logging
 
 # Show overlay only in debug builds; set false to silence in release too
 var overlay_enabled: bool = OS.is_debug_build()
 
 # ── State ─────────────────────────────────────────────────────────────────────
 var _log_file: FileAccess = null
+var _mutex: Mutex = Mutex.new()        # guards all _log_file writes
 var _line_count: int = 0
-var _entries: Array[Dictionary] = []   # { msg, ttl, level }
+
+var _entries: Array[Dictionary] = []   # { msg, ttl, color }
 var _overlay: CanvasLayer = null
 var _label: Label = null
-var _last_context: Dictionary = {}     # snapshot written on crash
+var _last_context: Dictionary = {}
+
+# Watchdog
+var _heartbeat_ms: int = 0            # written by main thread, read by watchdog
+var _watchdog_thread: Thread = null
+var _watchdog_running: bool = false
+
+# FPS / stutter tracking
+var _low_fps_streak: int = 0
+var _last_frame_ms: int = 0
 
 
 func _ready() -> void:
@@ -31,57 +46,55 @@ func _ready() -> void:
 		Time.get_datetime_string_from_system()
 	])
 	get_tree().node_added.connect(_on_node_added)
+	_start_watchdog()
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
 
-## General info — green overlay, always logged
 func log_info(msg: String) -> void:
 	_record("INFO", msg, Color(0.6, 1.0, 0.6))
 
 
-## Warning — yellow overlay, logged
 func log_warn(msg: String) -> void:
 	_record("WARN", msg, Color(1.0, 0.9, 0.3))
 	push_warning("[ErrorCatcher] " + msg)
 
 
-## Error — red overlay, logged, includes current game context
 func log_error(msg: String) -> void:
 	_record("ERROR", msg, Color(1.0, 0.35, 0.35))
 	push_error("[ErrorCatcher] " + msg)
 
 
-## Safe node access — returns null and logs instead of crashing
+## Null-safe node access — logs instead of crashing
 func safe_get(node: Node, child_path: NodePath, context: String = "") -> Node:
 	if not is_instance_valid(node):
-		log_error("safe_get: parent node is invalid | context=%s" % context)
+		log_error("safe_get: parent invalid | ctx=%s" % context)
 		return null
 	var child := node.get_node_or_null(child_path)
 	if child == null:
-		log_warn("safe_get: '%s' not found | context=%s" % [child_path, context])
+		log_warn("safe_get: '%s' not found | ctx=%s" % [child_path, context])
 	return child
 
 
-## Validate a node and log if dead/null — returns true if usable
+## Returns true if node is alive and usable
 func is_valid(node: Object, context: String = "") -> bool:
 	if node == null or not is_instance_valid(node):
-		log_error("is_valid: null/freed instance | context=%s" % context)
+		log_error("is_valid: null/freed | ctx=%s" % context)
 		return false
 	return true
 
 
-## Store game context for crash reports (call from Game._process)
+## Called from Game._process every frame — feeds crash + freeze context
 func update_context(ctx: Dictionary) -> void:
 	_last_context = ctx.duplicate()
+	_heartbeat_ms = Time.get_ticks_msec()   # main thread is alive
 
 
-## Dump a manual snapshot of the current game state to the log
+## Dump a manual state snapshot to log
 func snapshot(label: String = "manual") -> void:
-	var scene_name := _current_scene_name()
-	log_info("[SNAPSHOT:%s] scene=%s fps=%.0f mem=%dMB | ctx=%s" % [
+	log_info("[SNAPSHOT:%s] scene=%s fps=%.0f mem=%dMB ctx=%s" % [
 		label,
-		scene_name,
+		_current_scene_name(),
 		Engine.get_frames_per_second(),
 		OS.get_static_memory_usage() / 1_000_000,
 		str(_last_context)
@@ -93,31 +106,108 @@ func snapshot(label: String = "manual") -> void:
 func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_CRASH:
-			_write_crash_report()
+			_write_crash_report("CRASH")
 		NOTIFICATION_WM_CLOSE_REQUEST:
 			snapshot("shutdown")
+			_stop_watchdog()
 			_flush_log()
+		NOTIFICATION_PREDELETE:
+			_stop_watchdog()
 
 
 func _process(delta: float) -> void:
-	if not overlay_enabled:
-		return
-	# Age entries
-	for i in range(_entries.size() - 1, -1, -1):
-		_entries[i].ttl -= delta
-		if _entries[i].ttl <= 0.0:
-			_entries.remove_at(i)
-	_refresh_label()
+	# ── Heartbeat (also updated by update_context, but this covers non-Game scenes)
+	_heartbeat_ms = Time.get_ticks_msec()
+
+	# ── Stutter detection: single very long frame
+	var now_ms := Time.get_ticks_msec()
+	if _last_frame_ms > 0:
+		var frame_ms := now_ms - _last_frame_ms
+		if frame_ms > int(STUTTER_THRESHOLD_S * 1000):
+			log_warn("STUTTER: frame took %dms (%.1fs) | ctx=%s" % [
+				frame_ms, frame_ms / 1000.0, str(_last_context)
+			])
+	_last_frame_ms = now_ms
+
+	# ── Low-FPS streak detection
+	var fps := Engine.get_frames_per_second()
+	if fps > 0 and fps < LOW_FPS_THRESHOLD:
+		_low_fps_streak += 1
+		if _low_fps_streak == LOW_FPS_FRAMES:
+			log_warn("LOW FPS: %d fps for %d frames | ctx=%s" % [
+				int(fps), LOW_FPS_FRAMES, str(_last_context)
+			])
+	else:
+		_low_fps_streak = 0
+
+	# ── Overlay aging
+	if overlay_enabled:
+		for i in range(_entries.size() - 1, -1, -1):
+			_entries[i].ttl -= delta
+			if _entries[i].ttl <= 0.0:
+				_entries.remove_at(i)
+		_refresh_label()
+
+
+# ── Watchdog thread ───────────────────────────────────────────────────────────
+
+func _start_watchdog() -> void:
+	_heartbeat_ms = Time.get_ticks_msec()
+	_watchdog_running = true
+	_watchdog_thread = Thread.new()
+	_watchdog_thread.start(_watchdog_loop)
+
+
+func _stop_watchdog() -> void:
+	_watchdog_running = false
+	if _watchdog_thread and _watchdog_thread.is_started():
+		_watchdog_thread.wait_to_finish()
+	_watchdog_thread = null
+
+
+func _watchdog_loop() -> void:
+	# Runs on a separate OS thread — keeps ticking even when main loop freezes
+	var last_reported_ms: int = 0
+	while _watchdog_running:
+		OS.delay_msec(500)   # check twice per second
+		if not _watchdog_running:
+			break
+		var now := Time.get_ticks_msec()
+		var gap  := now - _heartbeat_ms
+		if gap >= FREEZE_THRESHOLD_MS and now != last_reported_ms:
+			last_reported_ms = now
+			_write_freeze_report(gap)
+
+
+func _write_freeze_report(gap_ms: int) -> void:
+	# Called from watchdog thread — must use mutex
+	var ts    := Time.get_datetime_string_from_system()
+	var lines := [
+		"=" .repeat(60),
+		"[%s][FREEZE] main loop silent for %dms (%.1fs)" % [ts, gap_ms, gap_ms / 1000.0],
+		"  last_context : %s" % str(_last_context),
+		"  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000),
+		"=" .repeat(60),
+	]
+	_mutex.lock()
+	for line in lines:
+		if _log_file:
+			_log_file.store_line(line)
+			_line_count += 1
+	if _log_file:
+		_log_file.flush()
+	_mutex.unlock()
 
 
 # ── Internal ──────────────────────────────────────────────────────────────────
 
 func _record(level: String, msg: String, color: Color) -> void:
-	var ts := Time.get_time_string_from_system()
+	var ts    := Time.get_time_string_from_system()
 	var scene := _current_scene_name()
-	var line := "[%s][%s][%s] %s" % [ts, level, scene, msg]
-
-	_write_line(line)
+	var line  := "[%s][%s][%s] %s" % [ts, level, scene, msg]
+	_mutex.lock()
+	_write_line_unsafe(line)
+	_mutex.unlock()
 
 	if overlay_enabled:
 		_entries.append({ "text": "[%s] %s" % [level, msg], "ttl": OVERLAY_TTL, "color": color })
@@ -126,13 +216,14 @@ func _record(level: String, msg: String, color: Color) -> void:
 		_refresh_label()
 
 
-func _write_line(line: String) -> void:
+# Must be called with _mutex held
+func _write_line_unsafe(line: String) -> void:
 	if _log_file == null:
 		return
 	_log_file.store_line(line)
 	_line_count += 1
 	if _line_count >= MAX_LOG_LINES:
-		_rotate_log()
+		_rotate_log_unsafe()
 
 
 func _open_log() -> void:
@@ -140,15 +231,13 @@ func _open_log() -> void:
 	if _log_file == null:
 		push_error("ErrorCatcher: cannot open log at " + LOG_PATH)
 		return
-	# Seek to end to append
 	_log_file.seek_end(0)
-	# Estimate current line count to know when to rotate
-	var size := _log_file.get_length()
-	_line_count = size / 60  # rough average
+	_line_count = _log_file.get_length() / 60
 
 
-func _rotate_log() -> void:
-	_flush_log()
+func _rotate_log_unsafe() -> void:
+	if _log_file:
+		_log_file.flush()
 	var backup := LOG_PATH.replace(".txt", "_prev.txt")
 	DirAccess.rename_absolute(
 		ProjectSettings.globalize_path(LOG_PATH),
@@ -156,27 +245,31 @@ func _rotate_log() -> void:
 	)
 	_log_file = FileAccess.open(LOG_PATH, FileAccess.WRITE)
 	_line_count = 0
-	_write_line("[%s][INFO][system] Log rotated — previous saved to %s" % [
-		Time.get_time_string_from_system(), backup
-	])
+	if _log_file:
+		_log_file.store_line("[%s][INFO][system] Log rotated" % Time.get_time_string_from_system())
 
 
 func _flush_log() -> void:
+	_mutex.lock()
 	if _log_file:
 		_log_file.flush()
+	_mutex.unlock()
 
 
-func _write_crash_report() -> void:
-	var ts  := Time.get_datetime_string_from_system()
+func _write_crash_report(kind: String) -> void:
+	var ts    := Time.get_datetime_string_from_system()
 	var scene := _current_scene_name()
-	_write_line("=" .repeat(60))
-	_write_line("[%s][CRASH] scene=%s" % [ts, scene])
-	_write_line("  last_context : %s" % str(_last_context))
-	_write_line("  fps          : %.0f" % Engine.get_frames_per_second())
-	_write_line("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
-	_write_line("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
-	_write_line("=" .repeat(60))
-	_flush_log()
+	_mutex.lock()
+	_write_line_unsafe("=" .repeat(60))
+	_write_line_unsafe("[%s][%s] scene=%s" % [ts, kind, scene])
+	_write_line_unsafe("  last_context : %s" % str(_last_context))
+	_write_line_unsafe("  fps          : %.0f" % Engine.get_frames_per_second())
+	_write_line_unsafe("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
+	_write_line_unsafe("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
+	_write_line_unsafe("=" .repeat(60))
+	if _log_file:
+		_log_file.flush()
+	_mutex.unlock()
 
 
 func _current_scene_name() -> String:
@@ -186,18 +279,13 @@ func _current_scene_name() -> String:
 	return s.name if s else "none"
 
 
-## Auto-watch enemy and bullet nodes for freed-while-active patterns
 func _on_node_added(node: Node) -> void:
 	if node is BaseEnemy:
 		if not node.is_connected("died", _on_enemy_died_watch):
 			node.died.connect(_on_enemy_died_watch.bind(node))
-	# Uncomment to trace every spawn in the log (noisy):
-	# if node is BaseEnemy or node.get_script() != null:
-	#     log_info("SPAWN: %s @ %s" % [node.name, str(node.get_position() if node.has_method("get_position") else "?")])
 
 
 func _on_enemy_died_watch(enemy: BaseEnemy, _src: BaseEnemy) -> void:
-	# Fires if an enemy's died signal arrives but the node is already freed
 	if not is_instance_valid(enemy):
 		log_warn("Enemy 'died' fired but instance already freed — possible double-free")
 
@@ -232,7 +320,6 @@ func _refresh_label() -> void:
 	for e in _entries:
 		lines.append(e.text)
 	_label.text = "\n".join(lines)
-	# Colour by worst level present
 	var worst := Color(0.6, 1.0, 0.6)
 	for e in _entries:
 		if e.text.begins_with("[ERROR"):
