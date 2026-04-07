@@ -6,6 +6,7 @@ var _base_y: float = 0.0
 var _base_y_set: bool = false
 var _amplitude: float = 80.0
 var _frequency: float = 2.5
+var _arc_overlay: ColorRect
 
 
 func _ready() -> void:
@@ -16,6 +17,22 @@ func _ready() -> void:
 	enemy_type = "zigzag"
 	_color = Color(1.0, 0.7, 0.0)
 	super._ready()
+	_build_arc_overlay()
+
+
+func _build_arc_overlay() -> void:
+	_arc_overlay = ColorRect.new()
+	_arc_overlay.size = Vector2(44, 44)
+	_arc_overlay.position = Vector2(-22, -22)
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/electric_arc.gdshader")
+	if shader:
+		mat.shader = shader
+		mat.set_shader_parameter("arc_color", Color(0.4, 0.7, 1.0, 0.9))
+		mat.set_shader_parameter("speed", 5.0)
+		mat.set_shader_parameter("intensity", 2.5)
+		_arc_overlay.material = mat
+	add_child(_arc_overlay)
 
 
 func _process(delta: float) -> void:

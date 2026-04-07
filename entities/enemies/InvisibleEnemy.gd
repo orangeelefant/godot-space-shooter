@@ -9,6 +9,7 @@ const VISIBLE_INTERVAL := 3.0
 const VISIBLE_DURATION := 0.5
 
 var _shimmer: _ShimmerNode
+var _glitch_overlay: ColorRect
 
 
 func _ready() -> void:
@@ -24,6 +25,7 @@ func _ready() -> void:
 	_shimmer = _ShimmerNode.new()
 	_shimmer.owner_enemy = self
 	add_child(_shimmer)
+	_build_glitch_overlay()
 	# Cache player reference once — avoids O(n) get_children() scan every frame
 	var parent := get_parent()
 	if parent:
@@ -49,11 +51,13 @@ func _process(delta: float) -> void:
 		_visible_timer = VISIBLE_DURATION
 		self_modulate.a = 0.7
 		queue_redraw()
+		_trigger_glitch()
 	elif _is_visible and _visible_timer <= 0.0:
 		_is_visible = false
 		_visible_timer = VISIBLE_INTERVAL
 		self_modulate.a = 0.1
 		queue_redraw()
+		_trigger_glitch()
 
 	if _tint_timer > 0.0:
 		_tint_timer -= delta
@@ -66,6 +70,31 @@ func _process(delta: float) -> void:
 		queue_free()
 
 	_shimmer.queue_redraw()
+
+
+func _build_glitch_overlay() -> void:
+	_glitch_overlay = ColorRect.new()
+	_glitch_overlay.size = Vector2(40, 40)
+	_glitch_overlay.position = Vector2(-20, -20)
+	_glitch_overlay.visible = false
+	var mat := ShaderMaterial.new()
+	var shader := load("res://shaders/glitch.gdshader")
+	if shader:
+		mat.shader = shader
+		mat.set_shader_parameter("shake_power", 0.06)
+		mat.set_shader_parameter("shake_rate", 0.6)
+		mat.set_shader_parameter("shake_speed", 12.0)
+		_glitch_overlay.material = mat
+	add_child(_glitch_overlay)
+
+
+func _trigger_glitch() -> void:
+	if _glitch_overlay and is_instance_valid(_glitch_overlay):
+		_glitch_overlay.visible = true
+		get_tree().create_timer(0.18).timeout.connect(
+			func(): if is_instance_valid(_glitch_overlay): _glitch_overlay.visible = false,
+			CONNECT_ONE_SHOT
+		)
 
 
 func set_player_position(pos: Vector2) -> void:

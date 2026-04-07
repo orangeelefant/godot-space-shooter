@@ -61,6 +61,7 @@ const WORLDS: Array[Dictionary] = [
 				"waves": [
 					{"type": "yellow", "count": 40, "formation": "swarm", "delay": 0.2},
 					{"type": "green",  "count": 60, "formation": "swarm", "delay": 0.08},
+					{"type": "zigzag", "count": 8,  "formation": "v",     "delay": 0.2},
 				],
 				"mission": {"type": "timed", "time_limit": 90}
 			},
