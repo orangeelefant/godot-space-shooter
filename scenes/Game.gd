@@ -30,7 +30,7 @@ const SHOOT_RATE := 0.18  # seconds between shots
 var _stars_far: Node2D
 var _stars_near: Node2D
 var _nebula: Node2D
-var _god_rays: ColorRect
+var _god_rays: Node2D
 var _planet: Node2D
 var _asteroids: Node2D
 var _far_offset: float = 0.0
@@ -76,10 +76,6 @@ func _build_background() -> void:
 	# Nebula layer (behind everything)
 	_nebula = _NebulaLayer.new()
 	add_child(_nebula)
-
-	# God rays layer (behind stars)
-	_god_rays = _GodRaysLayer.new()
-	add_child(_god_rays)
 
 	# Far parallax layer
 	_stars_far = _StarLayer.new(80, 0.5, 1.5, Color(0.27, 0.53, 0.8), 0.15, 0.5)
@@ -459,8 +455,12 @@ func _spawn_combo_burst(pos: Vector2, tier: int) -> void:
 		mat.set_shader_parameter("lifespan", 1.0)
 		burst.material = mat
 	add_child(burst)
+	var burst_mat := mat as ShaderMaterial
 	var t := create_tween()
-	t.tween_method(func(v: float): if is_instance_valid(burst) and burst.material: (burst.material as ShaderMaterial).set_shader_parameter("lifespan", v), 1.0, 0.0, 0.55)
+	var _update_burst := func(v: float):
+		if is_instance_valid(burst) and burst_mat:
+			burst_mat.set_shader_parameter("lifespan", v)
+	t.tween_method(_update_burst, 1.0, 0.0, 0.55)
 	t.tween_callback(func(): if is_instance_valid(burst): burst.queue_free())
 
 
@@ -679,8 +679,12 @@ func _spawn_slash_arc(pos: Vector2) -> void:
 		arc.material = mat
 	add_child(arc)
 	# Animate fade-out
+	var arc_mat := mat as ShaderMaterial
 	var t := create_tween()
-	t.tween_method(func(v: float): if is_instance_valid(arc) and arc.material: (arc.material as ShaderMaterial).set_shader_parameter("progress", v), 1.0, 0.0, 0.25)
+	var _update_arc := func(v: float):
+		if is_instance_valid(arc) and arc_mat:
+			arc_mat.set_shader_parameter("progress", v)
+	t.tween_method(_update_arc, 1.0, 0.0, 0.25)
 	t.tween_callback(func(): if is_instance_valid(arc): arc.queue_free())
 
 
@@ -821,27 +825,6 @@ class _NebulaLayer extends Node2D:
 			var x: float = fmod(float(b["x"]) - _offset * 0.03, GameData.GAME_WIDTH + radius * 2.0) - radius
 			draw_circle(Vector2(x, float(b["y"])), radius, color)
 			draw_circle(Vector2(x, float(b["y"])), radius * 0.6, Color(color.r, color.g, color.b, color.a * 1.5))
-
-
-# ── God rays layer ────────────────────────────────────────────────────────────
-
-class _GodRaysLayer extends ColorRect:
-	func _ready() -> void:
-		z_index = -1
-		size = Vector2(GameData.GAME_WIDTH, GameData.GAME_HEIGHT)
-		color = Color(0, 0, 0, 0)  # transparent fallback so no white flash if shader missing
-		mouse_filter = Control.MOUSE_FILTER_IGNORE  # never block input
-		var mat := ShaderMaterial.new()
-		var shader := load("res://shaders/god_rays.gdshader")
-		if shader:
-			mat.shader = shader
-			mat.set_shader_parameter("color", Color(0.08, 0.2, 0.6, 0.12))
-			mat.set_shader_parameter("angle", -0.25)
-			mat.set_shader_parameter("spread", 0.4)
-			mat.set_shader_parameter("speed", 0.6)
-			mat.set_shader_parameter("ray1_density", 6.0)
-			mat.set_shader_parameter("ray2_density", 25.0)
-			material = mat
 
 
 # ── Planet layer ──────────────────────────────────────────────────────────────
