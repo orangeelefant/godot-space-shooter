@@ -29,6 +29,7 @@ var _entries: Array[Dictionary] = []   # { msg, ttl, color }
 var _overlay: CanvasLayer = null
 var _label: Label = null
 var _last_context: Dictionary = {}
+var _events: EventBuffer = EventBuffer.new()
 
 # Watchdog
 var _heartbeat_ms: int = 0            # written by main thread, read by watchdog
@@ -98,6 +99,10 @@ func is_valid(node: Object, context: String = "") -> bool:
 func update_context(ctx: Dictionary) -> void:
 	_last_context = ctx.duplicate()
 	_heartbeat_ms = Time.get_ticks_msec()   # main thread is alive
+
+
+func record_event(tag: String, detail: String = "") -> void:
+	_events.record(tag, detail)
 
 
 ## Dump a manual state snapshot to log
@@ -196,6 +201,7 @@ func _write_freeze_report(gap_ms: int) -> void:
 		"=" .repeat(60),
 		"[%s][FREEZE] main loop silent for %dms (%.1fs)" % [ts, gap_ms, gap_ms / 1000.0],
 		"  last_context : %s" % str(_last_context),
+		"  event_timeline:\n%s" % _events.dump(),
 		"  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000),
 		"=" .repeat(60),
 	]
@@ -315,6 +321,7 @@ func _write_crash_report(kind: String) -> void:
 	_write_line_unsafe("=" .repeat(60))
 	_write_line_unsafe("[%s][%s] scene=%s" % [ts, kind, scene])
 	_write_line_unsafe("  last_context : %s" % str(_last_context))
+	_write_line_unsafe("  event_timeline:\n%s" % _events.dump())
 	_write_line_unsafe("  fps          : %.0f" % Engine.get_frames_per_second())
 	_write_line_unsafe("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
 	_write_line_unsafe("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
@@ -335,6 +342,11 @@ func _on_node_added(node: Node) -> void:
 	if node is BaseEnemy:
 		if not node.is_connected("died", _on_enemy_died_watch):
 			node.died.connect(_on_enemy_died_watch.bind(node))
+	if node is EnemySpawner:
+		node.wave_started.connect(func(i: int): record_event("wave_started", "wave %d" % i))
+		node.all_waves_done.connect(func(): record_event("all_waves_done"))
+		node.boss_spawned.connect(func(_b: BossEnemy): record_event("boss_spawned"))
+		node.boss_defeated.connect(func(): record_event("boss_defeated"))
 
 
 func _on_enemy_died_watch(enemy: BaseEnemy, _src: BaseEnemy) -> void:
