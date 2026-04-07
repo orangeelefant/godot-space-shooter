@@ -70,7 +70,7 @@ func _ready() -> void:
 
 	# Upgrade button (if not at max)
 	if current_idx < CANNON_ORDER.size() - 1:
-		var next_cannon := CANNON_ORDER[current_idx + 1]
+		var next_cannon: String = CANNON_ORDER[current_idx + 1]
 		var coins := SaveSystem.get_coins()
 		var can_afford := coins >= UPGRADE_COST
 
