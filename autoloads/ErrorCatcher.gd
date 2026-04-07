@@ -30,6 +30,7 @@ var _overlay: CanvasLayer = null
 var _label: Label = null
 var _last_context: Dictionary = {}
 var _events: EventBuffer = EventBuffer.new()
+var _inputs: InputRecorder = InputRecorder.new()
 
 # Watchdog
 var _heartbeat_ms: int = 0            # written by main thread, read by watchdog
@@ -131,6 +132,8 @@ func _notification(what: int) -> void:
 
 
 func _process(delta: float) -> void:
+	_inputs.tick()
+
 	# ── Heartbeat (also updated by update_context, but this covers non-Game scenes)
 	_heartbeat_ms = Time.get_ticks_msec()
 
@@ -202,6 +205,7 @@ func _write_freeze_report(gap_ms: int) -> void:
 		"[%s][FREEZE] main loop silent for %dms (%.1fs)" % [ts, gap_ms, gap_ms / 1000.0],
 		"  last_context : %s" % str(_last_context),
 		"  event_timeline:\n%s" % _events.dump(),
+		"  last_inputs:\n%s" % _inputs.dump(),
 		"  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000),
 		"=" .repeat(60),
 	]
@@ -322,6 +326,7 @@ func _write_crash_report(kind: String) -> void:
 	_write_line_unsafe("[%s][%s] scene=%s" % [ts, kind, scene])
 	_write_line_unsafe("  last_context : %s" % str(_last_context))
 	_write_line_unsafe("  event_timeline:\n%s" % _events.dump())
+	_write_line_unsafe("  last_inputs:\n%s" % _inputs.dump())
 	_write_line_unsafe("  fps          : %.0f" % Engine.get_frames_per_second())
 	_write_line_unsafe("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
 	_write_line_unsafe("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
