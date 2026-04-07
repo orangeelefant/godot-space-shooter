@@ -334,6 +334,26 @@ func _should_log(msg: String) -> bool:
 
 
 # Must be called with _mutex held
+func _dump_scene_tree() -> String:
+	if get_tree() == null or get_tree().root == null:
+		return "(no tree)"
+	var lines: PackedStringArray = []
+	_walk_tree(get_tree().root, 0, lines)
+	return "\n".join(lines)
+
+
+func _walk_tree(node: Node, depth: int, lines: PackedStringArray) -> void:
+	var indent := "  ".repeat(depth)
+	var child_count := node.get_child_count()
+	lines.append("%s%s [%s] (%d children)" % [indent, node.name, node.get_class(), child_count])
+	if depth < 4:
+		for child in node.get_children():
+			_walk_tree(child, depth + 1, lines)
+	elif child_count > 0:
+		lines.append("%s  ... (%d more)" % [indent, child_count])
+
+
+# Must be called with _mutex held
 func _write_line_unsafe(line: String) -> void:
 	if _log_file == null:
 		return
@@ -384,6 +404,7 @@ func _write_crash_report(kind: String) -> void:
 	_write_line_unsafe("  event_timeline:\n%s" % _events.dump())
 	_write_line_unsafe("  last_inputs:\n%s" % _inputs.dump())
 	_write_line_unsafe("  mem_watcher : %s" % _mem_watcher.dump())
+	_write_line_unsafe("  scene_tree:\n%s" % _dump_scene_tree())
 	_write_line_unsafe("  fps          : %.0f" % Engine.get_frames_per_second())
 	_write_line_unsafe("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
 	_write_line_unsafe("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
