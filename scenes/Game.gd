@@ -217,12 +217,33 @@ func _process(delta: float) -> void:
 	# Magnet boss pull
 	_apply_magnet_pull(delta)
 
+	# Gather typed lists once — avoids repeated get_children() scans per check
+	var bullets: Array = []
+	var enemies: Array = []
+	var enemy_bullets: Array = []
+	var powerups: Array = []
+	var bosses: Array = []
+	for child in get_children():
+		if not child.is_inside_tree():
+			continue
+		if child is Bullet:
+			bullets.append(child)
+		elif child is BaseEnemy:
+			if child is BossEnemy:
+				bosses.append(child)
+			else:
+				enemies.append(child)
+		elif child is EnemyBullet:
+			enemy_bullets.append(child)
+		elif child is PowerUp:
+			powerups.append(child)
+
 	# Collision checks (manual overlap)
-	_check_bullet_enemy_overlap()
-	_check_player_enemy_overlap()
-	_check_player_enemy_bullets()
-	_check_player_powerups()
-	_check_player_boss_sweep()
+	_check_bullet_enemy_overlap(bullets, enemies)
+	_check_player_enemy_overlap(enemies)
+	_check_player_enemy_bullets(enemy_bullets)
+	_check_player_powerups(powerups)
+	_check_player_boss_sweep(bosses)
 
 	# Handle enemies that escaped off-screen without being killed
 	if _spawner._all_launched and not _level_done:
@@ -290,16 +311,12 @@ func _use_gas() -> void:
 
 # ── Collision checks ─────────────────────────────────────────────────────────
 
-func _check_bullet_enemy_overlap() -> void:
-	for bullet in get_children():
-		if not bullet is Bullet:
+func _check_bullet_enemy_overlap(bullets: Array, enemies: Array) -> void:
+	for bullet in bullets:
+		if not is_instance_valid(bullet) or not bullet.is_inside_tree():
 			continue
-		if not bullet.is_inside_tree():
-			continue
-		for enemy in get_children():
-			if not enemy is BaseEnemy:
-				continue
-			if not enemy.is_inside_tree():
+		for enemy in enemies:
+			if not is_instance_valid(enemy) or not enemy.is_inside_tree():
 				continue
 			if bullet.position.distance_to(enemy.position) < 22.0:
 				bullet.queue_free()
@@ -307,13 +324,11 @@ func _check_bullet_enemy_overlap() -> void:
 				break
 
 
-func _check_player_enemy_overlap() -> void:
+func _check_player_enemy_overlap(enemies: Array) -> void:
 	if _player._invincible or _player._frozen:
 		return
-	for enemy in get_children():
-		if not enemy is BaseEnemy:
-			continue
-		if not enemy.is_inside_tree():
+	for enemy in enemies:
+		if not is_instance_valid(enemy) or not enemy.is_inside_tree():
 			continue
 		if _player.position.distance_to(enemy.position) < 28.0:
 			if enemy is FlyEnemy:
@@ -324,37 +339,31 @@ func _check_player_enemy_overlap() -> void:
 			enemy.hit(999)
 
 
-func _check_player_enemy_bullets() -> void:
+func _check_player_enemy_bullets(enemy_bullets: Array) -> void:
 	if _player._invincible or _player._frozen:
 		return
-	for bullet in get_children():
-		if not bullet is EnemyBullet:
-			continue
-		if not bullet.is_inside_tree():
+	for bullet in enemy_bullets:
+		if not is_instance_valid(bullet) or not bullet.is_inside_tree():
 			continue
 		if _player.position.distance_to(bullet.position) < 22.0:
 			bullet.queue_free()
 			_player.take_damage(1)
 
 
-func _check_player_powerups() -> void:
-	for pu in get_children():
-		if not pu is PowerUp:
-			continue
-		if not pu.is_inside_tree():
+func _check_player_powerups(powerups: Array) -> void:
+	for pu in powerups:
+		if not is_instance_valid(pu) or not pu.is_inside_tree():
 			continue
 		if _player.position.distance_to(pu.position) < 32.0:
 			_collect_powerup(pu as PowerUp)
 
 
-func _check_player_boss_sweep() -> void:
+func _check_player_boss_sweep(bosses: Array) -> void:
 	if _player._invincible or _player._frozen:
 		return
 	if _sweep_hit_cooldown > 0.0:
 		return
-	for child in get_children():
-		if not child is BossEnemy:
-			continue
+	for child in bosses:
 		var boss := child as BossEnemy
 		if not boss.is_sweep_active():
 			continue
