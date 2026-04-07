@@ -32,6 +32,8 @@ var _last_context: Dictionary = {}
 var _events: EventBuffer = EventBuffer.new()
 var _inputs: InputRecorder = InputRecorder.new()
 
+var _mem_watcher: MemoryWatcher = MemoryWatcher.new()
+
 # Watchdog
 var _heartbeat_ms: int = 0            # written by main thread, read by watchdog
 var _watchdog_thread: Thread = null
@@ -53,6 +55,10 @@ func _ready() -> void:
 	])
 	get_tree().node_added.connect(_on_node_added)
 	_start_watchdog()
+	_mem_watcher.memory_leak_detected.connect(func(rate: float, mb: float):
+		log_warn("MEMORY LEAK: +%.1f MB/min | current=%.0fMB" % [rate, mb]))
+	_mem_watcher.node_leak_detected.connect(func(rate: float, count: int):
+		log_warn("NODE LEAK: +%.0f nodes/min | current=%d" % [rate, count]))
 
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -132,6 +138,7 @@ func _notification(what: int) -> void:
 
 
 func _process(delta: float) -> void:
+	_mem_watcher.tick(delta, get_tree())
 	_inputs.tick()
 
 	# ── Heartbeat (also updated by update_context, but this covers non-Game scenes)
@@ -341,6 +348,7 @@ func _write_crash_report(kind: String) -> void:
 	_write_line_unsafe("  last_context : %s" % str(_last_context))
 	_write_line_unsafe("  event_timeline:\n%s" % _events.dump())
 	_write_line_unsafe("  last_inputs:\n%s" % _inputs.dump())
+	_write_line_unsafe("  mem_watcher : %s" % _mem_watcher.dump())
 	_write_line_unsafe("  fps          : %.0f" % Engine.get_frames_per_second())
 	_write_line_unsafe("  mem          : %dMB" % (OS.get_static_memory_usage() / 1_000_000))
 	_write_line_unsafe("  video_adapter: %s" % RenderingServer.get_video_adapter_name())
