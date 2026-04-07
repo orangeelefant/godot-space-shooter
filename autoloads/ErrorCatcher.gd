@@ -246,6 +246,8 @@ func _get_callstack() -> String:
 
 
 func _should_log(msg: String) -> bool:
+	if _dedup.size() > 200:
+		_dedup.clear()
 	var h := hash(msg)
 	var now := Time.get_ticks_msec() / 1000.0
 	if _dedup.has(h):
