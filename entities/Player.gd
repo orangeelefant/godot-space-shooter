@@ -59,8 +59,8 @@ func setup(ship: Dictionary, upgrade_state: Dictionary) -> void:
 
 
 func _apply_ship_data() -> void:
-	var base_speed := float(ship_data.get("speed", 3)) * 60.0
-	var motor_bonus := float(upgrades.get("motor_level", 1) - 1) * 20.0
+	var base_speed := float(ship_data.get("speed", 3)) * 100.0
+	var motor_bonus := float(upgrades.get("motor_level", 1) - 1) * 40.0
 	_speed = base_speed + motor_bonus
 	_color = ship_data.get("color", Color.CYAN)
 

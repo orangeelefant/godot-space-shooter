@@ -345,7 +345,7 @@ func _check_bullet_enemy_overlap(bullets: Array, enemies: Array) -> void:
 		for enemy in enemies:
 			if not is_instance_valid(enemy) or not enemy.is_inside_tree():
 				continue
-			if bullet.position.distance_to(enemy.position) < 22.0:
+			if bullet.position.distance_to(enemy.position) < enemy._get_radius() + 10.0:
 				bullet.queue_free()
 				enemy.hit(bullet.damage)
 				break

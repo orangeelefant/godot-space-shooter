@@ -6,7 +6,7 @@ signal shoot_directed(pos: Vector2, vel: Vector2)
 signal spawn_minions(pos: Vector2, count: int)
 signal health_changed(current_hp: int, max_hp_val: int)
 
-const TARGET_X := 1500.0
+const TARGET_X := 1100.0
 const PHASE_DURATION := 3.5
 
 var _phase: int = 0       # 0 = burst, 1 = minions, 2 = sweep
@@ -42,8 +42,9 @@ func _process(delta: float) -> void:
 			speed = 0.0
 			_arrived = true
 	else:
-		# Gentle vertical drift
+		# Gentle vertical drift, clamped to screen
 		position.y += sin(_rotation_angle * 0.7) * 0.6
+		position.y = clampf(position.y, 80.0, GameData.GAME_HEIGHT - 80.0)
 		if _sweep_active:
 			_sweep_angle -= delta * 1.5
 

@@ -16,7 +16,7 @@ var _waiting_for_next_wave: bool = false
 var _all_launched: bool = false
 
 const SPAWN_X := 1970.0
-const GAP_BETWEEN_WAVES := 3.0  # seconds after last spawn of a wave
+const GAP_BETWEEN_WAVES := 0.5  # seconds after last spawn of a wave
 
 
 func setup(waves: Array) -> void:
