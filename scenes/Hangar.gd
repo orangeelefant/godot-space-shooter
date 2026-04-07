@@ -187,7 +187,7 @@ class _UpgradeCard extends Node2D:
 		desc_lbl.size = Vector2(card_size.x - 32, 60)
 		desc_lbl.add_theme_font_size_override("font_size", 15)
 		desc_lbl.add_theme_color_override("font_color", Color(0.5, 0.6, 0.7))
-		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_ONLY
+		desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 		add_child(desc_lbl)
 
 		if is_owned:

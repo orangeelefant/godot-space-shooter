@@ -70,7 +70,7 @@ func _process(_delta: float) -> void:
 		_mel_phase += mel_freq / SAMPLE_RATE
 
 		# Bass: triangle wave
-		var bass := abs(fmod(_bass_phase, 1.0) * 2.0 - 1.0) * 2.0 - 1.0
+		var bass: float = absf(fmod(_bass_phase, 1.0) * 2.0 - 1.0) * 2.0 - 1.0
 		bass *= 0.22
 		_bass_phase += bass_freq / SAMPLE_RATE
 
@@ -84,7 +84,7 @@ func _process(_delta: float) -> void:
 		if _step % 2 == 0 and _step_t < 0.02:
 			hat = (randf() * 2.0 - 1.0) * 0.06 * (1.0 - _step_t / 0.02)
 
-		var sample := mel + bass + arp + hat
+		var sample: float = mel + bass + arp + hat
 		_playback.push_frame(Vector2(sample, sample))
 
 
