@@ -198,6 +198,7 @@ func _watchdog_loop() -> void:
 
 
 func _write_freeze_report(gap_ms: int) -> void:
+	call_deferred("_take_screenshot", "freeze_screenshot.png")
 	# Called from watchdog thread — must use mutex
 	var ts    := Time.get_datetime_string_from_system()
 	var lines := [
@@ -242,6 +243,18 @@ func _write_line_direct(line: String) -> void:
 	if _log_file:
 		_log_file.flush()
 	_mutex.unlock()
+
+
+func _take_screenshot(filename: String = "crash_screenshot.png") -> void:
+	var vp := get_viewport()
+	if vp == null:
+		return
+	var img := vp.get_texture().get_image()
+	if img == null:
+		return
+	var path := "user://" + filename
+	img.save_png(path)
+	_write_line_direct("[SCREENSHOT] saved to %s" % path)
 
 
 func _get_callstack() -> String:
@@ -319,6 +332,7 @@ func _flush_log() -> void:
 
 
 func _write_crash_report(kind: String) -> void:
+	call_deferred("_take_screenshot", "crash_screenshot.png")
 	var ts    := Time.get_datetime_string_from_system()
 	var scene := _current_scene_name()
 	_mutex.lock()
