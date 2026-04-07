@@ -319,6 +319,7 @@ func _spawn_bullet(pos: Vector2, vel: Vector2) -> Bullet:
 
 
 func _use_gas() -> void:
+	ErrorCatcher.record_event("gas_used", "remaining=%d" % (_gas_count - 1))
 	_gas_count -= 1
 	_hud.call("update_gas", _gas_count)
 	# Update only the gas_grenades field — avoid a full load_game() round-trip during gameplay
@@ -412,6 +413,7 @@ func _on_lives_changed(lives: int) -> void:
 
 
 func _on_player_damaged() -> void:
+	ErrorCatcher.record_event("player_hit", "lives=%d" % _player.lives)
 	AudioSystem.play_damage()
 	_camera_shake()
 
@@ -422,6 +424,7 @@ func _on_player_died() -> void:
 
 
 func _on_enemy_killed(enemy: BaseEnemy) -> void:
+	ErrorCatcher.record_event("enemy_killed", "total=%d" % _enemies_killed)
 	_spawn_explosion(enemy.position, 1.0)
 	var points := (_combo_system as ComboSystem).register_kill()
 	_score += points
@@ -531,6 +534,7 @@ func _force_level_complete() -> void:
 
 
 func _complete_level() -> void:
+	ErrorCatcher.record_event("level_complete", "%s score=%d" % [_level_id, _score])
 	_level_done = true
 	AudioSystem.play_level_complete()
 	_hud.call("update_mission", "UPPDRAG SLUTFÖRT!")
